@@ -1,2 +1,4 @@
 # ignore Mac files
 .DS_Store
+# ignore .env file
+.env
