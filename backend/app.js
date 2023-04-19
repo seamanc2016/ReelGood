@@ -169,5 +169,33 @@ app.get('/movie/upcoming', function (req, res) {
 
 });
 
+/** 
+* GET - Get the primary information about a movie via MovieDB
+* @method /movie/:movie_id
+* @param {number} Request.params.movie_id -  The unique identifier for a movie on TMBD.
+* @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
+*/
+app.get('/movie/:movie_id', function (req, res) {
+  //Make request to MovieDB API
+  baseUrl = process.env.MOVIE_DB_BASE_URL;
+
+  axios.get(`${baseUrl}/movie/${req.params.movie_id}`, {
+      params: {
+          api_key: process.env.MOVIE_DB_API_KEY,
+          language: 'en-US', //Keeping our app US based.
+      }
+  })
+      .then(function (response) {
+          //On success, return movie data object from MovieDB
+          return res.status(response.status).send(response.data);
+      })
+      .catch(function (error) {
+          // If a response has been received from the request server, the error object will contain the response property.
+          if (error.response)
+              return res.status(error.response.status).send(error.response.data);
+      });
+
+});
+
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
