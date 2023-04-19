@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/cop4808-spring-2023-fullstack-web/final-project-group2/issues"
   },
-  "homepage": "https://github.com/cop4808-spring-2023-fullstack-web/final-project-group2#readme"
+  "homepage": "https://github.com/cop4808-spring-2023-fullstack-web/final-project-group2#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
 }
