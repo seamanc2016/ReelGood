@@ -101,5 +101,39 @@ app.get('/movie/now_playing', function (req, res) {
 
 });
 
+/** 
+* GET - Get a list of the current popular movies on MovieDB. This list updates daily.
+* @method /movie/popular
+* @param {number} Request.query.page - A page is every 20 search results. For example, page = 1 means the first 20 search results. 
+* @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
+*/
+app.get('/movie/popular', function (req, res) {
+  //Guard clause
+  if (req.query.page === undefined)
+      return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
+
+  //Make request to MovieDB API
+  baseUrl = process.env.MOVIE_DB_BASE_URL;
+
+  axios.get(`${baseUrl}/movie/popular`, {
+      params: {
+          api_key: process.env.MOVIE_DB_API_KEY,
+          region: 'US',
+          language: 'en-US', //Keeping our app US based.
+          page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
+      }
+  })
+      .then(function (response) {
+          //On success, return movie data object from MovieDB
+          return res.status(response.status).send(response.data);
+      })
+      .catch(function (error) {
+          // If a response has been received from the request server, the error object will contain the response property.
+          if (error.response)
+              return res.status(error.response.status).send(error.response.data);
+      });
+
+});
+
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
