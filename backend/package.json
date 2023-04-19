@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/cop4808-spring-2023-fullstack-web/final-project-group2#readme",
   "dependencies": {
+    "firebase-admin": "^11.7.0",
     "dotenv": "^16.0.3"
   }
 }
