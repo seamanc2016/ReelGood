@@ -31,13 +31,14 @@ function Login(){
   const login = (e) =>{
     e.preventDefault();
 
+    // authenticates with google using api credentals
     const auth = getAuth()
     signInWithEmailAndPassword(auth, email, password)
-    .then((usercredentials) => {
+    .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
         setAuth(true)
       }
-    }).catch((e) => {
+    }).catch((e) => { // else catch and print errors
       console.log(e.code)
       console.log(e.message);
     });
