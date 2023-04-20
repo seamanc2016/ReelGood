@@ -17,7 +17,7 @@ export default function MyRouter() {
                 <Route exact path='/popular' element={<Popular />}></Route>
                 <Route exact path='/theater' element={<Theater />}></Route>
                 <Route exact path='/upcoming' element={<Upcoming />}></Route>
-                {/* <Route exact path='/login' element={<Login />}></Route> */}
+                <Route exact path='/login' element={<Login />}></Route>
             </Routes>
         </>
      
