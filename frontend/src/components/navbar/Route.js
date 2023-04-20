@@ -6,6 +6,7 @@ import NowPlaying from '../../pages/NowPlaying'
 import Popular from '../../pages/Popular'
 import Theater from '../../pages/Theater'
 import Upcoming from '../../pages/Upcoming'
+import Login from '../../pages/Login'
 
 export default function MyRouter() {
     return (
@@ -16,6 +17,7 @@ export default function MyRouter() {
                 <Route exact path='/popular' element={<Popular />}></Route>
                 <Route exact path='/theater' element={<Theater />}></Route>
                 <Route exact path='/upcoming' element={<Upcoming />}></Route>
+                <Route exact path='/login' element={<Login />}></Route>
             </Routes>
         </>
      
