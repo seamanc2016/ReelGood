@@ -7,6 +7,7 @@ import Popular from '../../pages/Popular'
 import Theater from '../../pages/Theater'
 import Upcoming from '../../pages/Upcoming'
 import Login from '../../pages/Login'
+import Register from '../userauth/Register'
 
 
 export default function MyRouter() {
@@ -19,6 +20,7 @@ export default function MyRouter() {
                 <Route exact path='/Theater' element={<Theater />}></Route>
                 <Route exact path='/Upcoming' element={<Upcoming />}></Route>
                 <Route exact path='/Login' element={<Login />}></Route>
+                <Route exact path='/Register' element={<Register />}></Route>
             </Routes>
         </>
      

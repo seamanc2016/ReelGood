@@ -1,14 +1,15 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
-import Nav from 'react-bootstrap/Nav';
 
-import {useState, useEffect, useContext} from 'react';
-import {getAuth, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
-import '../config/firebase-config';
+import {useState, useEffect} from 'react';
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
+import '../../config/firebase-config';
 
-function Login(){
-  
+function Register(){
+
+
+  const [Auth, setAuth] = useState(false);  // determines if user is authenticated
   const [token, setToken] = useState('');   // sets token
 
   const [email, setEmail] = useState('');
@@ -27,16 +28,15 @@ function Login(){
     })
   }, [])
 
-  // called when user logs in
-  const login = (e) =>{
+  const reg = (e) =>{
     e.preventDefault();
 
     // authenticates with google using api credentals
     const auth = getAuth()
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
-        //setAuth(true)
+        setAuth(true)
       }
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
@@ -44,11 +44,11 @@ function Login(){
     });
 }
 
-
   return(
-    <Container className='p-5'  fluid>
-      <h1>Login</h1>
-      <Form onSubmit={login}>
+    <>
+      <Container className='p-5'  fluid>
+        <h1>Signup</h1>
+      <Form onSubmit={reg}>
         <Form.Group className='' controlId='formemail'>
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="email address" onChange={(e) => {setEmail(e.target.value)}}/ >
@@ -62,7 +62,7 @@ function Login(){
         </Button>
       </Form>
     </Container>
+    </>
   );
 }
-
-export default Login
+export default Register
