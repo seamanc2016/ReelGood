@@ -14,11 +14,11 @@ export default function MyRouter() {
         <>
             <Routes>
                 <Route exact path="/" element={<Home />}></Route>
-                <Route exact path='/nowplaying' element={<NowPlaying />}></Route>
-                <Route exact path='/popular' element={<Popular />}></Route>
-                <Route exact path='/theater' element={<Theater />}></Route>
-                <Route exact path='/upcoming' element={<Upcoming />}></Route>
-                <Route exact path='/login' element={<Login />}></Route>
+                <Route exact path='/Nowplaying' element={<NowPlaying />}></Route>
+                <Route exact path='/Popular' element={<Popular />}></Route>
+                <Route exact path='/Theater' element={<Theater />}></Route>
+                <Route exact path='/Upcoming' element={<Upcoming />}></Route>
+                <Route exact path='/Login' element={<Login />}></Route>
             </Routes>
         </>
      
