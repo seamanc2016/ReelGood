@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 
 import {useState, useEffect} from 'react';
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
-import '../config/firebase-config';
+import '../../config/firebase-config';
 
 function Register(){
 
@@ -47,6 +47,7 @@ function Register(){
   return(
     <>
       <Container className='p-5'  fluid>
+        <h1>Signup</h1>
       <Form onSubmit={reg}>
         <Form.Group className='' controlId='formemail'>
           <Form.Label>Email address</Form.Label>

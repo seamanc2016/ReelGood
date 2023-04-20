@@ -1,14 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
+import Nav from 'react-bootstrap/Nav';
 
-import {useState, useEffect} from 'react';
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
+import {useState, useEffect, useContext} from 'react';
+import {getAuth, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import '../config/firebase-config';
 
 function Login(){
-
-  const [Auth, setAuth] = useState(false);  // determines if user is authenticated
+  
   const [token, setToken] = useState('');   // sets token
 
   const [email, setEmail] = useState('');
@@ -36,7 +36,7 @@ function Login(){
     signInWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
-        setAuth(true)
+        //setAuth(true)
       }
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
@@ -47,6 +47,7 @@ function Login(){
 
   return(
     <Container className='p-5'  fluid>
+      <h1>Login</h1>
       <Form onSubmit={login}>
         <Form.Group className='' controlId='formemail'>
           <Form.Label>Email address</Form.Label>
