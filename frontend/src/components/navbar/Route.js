@@ -8,6 +8,7 @@ import Theater from '../../pages/Theater'
 import Upcoming from '../../pages/Upcoming'
 import Login from '../../pages/Login'
 
+
 export default function MyRouter() {
     return (
         <>

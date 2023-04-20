@@ -3,6 +3,8 @@ import logo from '../../reelgood_logo.png';
 import { Navbar, Nav, Container, Image} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import MySearchBar from './SearchBar';
+
+
 export default function MyNavbar() {
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
