@@ -2,6 +2,8 @@ import {useState, useEffect} from 'react';
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import '../config/firebase-config';
 
+
+
 function Login(){
 
   const [Auth, setAuth] = useState(false);  // determines if user is authenticated
@@ -33,13 +35,11 @@ function Login(){
     });
 }
   
-
-
   return(
-
     <>
+    <h1>LOL</h1>
     </>
-  )
+  );
 }
 
 export default Login

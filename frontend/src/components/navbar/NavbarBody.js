@@ -16,7 +16,7 @@ export default function MyNavbar() {
                         <Nav.Link as={Link} to='/popular'>Popular</Nav.Link>
                         <Nav.Link as={Link} to='/theater'>Theather</Nav.Link>
                         <Nav.Link as={Link} to='/upcoming'>Upcoming</Nav.Link>
-                        <Nav.Link as={Link} to='/login'>Login</Nav.Link>
+                        {/* <Nav.Link as={Link} to='/login'>Login</Nav.Link> */}
                     </Nav>
                 </Navbar.Collapse>
             </Container>
