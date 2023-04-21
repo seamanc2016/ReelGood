@@ -1,14 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
-import Nav from 'react-bootstrap/Nav';
 
 import {useState, useEffect, useContext} from 'react';
 import {getAuth, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import '../config/firebase-config';
 
+import { AuthContext } from '../Context/authContext';
+
 function Login(){
-  
+
+  const {Auth, setAuth} = useContext(AuthContext);
   const [token, setToken] = useState('');   // sets token
 
   const [email, setEmail] = useState('');
@@ -19,7 +21,7 @@ function Login(){
     auth.onAuthStateChanged((user) => { // when users login state changes...
       if(user){
         console.log(user)
-        // setAuth(true);
+        //setAuth(true);
         // userCred.getIdToken().then((token)=>{
         //   setToken(token);
         // })
@@ -28,7 +30,7 @@ function Login(){
   }, [])
 
   // called when user logs in
-  const login = (e) =>{
+  const login = (e) => {
     e.preventDefault();
 
     // authenticates with google using api credentals
@@ -42,9 +44,8 @@ function Login(){
       console.log(e.code)
       console.log(e.message);
     });
-}
-
-
+    
+  }
   return(
     <Container className='p-5'  fluid>
       <h1>Login</h1>

@@ -1,39 +1,37 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../../reelgood_logo.png';
-
 import { Navbar, Nav, Form, Button, ButtonGroup, Image, Container } from 'react-bootstrap'
 import MySearchBar from './SearchBar';
 
 import {Link} from 'react-router-dom'
 
-import { useState, useEffect, createContext } from 'react';
+import { useEffect, useContext } from 'react';
+import { AuthContext } from '../../Context/authContext';
 
 import {getAuth, signOut} from 'firebase/auth';
 import '../../config/firebase-config';
 
-import AuthContext from '../userauth/AuthContext';
-
-// Sets context. Is a global variable for components
 
 export default function MyNavbar() {
 
-    const [Auth, setAuth] = useState(false)
+    // Using AuthContext to access Auth and setAuth
+    const {Auth, setAuth} = useContext(AuthContext);
 
     const authbutton = () => {
-        if(!Auth){
+        if(!Auth){  // If Not Authenticated Show Login and Signup
             return(
             <ButtonGroup>
                 <Button variant="secondary" as={Link} to="/Login">Login</Button>
                 <Button variant="secondary" as={Link} to="/Register">Signup</Button>
             </ButtonGroup>
             );
-        }else{
+        }else{  // If Authenticated Show Logout
             return <Button variant="warning" onSubmit={signout}>Logout</Button>
         }
 
     }
 
-    const signout = (e) =>{
+    const signout = (e) => {
         e.preventDefault();
     
         // authenticates with google using api credentals
@@ -64,7 +62,6 @@ export default function MyNavbar() {
             <Container fluid> {/* Warning: bottom marging might exceed visual.*/}
                 <Image src={logo} alt="Logo" width={80} height={60} />
                 <Navbar.Toggle aria-controls="basic-navbar=nav" />
-                <AuthContext.Provider value={Auth}> {/* Here pass Auth state value to login*/}
                     <Navbar.Collapse id="responsive-navbar-nav">            
                         <Nav>
                             <Nav.Link as={Link} to='/'>Home</Nav.Link>
@@ -77,7 +74,6 @@ export default function MyNavbar() {
                     <Form inline className="mx-3">
                         {authbutton()}
                     </Form>
-                </AuthContext.Provider>
                 <MySearchBar/>
             </Container>
         </Navbar>
