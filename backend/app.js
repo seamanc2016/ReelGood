@@ -7,9 +7,6 @@ const path = require('path');
 const axios = require('axios');
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
-const admin = require('firebase-admin');
-
-
 const multer = require('multer');
 const upload = multer();
 
@@ -40,7 +37,8 @@ const decodeToken = (res,req ,next) => {
     // retrieves token from user API call
 
     // bearer iosdfjhaweu094u32094jerw2rsefwea
-    const token = req.headers.authorization.split(' ')[1];
+    console.log(req.headers)
+    const token = req.headers.Authorization.split(' ')[1];
     try{
         const decodeValue = admin.auth().verifyIdToken(token);
         if(decodeValue){
