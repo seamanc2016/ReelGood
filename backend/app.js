@@ -7,11 +7,14 @@ const path = require('path');
 const axios = require('axios');
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
+const admin = require('firebase-admin');
+
 
 const multer = require('multer');
 const upload = multer();
 
-const cors = require('cors')
+const cors = require('cors');
+const { nextTick } = require('process');
 
 /**
  * Router paths will go here
@@ -30,6 +33,29 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+const decodeToken = (res,req ,next) => {
+
+    // retrieves token from user API call
+
+    // bearer iosdfjhaweu094u32094jerw2rsefwea
+    const token = req.headers.authorization.split(' ')[1];
+    try{
+        const decodeValue = admin.auth().verifyIdToken(token);
+        if(decodeValue){
+            console.log(decodeValue);
+            return next();
+        }
+        return res.json({message: 'unauthorize'})
+    } catch (e){
+        return res.json({message: 'Internal Error'});
+    }
+}
+app.use(decodeToken);
+
+
+
 
 //MovieDB endpoints
 /** 
