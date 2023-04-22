@@ -21,8 +21,8 @@ export default function MyNavbar() {
         if(!Auth){  // If Not Authenticated Show Login and Signup
             return(
             <ButtonGroup>
-                <Button variant="secondary" as={Link} to="/Login">Login</Button>
-                <Button variant="secondary" as={Link} to="/Register">Signup</Button>
+                <Button variant="outline-light" as={Link} to="/Login">Login</Button>
+                <Button variant="outline-light" as={Link} to="/Register">Signup</Button>
             </ButtonGroup>
             );
         }else{  // If Authenticated Show Logout
@@ -71,10 +71,10 @@ export default function MyNavbar() {
                             <Nav.Link as={Link} to='/upcoming'>Upcoming</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                    <Form inline className="mx-3">
+                <MySearchBar/>
+                <Form inline className="mx-3">
                         {authbutton()}
                     </Form>
-                <MySearchBar/>
             </Container>
         </Navbar>
     )
