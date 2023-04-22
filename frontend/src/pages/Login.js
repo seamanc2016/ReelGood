@@ -8,6 +8,8 @@ import '../config/firebase-config';
 
 import { AuthContext } from '../Context/authContext';
 
+import axios from 'axios';
+
 function Login(){
 
   const {Auth, setAuth} = useContext(AuthContext);
@@ -30,7 +32,7 @@ function Login(){
   }, [])
 
   // called when user logs in
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
 
     // authenticates with google using api credentals
@@ -38,6 +40,20 @@ function Login(){
     signInWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
+        console.log(usercredentials)
+
+        usercredentials.user.getIdToken().then((token) => {
+          console.log(token)
+
+          const options ={
+            headers: {
+              Authorization: 'Bearer ' + token
+            }
+          }
+          const res = axios.get('http://localhost:5678/search/movie',options);
+          console.log(res.data);
+          
+        });
         //setAuth(true)
       }
     }).catch((e) => { // else catch and print errors
