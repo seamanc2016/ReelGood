@@ -37,29 +37,29 @@ function Login(){
 
     // authenticates with google using api credentals
     const auth = getAuth()
-    signInWithEmailAndPassword(auth, email, password)
+
+    const Token = await signInWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
-        console.log(usercredentials)
-
-        usercredentials.user.getIdToken().then((token) => {
-          console.log(token)
-
-          const options ={
-            headers: {
-              Authorization: 'Bearer ' + token
-            }
-          }
-          const res = axios.get('http://localhost:5678/search/movie',options);
-          console.log(res.data);
-          
+        return usercredentials.user.getIdToken().then((token) => {
+          console.log(token);
+          return token;
         });
         //setAuth(true)
       }
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
       console.log(e.message);
+      Token = 0;
     });
+
+    const options ={
+      headers: {
+        Authorization: 'Bearer ' + Token
+      }
+    }
+    const res = await axios.get('http://localhost:5678/search/movie',options);
+    console.log(res.data);
     
   }
   return(

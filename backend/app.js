@@ -32,13 +32,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-const decodeToken = (res,req ,next) => {
-
+const decodeToken = (req, res ,next) => {
     // retrieves token from user API call
 
     // bearer iosdfjhaweu094u32094jerw2rsefwea
-    console.log(req.headers)
-    const token = req.headers.Authorization.split(' ')[1];
+    const token = req.headers.authorization.split(' ')[1];
+    console.log(token);
     try{
         const decodeValue = admin.auth().verifyIdToken(token);
         if(decodeValue){
