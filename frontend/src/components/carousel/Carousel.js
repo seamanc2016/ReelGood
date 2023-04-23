@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import logo from "../../SearchingMovie.jpg"
+import logo_movie from "../../SearchingMovie.jpg";
+import logo_theater from "../../SearchingTheater.jpg";
+import logo_favorites from "../../AddingFavorites.jpg";
+import { Image } from 'react-bootstrap'
+
 export default function MyFooter() {
     const [index, setIndex] = useState(0);
 
@@ -11,41 +15,24 @@ export default function MyFooter() {
     return (
         <Carousel activeIndex={index} onSelect={handleSelect}>
             <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src={logo}
-                    alt="First slide"
-                    
-                />
+                <Image src={logo_movie} fluid contain/>
                 <Carousel.Caption>
                     <h3>Search Movies</h3>
                     <p>Discover your favourites, trending, upcoming, and add any of them to your own list.</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src={logo}
-                    alt="Second slide"
-                />
-
+            <Image src={logo_theater} fluid contain/>
                 <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <h3>Search Theathers</h3>
+                    <p>Find the place to see them in the big screen.</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
-                <img
-                    className="d-block w-100"
-                    src={logo}
-                    alt="Third slide"
-                />
-
+            <Image src={logo_favorites} fluid contain/>
                 <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                    </p>
+                    <h3>Make it your collection</h3>
+                    <p>Add your favorites to your own collection!</p>
                 </Carousel.Caption>
             </Carousel.Item>
         </Carousel>
