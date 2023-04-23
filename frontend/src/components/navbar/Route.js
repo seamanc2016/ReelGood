@@ -13,7 +13,7 @@ import Register from '../userauth/Register'
 export default function MyRouter() {
     return (
         <>
-            <Routes>
+            <Routes> 
                 <Route exact path="/" element={<Home />}></Route>
                 <Route exact path='/Nowplaying' element={<NowPlaying />}></Route>
                 <Route exact path='/Popular' element={<Popular />}></Route>

@@ -58,7 +58,7 @@ export default function MyNavbar() {
       }, [])
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar bg="dark" variant="dark" expand="lg"> {/* This component is a container towards the navbar. */}
             <Container fluid> {/* Warning: bottom marging might exceed visual.*/}
                 <Image src={logo} alt="Logo" width={80} height={60} />
                 <Navbar.Toggle aria-controls="basic-navbar=nav" />
@@ -71,7 +71,7 @@ export default function MyNavbar() {
                             <Nav.Link as={Link} to='/upcoming'>Upcoming</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                <MySearchBar/>
+                <MySearchBar/> {/* This component loads the searchbar component. */}
                 <Form inline className="mx-3">
                         {authbutton()}
                     </Form>

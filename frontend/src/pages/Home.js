@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap'
 export default function Home() {
     return (
         <>
-        <MyCarousel />
+        <MyCarousel /> {/* This component just loads the content of the carousel. */}
         </>
     )
 }

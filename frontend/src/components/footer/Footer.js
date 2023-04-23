@@ -4,10 +4,11 @@ import logo_yelp from '../../Yelp_logo.png';
 import logo_tmdb from '../../TheMovieDB_logo.png';
 import { Image } from 'react-bootstrap'
 import "./Footer.css"
+
 export default function MyFooter() {
     return (
         <>
-            <div className="main-footer">
+            <div className="main-footer"> {/* This div holds a class towards the div's for footer. */}
                 <div className="text-center col-sm">
                     <Image src={logo_ours} alt="Logo_ours" width={175} height={85} />
                     <Image className="block" src={logo_yelp} alt="Logo_yelp" width={125} height={85} />
