@@ -10,7 +10,8 @@ export const AuthContextProvider = ({children}) => {
   // which values will be avaliable through context
   const value = {
     Auth,
-    setAuth
+    setAuth,
+
   }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

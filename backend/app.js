@@ -11,7 +11,8 @@ const multer = require('multer');
 const upload = multer();
 
 const cors = require('cors');
-const { nextTick } = require('process');
+
+const admin = require('./src/config/firebase-config');
 
 /**
  * Router paths will go here
@@ -37,7 +38,6 @@ const decodeToken = (req, res ,next) => {
 
     // bearer iosdfjhaweu094u32094jerw2rsefwea
     const token = req.headers.authorization.split(' ')[1];
-    console.log(token);
     try{
         const decodeValue = admin.auth().verifyIdToken(token);
         if(decodeValue){
@@ -281,6 +281,6 @@ app.get('/movie/:movie_id/recommendations', function (req, res) {
       });
 
 });
-
+console.log(process.env.PORT)
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');

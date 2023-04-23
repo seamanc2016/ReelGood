@@ -45,12 +45,14 @@ function Login(){
           console.log(token);
           return token;
         });
-        //setAuth(true)
+
+        // User is now Authorized
+        setAuth(true)
       }
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
       console.log(e.message);
-      Token = 0;
+      Token = 0;  // set token to zero incase of error
     });
 
     const options ={
@@ -58,8 +60,10 @@ function Login(){
         Authorization: 'Bearer ' + Token
       }
     }
+
     const res = await axios.get('http://localhost:5678/search/movie',options);
     console.log(res.data);
+    console.log(process.env.PORT)
     
   }
   return(
