@@ -7,8 +7,8 @@ import MyRoute from "./Route";
 export default function MyNavbar() {
     return (
         <>
-        <NavbarBody />
-        <MyRoute />
+        <NavbarBody /> {/* This component just loads the content of the NavbarBody. */}
+        <MyRoute /> {/* This component just loads the content of Routes. */}
         </>
     )
 }
