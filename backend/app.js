@@ -282,5 +282,46 @@ app.get('/movie/:movie_id/recommendations', function (req, res) {
 
 });
 
+//Yelp Endpoints
+/** 
+* GET - Gets a list of cinemas based on the location provided. Powered by Yelp.
+* @method /theatres
+* @param {string} Request.query.location -  Indicates the geographic area to be used when searching for businesses.
+* @param {string} Request.query.sort_by -  Sort by one of the these modes: "best_match" (default), "rating", or "distance".
+* @param {number} Request.query.page - A page is every 10 search results. For example, page = 1 means the first 10 search results. 
+* @return {Response} 200/304 on success. 400 on undefined params. 401 on Invalid API Key. 404 on Not Found.
+*/
+app.get('/theatres', function (req, res) {
+    //Guard clause
+    if (req.query.location === undefined || req.query.sort_by === undefined || req.query.page === undefined)
+        return res.status(400).send({ message: 'The parameters: (location, sort_by, page) is undefined. Please try again.' });
+        
+    //Make request to Yelp API
+    baseUrl = process.env.YELP_BASE_URL;
+
+    axios.get(`${baseUrl}/businesses/search`, {
+        params: {
+            location: req.query.location,
+            sort_by: req.query.sort_by, 
+            term: 'cinema',
+            limit: 10,
+            offset: -10 + (10 * req.query.page) //Very odd way that Yelp has you skim through search results
+        },
+        headers: {
+            Authorization: process.env.YELP_API_KEY
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from Yelp
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
+
+});
+
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
