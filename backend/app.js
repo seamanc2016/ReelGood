@@ -2,46 +2,50 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser")
 const { join } = require('path/posix');
 const path = require('path');
 const axios = require('axios');
+const csrf = require("csurf");
+const multer = require('multer');
+const cors = require('cors');
+const admin = require('./src/config/firebase-config');
+
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
-const multer = require('multer');
-const upload = multer();
 
-const cors = require('cors');
-const { nextTick } = require('process');
+const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
+const upload = multer();    // Allows for form submitions
 
-/**
- * Router paths will go here
- */
+// routing For endpoints
+const Login = require('./Routes/Login');
 
-/** router uses go here
- * app.use(${Routername},'/route/path')
- */
-
+// Setup Cors options
 const corsOptions = {
   origin:'*',
   credentials:true,
   optionSuccessStatus:200
 };
+
+// setting up middlewares
 app.use(cors(corsOptions));
-
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(csrfMiddleware);
 
 
-const decodeToken = (req, res ,next) => {
+const decodeToken = async (req, res ,next) => {
     // retrieves token from user API call
 
-    // bearer iosdfjhaweu094u32094jerw2rsefwea
     const token = req.headers.authorization.split(' ')[1];
-    console.log(token);
     try{
-        const decodeValue = admin.auth().verifyIdToken(token);
+        const decodeValue = await admin.auth().verifyIdToken(token);
         if(decodeValue){
+            console.log("trying to decode value")
             console.log(decodeValue);
+            req.decodeValue = decodeValue;
+            req.token = token.toString();
             return next();
         }
         return res.json({message: 'unauthorize'})
@@ -49,9 +53,18 @@ const decodeToken = (req, res ,next) => {
         return res.json({message: 'Internal Error'});
     }
 }
+// Add decodeToken middleware to stack
 app.use(decodeToken);
 
+app.use('/Login', Login);
 
+/** Attatches a XSRF-TOKEN to cookie
+ * 
+ */
+app.all("*", (req, res, next) => {
+    res.cookie("XSRF-TOKEN", req.csrfToken());
+    next();
+})
 
 
 //MovieDB endpoints
@@ -70,7 +83,7 @@ app.get('/search/movie', function (req, res) {
   //Make request to MovieDB API
   baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/search/movie`, {
+     axios.get(`${baseUrl}/search/movie`, {
       params: {
           api_key: process.env.MOVIE_DB_API_KEY,
           query: req.query.query,
