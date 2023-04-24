@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import logo_movie from "../../SearchingMovie.jpg";
-import logo_theater from "../../SearchingTheater.jpg";
-import logo_favorites from "../../AddingFavorites.jpg";
+import logo_movie from "../../images/SearchingMovie.jpg";
+import logo_theater from "../../images/SearchingTheater.jpg";
+import logo_favorites from "../../images/AddingFavorites.jpg";
 import { Image } from 'react-bootstrap'
 
 export default function MyFooter() {
