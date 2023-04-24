@@ -1,6 +1,10 @@
+import MyTheaterCard from "../../src/components/theatercard/TheaterCard"
+
 function Theater(){
   return(
-    <h1>Theater</h1>
+    <>
+    <MyTheaterCard />
+    </>
   )
 }
 export default Theater
