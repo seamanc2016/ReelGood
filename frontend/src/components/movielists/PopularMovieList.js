@@ -41,13 +41,13 @@ const PopularMovieList = () => {
             });
     }
 
-    //Call function to get now playing movies whenever this component re-renders
+    //Call function to get popular movies whenever this component re-renders
     useEffect(() => {
         getPopularMovies(page)
     }, [page])
 
 
-    //Generate the Now Playing movie list
+    //Generate the Popular movie list
     return (
         <>
             {/*If the response object isn't null, generate the movie list */}
