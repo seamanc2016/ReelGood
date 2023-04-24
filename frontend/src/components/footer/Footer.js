@@ -1,7 +1,7 @@
 import React from "react"
-import logo_ours from '../../reelgood_logo_with_name_nbg.png';
-import logo_yelp from '../../Yelp_logo.png';
-import logo_tmdb from '../../TheMovieDB_logo.png';
+import logo_ours from '../../images/reelgood_logo_with_name_nbg.png';
+import logo_yelp from '../../images/Yelp_logo.png';
+import logo_tmdb from '../../images/TheMovieDB_logo.png';
 import { Image } from 'react-bootstrap'
 import "./Footer.css"
 

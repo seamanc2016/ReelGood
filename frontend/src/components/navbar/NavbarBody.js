@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import logo from '../../reelgood_logo.png';
+import logo from '../../images/reelgood_logo.png';
 import { Navbar, Nav, Form, Button, ButtonGroup, Image, Container } from 'react-bootstrap'
 import MySearchBar from './SearchBar';
 
