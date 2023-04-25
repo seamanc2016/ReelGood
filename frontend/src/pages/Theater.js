@@ -1,10 +1,14 @@
-import MyTheaterCard from "../../src/components/theatercard/TheaterCard"
-
-function Theater(){
-  return(
+import { Container } from "react-bootstrap";
+import MyTheaterCard from "../../src/components/theatercard/TheaterCard";
+import MyTheaterSearchBar from "../../src/components/theatersearchbar/TheaterSearchBar";
+import PageNavigation from "../../src/components/pagenavigation/PageNavigation"
+export default function Theater() {
+  return (
     <>
-    <MyTheaterCard />
+      <Container className="my-5 ">
+        <MyTheaterSearchBar />
+      </Container>
+      <MyTheaterCard />
     </>
   )
 }
-export default Theater

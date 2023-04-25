@@ -1,33 +1,24 @@
-import { Container, Row, Col } from 'react-bootstrap';
-import Accordion from 'react-bootstrap/Accordion';
-import logo from "../../images/sampleSize.jpg";
+import EmptyImage from "../../images/sampleSize.jpg";
 import './Theatercard.css'
-export default function MyTheaterCard() {
+export default function MyTheaterCard(props) {
     return (
         <>
-            <Container className='py-5 background-card'>
-                <Row>
-                    <Col md={5} >
-                        <img src={logo} height="300" alt="Your image" />
-                    </Col>
-                    <Col md={4}>
-                        <Accordion defaultActiveKey="0">
-                            <Accordion.Item eventKey="0">
-                                <Accordion.Header>Accordion Item #1</Accordion.Header>
-                                <Accordion.Body>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                    aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                                    culpa qui officia deserunt mollit anim id est laborum.
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
-                    </Col>
-                </Row>
-            </Container>
+            <div className="container" style={{ maxHeight: '200px' }}>
+                <div className="card mb-3">
+                    <div className="row g-0">
+                        <div className="col-md-2 text-center">
+                            <img src={EmptyImage} className="img-fluid rounded-start" alt="..." />
+                        </div>
+                        <div className="col-md-10">
+                            <div className="card-body">
+                                <h5 className="card-title">Card title</h5>
+                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p className="card-text"><small className="text-body-secondary">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
