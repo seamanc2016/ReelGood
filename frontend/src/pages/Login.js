@@ -62,6 +62,7 @@ function Login(){
         Authorization: 'Bearer ' + Token,
         "Content-Type": "application/json",
         "CSRF-Token":Cookies.get("XSRF-TOKEN"),
+        withCredentials: true
       }
     }
 

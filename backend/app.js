@@ -11,8 +11,9 @@ const multer = require('multer');
 const cors = require('cors');
 const admin = require('./src/config/firebase-config');
 
-require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
+require('dotenv').config({ path: path.join(__dirname, 'certs', '.env'), debug: true });
 
+console.log(process.env.YELP_BASE_URL);
 
 const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
 const upload = multer();    // Allows for form submitions
@@ -38,7 +39,6 @@ app.use(csrfMiddleware);
 
 const decodeToken = async (req, res ,next) => {
     // retrieves token from user API call
-
     const token = req.headers.authorization.split(' ')[1];
     try{
         const decodeValue = await admin.auth().verifyIdToken(token);
@@ -68,13 +68,15 @@ const checkSession = (req, res, next) => {
         res.status(401).send("UNAUTHORIZED REQUEST!");
     });
 }
-// Add decodeToken and routes middleware to stack
+// Add decodeToken and routes middleware to stack 
 app.use(decodeToken);
 app.use('/Login', Login);
 app.use('/Signout', Signout);
 
 // add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
 app.use(checkSession);
+
+
 
 
 /** Attatches a XSRF-TOKEN to cookie
