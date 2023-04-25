@@ -37,7 +37,8 @@ app.use(csrfMiddleware);
 
 const decodeToken = async (req, res ,next) => {
     // retrieves token from user API call
-    const token = req.headers.authorization.split(' ')[1];
+    console.log(req.headers.authorization)
+    const token = req.headers.authorization.split(' ')[1] || " ";
     try{
         const decodeValue = await admin.auth().verifyIdToken(token);
         if(decodeValue){
@@ -55,8 +56,9 @@ const decodeToken = async (req, res ,next) => {
 
 // Checks session with firebase
 const checkSession = (req, res, next) => {
-    const sessionCookie = req.cookies.session || " ";
-
+    console.log(req.cookies)
+    const sessionCookie = req.cookies.session || "a";
+    console.log(sessionCookie)
     admin
     .verifySessionCookie(sessionCookie, true)
     .then(()=> {
@@ -65,6 +67,7 @@ const checkSession = (req, res, next) => {
     .catch((error) => {
         res.status(401).send("UNAUTHORIZED REQUEST!");
     });
+    next();
 }
 // Add decodeToken and routes middleware to stack 
 app.use(decodeToken);

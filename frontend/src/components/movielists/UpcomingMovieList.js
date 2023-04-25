@@ -15,7 +15,8 @@ const UpcomingMovieList = () => {
     function getUpcomingMovies(page) {
         axios.get(`http://localhost:5678/movie/upcoming`, {
             params: {
-                page: page
+                page: page,
+                withCredentials: true,
             }
         })
             .then(function (response) {

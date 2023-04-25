@@ -2,14 +2,16 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import '../../config/firebase-config';
+
+import { UserContext } from '../../Context/UserContext';
 
 function Register(){
 
 
-  const [Auth, setAuth] = useState(false);  // determines if user is authenticated
+  const {User, setUser} = useContext(UserContext)
   const [token, setToken] = useState('');   // sets token
 
   const [email, setEmail] = useState('');
@@ -36,7 +38,7 @@ function Register(){
     createUserWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
-        setAuth(true)
+        setUser(usercredentials.user)
       }
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
