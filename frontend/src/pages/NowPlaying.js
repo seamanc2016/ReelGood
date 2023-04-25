@@ -1,6 +1,8 @@
+import NowPlayingList from '../../src/components/movielists/NowPlayingMovieList';
+
 function NowPlaying(){
   return(
-    <h1>Now playing</h1>
+    <NowPlayingList />
   )
 }
 export default NowPlaying
