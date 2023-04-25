@@ -1,6 +1,8 @@
+import UpcomingList from '../../src/components/movielists/UpcomingMovieList';
+
 function Upcoming(){
   return(
-    <h1>Upcoming</h1>
+    <UpcomingList />
   )
 }
 export default Upcoming
