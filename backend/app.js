@@ -13,8 +13,6 @@ const admin = require('./src/config/firebase-config');
 
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env'), debug: true });
 
-console.log(process.env.YELP_BASE_URL);
-
 const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
 const upload = multer();    // Allows for form submitions
 

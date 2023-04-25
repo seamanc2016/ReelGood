@@ -8,9 +8,16 @@ import Theater from '../../pages/Theater'
 import Upcoming from '../../pages/Upcoming'
 import Login from '../../pages/Login'
 import Register from '../userauth/Register'
+import Error from '../Error/Error'
 
+import {useContext} from 'react';
+import { UserContext } from '../../Context/UserContext';
 
 export default function MyRouter() {
+
+    const {User, setUser} = useContext(UserContext);
+
+    if(User){
     return (
         <>
             <Routes> 
@@ -22,7 +29,21 @@ export default function MyRouter() {
                 <Route exact path='/Login' element={<Login />}></Route>
                 <Route exact path='/Register' element={<Register />}></Route>
             </Routes>
+        </>);
+    } else if(!User)
+    {   return(
+        <>
+            <Routes> 
+                <Route exact path="/" element={<Home />}></Route>
+                <Route exact path='/Nowplaying' element={<Error />}></Route>
+                <Route exact path='/Popular' element={<Error />}></Route>
+                <Route exact path='/Theater' element={<Error />}></Route>
+                <Route exact path='/Upcoming' element={<Error />}></Route>
+                <Route exact path='/Login' element={<Login />}></Route>
+                <Route exact path='/Register' element={<Register />}></Route>
+            </Routes>
         </>
+        );
+    }
      
-    )
 }

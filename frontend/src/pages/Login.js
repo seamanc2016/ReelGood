@@ -6,7 +6,7 @@ import {useState, useEffect, useContext} from 'react';
 import {getAuth, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import '../config/firebase-config';
 
-import { AuthContext } from '../Context/authContext';
+import { UserContext } from '../Context/UserContext';
 
 import axios from 'axios';
 
@@ -14,24 +14,11 @@ import Cookies from 'js-cookie';
 
 function Login(){
 
-  const {Auth, setAuth} = useContext(AuthContext);
+  const {User, setUser} = useContext(UserContext);
   const [token, setToken] = useState('');   // sets token
 
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
-
-  useEffect(()=>{
-    const auth = getAuth();
-    auth.onAuthStateChanged((user) => { // when users login state changes...
-      if(user){
-        console.log(user)
-        //setAuth(true);
-        // userCred.getIdToken().then((token)=>{
-        //   setToken(token);
-        // })
-      }
-    })
-  }, [])
 
   // called when user logs in
   const login = async (e) => {
@@ -43,13 +30,13 @@ function Login(){
     const Token = await signInWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
+        setUser(usercredentials.user);
         return usercredentials.user.getIdToken().then((token) => {
+          setToken(token)
           console.log(token);
           return token;
         });
 
-        // User is now Authorized
-        setAuth(true)
       }
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
