@@ -10,6 +10,8 @@ import { AuthContext } from '../Context/authContext';
 
 import axios from 'axios';
 
+import Cookies from 'js-cookie';
+
 function Login(){
 
   const {Auth, setAuth} = useContext(AuthContext);
@@ -57,11 +59,13 @@ function Login(){
 
     const options ={
       headers: {
-        Authorization: 'Bearer ' + Token
+        Authorization: 'Bearer ' + Token,
+        "Content-Type": "application/json",
+        "CSRF-Token":Cookies.get("XSRF-TOKEN"),
       }
     }
 
-    const res = await axios.get('http://localhost:5678/search/movie',options);
+    const res = await axios.get('http://localhost:5678/Login',options);
     console.log(res.data);
     console.log(process.env.PORT)
     
