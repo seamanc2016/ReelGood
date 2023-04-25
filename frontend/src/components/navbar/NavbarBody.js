@@ -3,7 +3,7 @@ import logo from '../../images/reelgood_logo.png';
 import { Navbar, Nav, Form, Button, ButtonGroup, Image, Container } from 'react-bootstrap'
 import MySearchBar from './SearchBar';
 
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 import { useEffect, useContext } from 'react';
 import { UserContext } from '../../Context/UserContext';
@@ -13,6 +13,9 @@ import '../../config/firebase-config';
 
 
 export default function MyNavbar() {
+
+    // used to naviate to different locations
+    const navigate = useNavigate();
 
     // Using UserContext to access Use and setUser
     const {User, setUser} = useContext(UserContext);
@@ -24,8 +27,8 @@ export default function MyNavbar() {
         const auth = getAuth()
         auth.signOut()
         .then(() => {
-            console.log("in this statements")
-            setUser(null)
+            navigate('/');  // navigate back to home page
+            setUser(null);
         }).catch((e) => { // else catch and print errors
           console.log(e.code)
           console.log(e.message);
