@@ -10,17 +10,16 @@ const csrf = require("csurf");
 const multer = require('multer');
 const cors = require('cors');
 const admin = require('./src/config/firebase-config');
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const dotenv = require('dotenv'); //
-require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
-dotenv.config();// Allows for use of .env file configuration
-const mString = process.env.databaseUsername;//process.env.databaseUsername;
 
-const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
-const upload = multer();    // Allows for form submission's
+require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
+
+
+const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
+const upload = multer();    // Allows for form submitions
 
 // routing For endpoints
 const Login = require('./Routes/Login');
+const Signout = require('./Routes/Signout');
 
 // Setup Cors options
 const corsOptions = {
@@ -39,7 +38,6 @@ app.use(csrfMiddleware);
 
 const decodeToken = async (req, res, next) => {
     // retrieves token from user API call
-
     const token = req.headers.authorization.split(' ')[1];
     try {
         const decodeValue = await admin.auth().verifyIdToken(token);
@@ -55,10 +53,30 @@ const decodeToken = async (req, res, next) => {
         return res.json({ message: 'Internal Error' });
     }
 }
-// Add decodeToken middleware to stack
-app.use(decodeToken);
 
+// Checks session with firebase
+const checkSession = (req, res, next) => {
+    const sessionCookie = req.cookies.session || " ";
+
+    admin
+    .verifySessionCookie(sessionCookie, true)
+    .then(()=> {
+        next();
+    })
+    .catch((error) => {
+        res.status(401).send("UNAUTHORIZED REQUEST!");
+    });
+}
+// Add decodeToken and routes middleware to stack 
+app.use(decodeToken);
 app.use('/Login', Login);
+app.use('/Signout', Signout);
+
+// add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
+app.use(checkSession);
+
+
+
 
 /** Attatches a XSRF-TOKEN to cookie
  * 
