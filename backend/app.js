@@ -13,19 +13,14 @@ const admin = require('./src/config/firebase-config');
 
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env'), debug: true });
 
-const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
-const upload = multer();    // Allows for form submitions
-
-// routing For endpoints
-const Login = require('./Routes/Login');
-const Signout = require('./Routes/Signout');
-
 // Setup Cors options
 const corsOptions = {
-  origin:'*',
-  credentials:true,
-  optionSuccessStatus:200
-};
+    origin:'*',
+    credentials:true,
+    optionSuccessStatus:200
+  };
+
+const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
 
 // setting up middlewares
 app.use(cors(corsOptions));
@@ -35,50 +30,37 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(csrfMiddleware);
 
 
-const decodeToken = async (req, res ,next) => {
-    // retrieves token from user API call
-    console.log(req.headers.authorization)
-    const token = req.headers.authorization.split(' ')[1] || " ";
-    try{
-        const decodeValue = await admin.auth().verifyIdToken(token);
-        if(decodeValue){
-            console.log("trying to decode value")
-            console.log(decodeValue);
-            req.decodeValue = decodeValue;
-            req.token = token.toString();
-            return next();
-        }
-        return res.json({message: 'unauthorize'})
-    } catch (e){
-        return res.json({message: 'Internal Error'});
-    }
-}
+const upload = multer();    // Allows for form submitions
+
+// routing For endpoints
+const Login = require('./Routes/Login');
+const Signout = require('./Routes/Signout');
+
 
 // Checks session with firebase
 const checkSession = (req, res, next) => {
-    console.log(req.cookies)
+
     const sessionCookie = req.cookies.session || "a";
-    console.log(sessionCookie)
-    admin
-    .verifySessionCookie(sessionCookie, true)
+    console.log(req.cookies.session)
+
+    admin.auth().verifySessionCookie(sessionCookie, true)
     .then(()=> {
+        console.log("next")
         next();
     })
     .catch((error) => {
-        res.status(401).send("UNAUTHORIZED REQUEST!");
+        console.log(error)
+        res.send("UNAUTHORIZED REQUEST!");
     });
     next();
 }
 // Add decodeToken and routes middleware to stack 
-app.use(decodeToken);
+
 app.use('/Login', Login);
 app.use('/Signout', Signout);
 
 // add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
 app.use(checkSession);
-
-
-
 
 /** Attatches a XSRF-TOKEN to cookie
  * 
@@ -360,3 +342,5 @@ app.get('/theatres', function (req, res) {
 
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
+
+module.exports = app

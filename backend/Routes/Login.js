@@ -1,9 +1,28 @@
 const express = require('express');
 const router = express.Router();
-
+const app = require('../app.js')
 const admin = require('../src/config/firebase-config');
 
-router.get('/', (req, res)=>{
+
+const decodeToken = async (req, res ,next) => {
+    // retrieves token from user API call
+    const token = req.headers.authorization.split(' ')[1] || " ";
+    try{
+        const decodeValue = await admin.auth().verifyIdToken(token);
+        if(decodeValue){
+            console.log("trying to decode value")
+            console.log(decodeValue);
+            req.decodeValue = decodeValue;
+            req.token = token.toString();
+            return next();
+        }
+        return res.json({message: 'unauthorize'})
+    } catch (e){
+        return res.json({message: 'Internal Error'});
+    }
+}
+
+router.get('/',decodeToken, (req, res)=>{
 
     const idToken = req.token;   // get un-decoded idToken
 
@@ -15,8 +34,8 @@ router.get('/', (req, res)=>{
     .createSessionCookie(idToken, {expiresIn})
     .then((sessionCookie) => {
         console.log("success")
-        const options = {maxAge: expiresIn, httpOnly: true };
-        res.cookie("session", sessionCookie, options);
+        const options = {maxAge: expiresIn, httpOnly: false, path: "/", sameSite: 'None', secure: true };
+        res.cookie("session", sessionCookie);
         res.send({status: "success"});
     }).catch((e) => {
         console.log("not working")

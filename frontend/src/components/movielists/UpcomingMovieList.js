@@ -13,7 +13,7 @@ const UpcomingMovieList = () => {
 
     //Function for Axios call to backend server to get Upcoming Movies
     function getUpcomingMovies(page) {
-        axios.get(`http://localhost:5678/movie/upcoming`, {
+        axios.get(`/movie/upcoming`, {
             params: {
                 page: page,
                 withCredentials: true,

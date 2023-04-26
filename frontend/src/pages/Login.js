@@ -47,15 +47,14 @@ function Login(){
     const options ={
       headers: {
         Authorization: 'Bearer ' + Token,
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
         "CSRF-Token":Cookies.get("XSRF-TOKEN"),
         withCredentials: true
       }
     }
 
-    const res = await axios.get('http://localhost:5678/Login',options);
+    const res = await axios.get('/Login',options);
     console.log(res.data);
-    console.log(process.env.PORT)
     
   }
   return(
