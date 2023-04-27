@@ -42,6 +42,7 @@ const checkSession = (req, res, next) => {
 
     const sessionCookie = req.cookies.session || "a";
     console.log(req.cookies.session)
+    console.log("checkingSession")
 
     admin.auth().verifySessionCookie(sessionCookie, true)
     .then(()=> {
@@ -52,7 +53,6 @@ const checkSession = (req, res, next) => {
         console.log(error)
         res.send("UNAUTHORIZED REQUEST!");
     });
-    next();
 }
 // Add decodeToken and routes middleware to stack 
 
@@ -61,14 +61,6 @@ app.use('/Signout', Signout);
 
 // add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
 app.use(checkSession);
-
-/** Attatches a XSRF-TOKEN to cookie
- * 
- */
-app.all("*", (req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken());
-    next();
-})
 
 
 //MovieDB endpoints

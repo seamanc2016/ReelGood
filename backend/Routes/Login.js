@@ -35,7 +35,7 @@ router.get('/',decodeToken, (req, res)=>{
     .then((sessionCookie) => {
         console.log("success")
         const options = {maxAge: expiresIn, httpOnly: false, path: "/", sameSite: 'None', secure: true };
-        res.cookie("session", sessionCookie);
+        res.cookie("session", sessionCookie, options);
         res.send({status: "success"});
     }).catch((e) => {
         console.log("not working")
