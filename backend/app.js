@@ -11,7 +11,8 @@ const multer = require('multer');
 const cors = require('cors');
 const admin = require('./src/config/firebase-config');
 
-require('dotenv').config({ path: path.join(__dirname, 'certs', '.env'), debug: true });
+require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
+
 
 // Setup Cors options
 const corsOptions = {
@@ -56,12 +57,8 @@ const checkSession = (req, res, next) => {
 }
 // Add decodeToken and routes middleware to stack 
 
-app.use('/Login', Login);
-app.use('/Signout', Signout);
-
 // add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
 app.use(checkSession);
-
 
 //MovieDB endpoints
 /** 
@@ -72,30 +69,30 @@ app.use(checkSession);
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/search/movie', function (req, res) {
-  //Guard clause
-  if (req.query.query === undefined || req.query.page === undefined)
-      return res.status(400).send({ message: 'At least one of the parameters: (query, page) is undefined. Please try again.' });
+    //Guard clause
+    if (req.query.query === undefined || req.query.page === undefined)
+        return res.status(400).send({ message: 'At least one of the parameters: (query, page) is undefined. Please try again.' });
 
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-     axios.get(`${baseUrl}/search/movie`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          query: req.query.query,
-          language: 'en-US', //Keeping our app US based.
-          page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/search/movie`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            query: req.query.query,
+            language: 'en-US', //Keeping our app US based.
+            page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -106,30 +103,30 @@ app.get('/search/movie', function (req, res) {
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/movie/now_playing', function (req, res) {
-  //Guard clause
-  if (req.query.page === undefined)
-      return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
+    //Guard clause
+    if (req.query.page === undefined)
+        return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
 
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/movie/now_playing`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          region: 'US',
-          language: 'en-US', //Keeping our app US based.
-          page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/movie/now_playing`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            region: 'US',
+            language: 'en-US', //Keeping our app US based.
+            page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -140,30 +137,30 @@ app.get('/movie/now_playing', function (req, res) {
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/movie/popular', function (req, res) {
-  //Guard clause
-  if (req.query.page === undefined)
-      return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
+    //Guard clause
+    if (req.query.page === undefined)
+        return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
 
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/movie/popular`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          region: 'US',
-          language: 'en-US', //Keeping our app US based.
-          page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/movie/popular`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            region: 'US',
+            language: 'en-US', //Keeping our app US based.
+            page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -174,30 +171,30 @@ app.get('/movie/popular', function (req, res) {
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/movie/upcoming', function (req, res) {
-  //Guard clause
-  if (req.query.page === undefined)
-      return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
+    //Guard clause
+    if (req.query.page === undefined)
+        return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
 
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/movie/upcoming`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          region: 'US',
-          language: 'en-US', //Keeping our app US based.
-          page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/movie/upcoming`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            region: 'US',
+            language: 'en-US', //Keeping our app US based.
+            page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -208,24 +205,24 @@ app.get('/movie/upcoming', function (req, res) {
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/movie/:movie_id', function (req, res) {
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/movie/${req.params.movie_id}`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          language: 'en-US', //Keeping our app US based.
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/movie/${req.params.movie_id}`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            language: 'en-US', //Keeping our app US based.
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -236,24 +233,24 @@ app.get('/movie/:movie_id', function (req, res) {
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/movie/:movie_id/credits', function (req, res) {
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/movie/${req.params.movie_id}/credits`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          language: 'en-US', //Keeping our app US based.
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/movie/${req.params.movie_id}/credits`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            language: 'en-US', //Keeping our app US based.
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -265,29 +262,29 @@ app.get('/movie/:movie_id/credits', function (req, res) {
 * @return {Response} 200/304 on success. 401 on Invalid API Key. 404 on Not Found.
 */
 app.get('/movie/:movie_id/recommendations', function (req, res) {
-  //Guard clause
-  if (req.query.page === undefined)
-      return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
+    //Guard clause
+    if (req.query.page === undefined)
+        return res.status(400).send({ message: 'The parameter: (page) is undefined. Please try again.' });
 
-  //Make request to MovieDB API
-  baseUrl = process.env.MOVIE_DB_BASE_URL;
+    //Make request to MovieDB API
+    baseUrl = process.env.MOVIE_DB_BASE_URL;
 
-  axios.get(`${baseUrl}/movie/${req.params.movie_id}/recommendations`, {
-      params: {
-          api_key: process.env.MOVIE_DB_API_KEY,
-          language: 'en-US', //Keeping our app US based.
-          page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
-      }
-  })
-      .then(function (response) {
-          //On success, return movie data object from MovieDB
-          return res.status(response.status).send(response.data);
-      })
-      .catch(function (error) {
-          // If a response has been received from the request server, the error object will contain the response property.
-          if (error.response)
-              return res.status(error.response.status).send(error.response.data);
-      });
+    axios.get(`${baseUrl}/movie/${req.params.movie_id}/recommendations`, {
+        params: {
+            api_key: process.env.MOVIE_DB_API_KEY,
+            language: 'en-US', //Keeping our app US based.
+            page: req.query.page == '' ? 1 : req.query.page //Default to page 1 if empty string received
+        }
+    })
+        .then(function (response) {
+            //On success, return movie data object from MovieDB
+            return res.status(response.status).send(response.data);
+        })
+        .catch(function (error) {
+            // If a response has been received from the request server, the error object will contain the response property.
+            if (error.response)
+                return res.status(error.response.status).send(error.response.data);
+        });
 
 });
 
@@ -304,14 +301,14 @@ app.get('/theatres', function (req, res) {
     //Guard clause
     if (req.query.location === undefined || req.query.sort_by === undefined || req.query.page === undefined)
         return res.status(400).send({ message: 'The parameters: (location, sort_by, page) is undefined. Please try again.' });
-        
+
     //Make request to Yelp API
     baseUrl = process.env.YELP_BASE_URL;
 
     axios.get(`${baseUrl}/businesses/search`, {
         params: {
             location: req.query.location,
-            sort_by: req.query.sort_by, 
+            sort_by: req.query.sort_by,
             term: 'cinema',
             limit: 10,
             offset: -10 + (10 * req.query.page) //Very odd way that Yelp has you skim through search results
