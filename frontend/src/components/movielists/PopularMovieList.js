@@ -13,7 +13,7 @@ const PopularMovieList = () => {
 
     //Function for Axios call to backend server to get Popular Movies
     function getPopularMovies(page) {
-        axios.get(`http://localhost:5678/movie/popular`, {
+        axios.get(`/movie/popular`, {
             params: {
                 page: page
             }

@@ -43,6 +43,7 @@ const checkSession = (req, res, next) => {
 
     const sessionCookie = req.cookies.session || "a";
     console.log(req.cookies.session)
+    console.log("checkingSession")
 
     admin.auth().verifySessionCookie(sessionCookie, true)
     .then(()=> {
@@ -53,60 +54,11 @@ const checkSession = (req, res, next) => {
         console.log(error)
         res.send("UNAUTHORIZED REQUEST!");
     });
-    next();
 }
 // Add decodeToken and routes middleware to stack 
 
 // add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
 app.use(checkSession);
-
-/** Attatches a XSRF-TOKEN to cookie
- * 
- */
-app.all("*", (req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken());
-    next();
-})
-
-/*MongoDB connection code for mongoDB atlas*
-connection code for mongoDB*/
-/**
- * The connection URI string for the MongoDB Atlas cluster.
- * @type {string}
- * The MongoClient instance used to connect to the MongoDB Atlas cluster.
- * @type {MongoClient}
- * The MongoDB URI stored in the environment variable.
- * @type {string}
- * @see https://docs.mongodb.com/drivers/node/quick-start
- * * Attempts to connect to the MongoDB Atlas cluster and logs a message indicating success or failure.
- * @async
- * @function main
- * @returns {Promise<void>}
- * * Lists all the databases available on the MongoDB Atlas cluster.
- * @async
- * @function listDatabases
- * @param {MongoClient} client - The MongoClient instance used to access the admin database.
- * @returns {Promise<void>}
- */
-const uri = "mongodb+srv://joshuahenry2020:fullstack@cluster0.fwd4l95.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-process.env.MONGODB_URI;
-
-async function main() {
-    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    try {
-        await client.connect();
-        console.log("Connected correctly to server");
-    } catch (e) {
-        console.error(e);
-    } finally {
-        await client.close();
-    }
-}
-main().catch(console.error);
-async function listDatabases(client) {
-    databasesList = await client.db().admin().listDatabases();
-}
 
 //MovieDB endpoints
 /** 

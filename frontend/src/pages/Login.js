@@ -14,8 +14,7 @@ import Cookies from 'js-cookie';
 
 function Login(){
 
-  const {User, setUser} = useContext(UserContext);
-  const [token, setToken] = useState('');   // sets token
+  const {User, setUser,Token, setToken, CheckAuthStateChanged} = useContext(UserContext);
 
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
@@ -55,6 +54,8 @@ function Login(){
 
     const res = await axios.get('/Login',options);
     console.log(res.data);
+
+    CheckAuthStateChanged();
     
   }
   return(

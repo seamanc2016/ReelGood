@@ -13,7 +13,7 @@ const NowPlayingMovieList = () => {
 
     //Function for Axios call to backend server to get Now Playing Movies
     function getNowPlayingMovies(page) {
-        axios.get(`http://localhost:5678/movie/now_playing`, {
+        axios.get(`/movie/now_playing`, {
             params: {
                 page: page
             }

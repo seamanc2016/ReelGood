@@ -29,6 +29,7 @@ export default function MyNavbar() {
         .then(() => {
             navigate('/');  // navigate back to home page
             setUser(null);
+            localStorage.clear()
         }).catch((e) => { // else catch and print errors
           console.log(e.code)
           console.log(e.message);
