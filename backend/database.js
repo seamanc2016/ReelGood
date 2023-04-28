@@ -1,6 +1,6 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
-const {MongoClient, serverApiVersion, MongoServerError, ListCollectionsCursor }= require("mongodb");
+const { MongoClient, serverApiVersion, MongoServerError, ListCollectionsCursor } = require("mongodb");
 
 // Create Uri
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@studentcluster.fwd4l95.mongodb.net/?retryWrites=true&w=majority`
@@ -9,7 +9,7 @@ const FAVORITEDMOVIES = "FavoritedMovies";
 
 const client = new MongoClient(uri);
 
-const PingDatabase = async function() {
+const PingDatabase = async function () {
   try {
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
@@ -51,26 +51,26 @@ const writeToCollection = async function(obj, db, collection) {
       console.log("insert")
       await myColl.insertOne({_id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "username": obj.username, "zipcode": obj.zipcode, "state": obj.state},).then((valueOrbool) => {
         // If returned response is false, print error
-        if(valueOrbool.acknowledged == false)
+        if (valueOrbool.acknowledged == false)
           console.log("Error - Could not insert document");
         else
           console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
       });
 
-    // If writing to FavoritedMovies
-    }else if(collection == FAVORITEDMOVIES){
+      // If writing to FavoritedMovies
+    } else if (collection == FAVORITEDMOVIES) {
 
       await myColl.insertOne({_id: obj._id, "FavoriteMovie_Id": obj.movieId},).then((valueOrbool) => {
 
         // If returned response is false, print error
-        if(valueOrbool.acknowledged == false)
+        if (valueOrbool.acknowledged == false)
           console.log("Error - Could not insert document");
         else
           console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
       });
     }
 
-  }catch(error) {
+  } catch (error) {
 
     if (error instanceof MongoServerError) {
       console.log(`Error - ${error}`); // special case for some reason
@@ -87,45 +87,45 @@ const writeToCollection = async function(obj, db, collection) {
  * @param {Int} objId - Student Record Id.
  * @returns {Promise<string>} - returns resonse string
  */
-const DeleteFromCollection = async function (objId){
-  try{
+const DeleteFromCollection = async function (objId) {
+  try {
     await client.connect();
 
     const myDB = await client.db("myDB");
     const myColl = myDB.collection("students");
 
     // Create query
-    const query = {_id: parseInt(objId) };
+    const query = { _id: parseInt(objId) };
 
     // stores result of document being deleted
     var result;
 
     // Delete student record in collection
     await myColl.findOneAndDelete(query).then(async (document) => {
-      if(document.value == null)
+      if (document.value == null)
         console.log("Error - The document was not found");
-      else{
-        const responsestr = {status: "success", data: [document.value]}//"The following document has been deleted\n" + JSON.stringify(document.value);
+      else {
+        const responsestr = { status: "success", data: [document.value] }//"The following document has been deleted\n" + JSON.stringify(document.value);
         result = responsestr;
       }
     });
     return result;
-  } catch(error) {
+  } catch (error) {
 
     if (error instanceof MongoServerError) {
       console.log(`Error - ${error}`); // special case for some reason
     }
   } finally {
     await client.close();
-  } 
+  }
 }
 
 /**
  * @descripton Reads all values in student collection.
  * @returns Returns Array of all studentRecords in collection.
  */
-const ReadCollection = async function (){
-  try{
+const ReadCollection = async function () {
+  try {
     await client.connect();
 
     const myDB = await client.db("myDB");
@@ -133,14 +133,14 @@ const ReadCollection = async function (){
 
     // Returns entire collection
     var myCursorAry = await myColl.find().toArray();
-    if(myCursorAry.length === 0)
+    if (myCursorAry.length === 0)
       console.log(`There are no documents in ${myColl.collectionName} collection`);
-    else{
+    else {
       myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
     }
 
-  } catch(error) {
+  } catch (error) {
 
     if (error instanceof MongoServerError) {
       console.log(`Error - ${error}`); // special case for some reason
@@ -154,25 +154,25 @@ const ReadCollection = async function (){
  * @description Reads a matching Student Record
  * @param {Int} objId - StudentRecord Id.
  */
-const Readdocument = async function (objId){
-  try{
+const Readdocument = async function (objId) {
+  try {
     await client.connect();
 
     const myDB = await client.db("myDB");
     const myColl = myDB.collection("students");
 
-    const query = {_id : parseInt(objId)}
+    const query = { _id: parseInt(objId) }
     console.log(query)
 
     var myCursorAry = await myColl.find(query).toArray();
-    if(myCursorAry.length === 0)
+    if (myCursorAry.length === 0)
       console.log(`There are no document with record id ${query._id} in ${myColl.collectionName} collection`);
-    else{
+    else {
       myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
     }
 
-  } catch(error) {
+  } catch (error) {
 
     if (error instanceof MongoServerError) {
       console.log(`Error - ${error}`); // special case for some reason
@@ -187,8 +187,8 @@ const Readdocument = async function (objId){
  * @param {Int} objId - StudentRecord Id.
  * @param {JSON} query - Json object of key/value pairs to be changed.
  */
-const updatedocument = async function (id, query){
-  try{
+const updatedocument = async function (id, query) {
+  try {
     await client.connect();
 
     const myDB = await client.db("myDB");
@@ -198,17 +198,17 @@ const updatedocument = async function (id, query){
       $set: query,
     };
 
-    const queryid = {_id: parseInt(id)};
+    const queryid = { _id: parseInt(id) };
     const result = await myColl.updateOne(queryid, newquery).then((valueOrbool) => {
 
       // If returned response is false, print error
-      if(valueOrbool.acknowledged == false)
+      if (valueOrbool.acknowledged == false)
         console.log("Error - Could not update document");
       else
         console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
     });
 
-  } catch(error) {
+  } catch (error) {
 
     if (error instanceof MongoServerError) {
       console.log(`Error - ${error}`); // special case for some reason
@@ -220,4 +220,4 @@ const updatedocument = async function (id, query){
   }
 }
 
-module.exports = {client, PingDatabase, writeToCollection, DeleteFromCollection, ReadCollection, Readdocument, updatedocument}
+module.exports = { client, PingDatabase, writeToCollection, DeleteFromCollection, ReadCollection, Readdocument, updatedocument }
