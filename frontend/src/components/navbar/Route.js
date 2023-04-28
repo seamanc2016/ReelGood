@@ -1,14 +1,15 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom';
 
 // Keep all routing localized here for PAGES
-import Home from '../../pages/Home'
-import NowPlaying from '../../pages/NowPlaying'
-import Popular from '../../pages/Popular'
-import Theater from '../../pages/Theater'
-import Upcoming from '../../pages/Upcoming'
-import Login from '../../pages/Login'
-import Register from '../userauth/Register'
-import Error from '../Error/Error'
+import Home from '../../pages/Home';
+import NowPlaying from '../../pages/NowPlaying';
+import Popular from '../../pages/Popular';
+import Theater from '../../pages/Theater';
+import Upcoming from '../../pages/Upcoming';
+import Login from '../../pages/Login';
+import Register from '../userauth/Register';
+import Error from '../Error/Error';
+import MovieDetails from '../../pages/MovieDetails';
 
 import {useContext} from 'react';
 import { UserContext } from '../../Context/UserContext';
@@ -28,6 +29,7 @@ export default function MyRouter() {
                 <Route exact path='/Upcoming' element={<Upcoming />}></Route>
                 <Route exact path='/Login' element={<Login />}></Route>
                 <Route exact path='/Register' element={<Register />}></Route>
+                <Route path="/movies/:id" element={<MovieDetails />} />
             </Routes>
         </>);
     } else if(!User)
@@ -41,6 +43,7 @@ export default function MyRouter() {
                 <Route exact path='/Upcoming' element={<Error />}></Route>
                 <Route exact path='/Login' element={<Login />}></Route>
                 <Route exact path='/Register' element={<Register />}></Route>
+                <Route path="/movies/:id" element={<Error />} />
             </Routes>
         </>
         );
