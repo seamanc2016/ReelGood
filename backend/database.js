@@ -1,8 +1,11 @@
-require("dotenv").config({path: 'certs/.env'});
-const {MongoClient, serverApiVersion, MongoServerError }= require("mongodb");
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
+const {MongoClient, serverApiVersion, MongoServerError, ListCollectionsCursor }= require("mongodb");
 
 // Create Uri
-const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@studentcluster.3sh2db9.mongodb.net/test`
+const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@studentcluster.fwd4l95.mongodb.net/?retryWrites=true&w=majority`
+const USERCOLLECTION = "User";
+const FAVORITEDMOVIES = "FavoritedMovies";
 
 const client = new MongoClient(uri);
 
@@ -18,38 +21,55 @@ const PingDatabase = async function() {
     await client.close();
   }
 }
+PingDatabase()
 
 /**
  * @Description adds a studentRecord document to students collection.
  * @param {studentRecord} obj - is a studentRecord.
  */
-const writeToCollection = async function(obj) {
+const writeToCollection = async function(obj, db, collection) {
   try{
     await client.connect();
 
-    const myDB = await client.db("myDB");
-    const myColl = myDB.collection("students");
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
 
-    // first check if database has a similar object
-    const matches = await myColl.aggregate([{$match: {first_name: obj.first_name, last_name: obj.last_name}}]).toArray();
+    //*************************THIS CODE USED TO CHECK FOR DUPLICATES***************************/
+    // // first check if database has a similar object
+    // const matches = await myColl.aggregate([{$match: {first_name: obj.first_name, last_name: obj.last_name}}]).toArray();
 
-    // If length is not 0, then database found similar object. Return duplicate values.
-    if(matches.length != 0){
-      console.log("Duplicate values!!");
-      return "Duplicate Values!!"
+    // // If length is not 0, then database found similar object. Return duplicate values.
+    // if(matches.length != 0){
+    //   console.log("Duplicate values!!");
+    //   return "Duplicate Values!!"
+    // }
+    //********************************************************************************************/
+
+    // If writing to user collection
+    if(collection == USERCOLLECTION){
+      await myColl.insertOne({_id: parseInt(obj.id), "first_name": obj.first_name, "last_name": obj.last_name, "email_Address": obj.email, "username": obj.username, "zipcode": obj.zipcode, "State": obj.state},).then((valueOrbool) => {
+
+        // If returned response is false, print error
+        if(valueOrbool.acknowledged == false)
+          console.log("Error - Could not insert document");
+        else
+          console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+      });
+
+    // If writing to FavoritedMovies
+    }else if(collection == FAVORITEDMOVIES){
+
+      await myColl.insertOne({_id: parseInt(obj.id), "FavoriteMovie_Id": obj.movieId},).then((valueOrbool) => {
+
+        // If returned response is false, print error
+        if(valueOrbool.acknowledged == false)
+          console.log("Error - Could not insert document");
+        else
+          console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+      });
     }
 
-    // Insert One student records in the collection
-    await myColl.insertOne({_id: parseInt(obj.record_id), "first_name": obj.first_name, "last_name": obj.last_name, "gpa": obj.gpa, "enrolled": obj.enrolled},).then((valueOrbool) => {
-
-      // If returned response is false, print error
-      if(valueOrbool.acknowledged == false)
-        console.log("Error - Could not insert document");
-      else
-        console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
-    });
-
-  } catch(error) {
+  }catch(error) {
 
     if (error instanceof MongoServerError) {
       console.log(`Error - ${error}`); // special case for some reason
