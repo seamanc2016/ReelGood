@@ -7,18 +7,23 @@ export const UserContext = createContext();
 
 //Creates AuthContext hook that takes children
 export const UserContextProvider = ({children}) => {
+
+  // Sets usercredentials and sets Token for user verification
   const [User, setUser] = useState(false);
   const [Token, setToken] = useState(false)
 
+  // When page first loads, get the useres credentials
   useEffect(() => {
-    console.log("in effect");
-    console.log(localStorage.getItem("user"))
+
     const currUser = localStorage.getItem("user");
+
+    // If it is set, set the user
     if(currUser)
       setUser(currUser);
 
   }, [])
 
+  // Check If users logedin 
   const CheckAuthStateChanged = () => {
     const auth = getAuth();
 
@@ -28,10 +33,8 @@ export const UserContextProvider = ({children}) => {
         setUser(StringUser);
         setToken(Token)
         localStorage.setItem("user", StringUser);
-        console.log(localStorage.getItem("user"));
       }else
         setUser(null)
-        //localStorage.clear();
     })
   }
 
