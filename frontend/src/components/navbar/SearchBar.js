@@ -18,6 +18,7 @@ export default function MySearchBar() {
     event.preventDefault();
     // Navigate to search results page
     navigate(`/search/${searchTerm}`);
+    setSearchTerm('');
   };
 
   return (
