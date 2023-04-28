@@ -79,3 +79,8 @@
     background-color: var(--bs-light) !important;
     border: solid 1px var(--bs-light) !important;
 }
+
+.container-results {
+  max-height: 900px; /* Set the maximum height to 400px */
+  overflow-y: auto; /* Add a vertical scroll bar if necessary */
+}
