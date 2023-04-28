@@ -11,6 +11,9 @@ const multer = require('multer');
 const cors = require('cors');
 const admin = require('./src/config/firebase-config');
 
+const Login = require('./Routes/Login');
+const Signout = require('./Routes/Signout');
+
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
 
@@ -29,13 +32,17 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(csrfMiddleware);
+app.use("/Login",Login );
+app.use("/Signout", Signout);
 
 
 const upload = multer();    // Allows for form submitions
 
 // routing For endpoints
-const Login = require('./Routes/Login');
-const Signout = require('./Routes/Signout');
+
+
+app.use(Login)
+app.use(Signout)
 
 
 // Checks session with firebase
@@ -332,4 +339,3 @@ app.get('/theatres', function (req, res) {
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
 
-module.exports = app

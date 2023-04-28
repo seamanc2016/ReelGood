@@ -9,7 +9,6 @@ import '../config/firebase-config';
 import { UserContext } from '../Context/UserContext';
 
 import axios from 'axios';
-
 import Cookies from 'js-cookie';
 
 function Login(){
@@ -29,10 +28,13 @@ function Login(){
     const Token = await signInWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
+
+        // If user exist, set user
         setUser(usercredentials.user);
+
+        // Return Token
         return usercredentials.user.getIdToken().then((token) => {
           setToken(token)
-          console.log(token);
           return token;
         });
 
@@ -40,8 +42,10 @@ function Login(){
     }).catch((e) => { // else catch and print errors
       console.log(e.code)
       console.log(e.message);
-      Token = 0;  // set token to zero incase of error
+      setToken(false);  // set token to false incase of error
+      return;
     });
+
 
     const options ={
       headers: {
@@ -52,9 +56,13 @@ function Login(){
       }
     }
 
-    const res = await axios.get('/Login',options);
-    console.log(res.data);
+    // if successfull login, sent request to backend for a session
+    if(Token){
+      const res = await axios.get('/Login',options);
+      console.log(res.data);
+    }
 
+    // check to see if users state has changed
     CheckAuthStateChanged();
     
   }

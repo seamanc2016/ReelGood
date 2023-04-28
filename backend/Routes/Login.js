@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const app = require('../app.js')
 const admin = require('../src/config/firebase-config');
 
 
 const decodeToken = async (req, res ,next) => {
     // retrieves token from user API call
+    console.log("im in decode token" + req.header.authorization)
+
     const token = req.headers.authorization.split(' ')[1] || " ";
     try{
         const decodeValue = await admin.auth().verifyIdToken(token);
@@ -25,7 +26,7 @@ const decodeToken = async (req, res ,next) => {
 router.get('/',decodeToken, (req, res)=>{
 
     const idToken = req.token;   // get un-decoded idToken
-
+    console.log("im in login" + idToken)
     // setting time for cookie expiring in 5 days
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
@@ -39,7 +40,7 @@ router.get('/',decodeToken, (req, res)=>{
         res.send({status: "success"});
     }).catch((e) => {
         console.log("not working")
-        res.status(401).send("UNAUTHORIZED REQUEST!");
+        res.send("UNAUTHORIZED REQUEST!");
     });
 
 })

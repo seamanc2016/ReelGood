@@ -1,7 +1,7 @@
 import Pagination from 'react-bootstrap/Pagination';
 
 function PageNavigation(props) {
-    console.log(props.setPage);
+    //console.log(props.setPage);
     return (
         <Pagination>
             {props.currentPageNumber !== 1 && (
