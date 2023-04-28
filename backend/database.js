@@ -4,7 +4,7 @@ const { MongoClient, serverApiVersion, MongoServerError, ListCollectionsCursor }
 
 // Create Uri
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@studentcluster.fwd4l95.mongodb.net/?retryWrites=true&w=majority`
-const USERCOLLECTION = "User";
+const USERCOLLECTION = "Users";
 const FAVORITEDMOVIES = "FavoritedMovies";
 
 const client = new MongoClient(uri);
@@ -29,6 +29,7 @@ PingDatabase()
  */
 const writeToCollection = async function (obj, db, collection) {
   try {
+
     await client.connect();
 
     const myDB = await client.db(String(db));
@@ -45,10 +46,10 @@ const writeToCollection = async function (obj, db, collection) {
     // }
     //********************************************************************************************/
 
-    // If writing to user collection
-    if (collection == USERCOLLECTION) {
-      await myColl.insertOne({ _id: parseInt(obj.id), "first_name": obj.first_name, "last_name": obj.last_name, "email_Address": obj.email, "username": obj.username, "zipcode": obj.zipcode, "State": obj.state },).then((valueOrbool) => {
 
+    if (collection == USERCOLLECTION) {
+      console.log("insert")
+      await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "username": obj.username, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
           console.log("Error - Could not insert document");
@@ -59,7 +60,7 @@ const writeToCollection = async function (obj, db, collection) {
       // If writing to FavoritedMovies
     } else if (collection == FAVORITEDMOVIES) {
 
-      await myColl.insertOne({ _id: parseInt(obj.id), "FavoriteMovie_Id": obj.movieId },).then((valueOrbool) => {
+      await myColl.insertOne({ _id: obj._id, "FavoriteMovie_Id": obj.movieId },).then((valueOrbool) => {
 
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
