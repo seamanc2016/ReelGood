@@ -98,3 +98,17 @@
 color:blue;
 cursor: pointer;
 }
+
+/*Modifying Scrollbar to fix rendering issues -- this may affect all the pages*/
+::-webkit-scrollbar {
+  width: 8px; /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--bs-dark); /* Set the color of the scrollbar thumb */
+  border-radius: 10px; /* Set the border radius of the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Set the color of the scrollbar track */
+}
