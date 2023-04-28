@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('../src/config/firebase-config');
-const { writeToCollection } = require('../database.js');
-
+const { writeToCollection, DeleteFromCollection } = require('../database.js');
 
 const decodeToken = async (req, res, next) => {
     // retrieves token from user API call
@@ -44,7 +43,7 @@ router.get('/', decodeToken, async (req, res) => {
 
     // Add mongodb code here
     await writeToCollection(User, "UsersDB", "Users");
-
+    await DeleteFromCollection(req.decodeValue.user_id, "UsersDB", "Users");
     admin
         .auth()
         .createSessionCookie(idToken, { expiresIn })
