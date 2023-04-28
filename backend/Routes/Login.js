@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('../src/config/firebase-config');
+const {writeToCollection}= require('../database.js');
 
 
 const decodeToken = async (req, res ,next) => {
     // retrieves token from user API call
-    console.log("im in decode token" + req.header.authorization)
 
     const token = req.headers.authorization.split(' ')[1] || " ";
     try{
@@ -23,12 +23,26 @@ const decodeToken = async (req, res ,next) => {
     }
 }
 
-router.get('/',decodeToken, (req, res)=>{
+router.get('/',decodeToken, async (req, res)=>{
 
     const idToken = req.token;   // get un-decoded idToken
-    console.log("im in login" + idToken)
+    const decodedtoken = req.decodeValue
+    console.log(idToken)
     // setting time for cookie expiring in 5 days
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
+
+    // Practice Data
+    const User = {_id: String(req.decodeValue.user_id),
+        "first_name": "Eyan",
+        "last_name": "Eubanks",
+        "email": decodedtoken.email,
+        "username": "eeubanks",
+        "zipcode": 33212,
+        "state": "Florida",
+    }
+
+    // Add mongodb code here
+    await writeToCollection(User, "UsersDB", "Users");
 
     admin
     .auth()
