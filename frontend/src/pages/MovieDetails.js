@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import MovieDetailsCard from './components/moviedetailscard/MovieDetailsCard';
-import ActorList from './components/actorlist/ActorList';
-import RecommendationList from './components/recommendationlist/RecommendationList';
+import { useParams } from 'react-router-dom';
+import MovieDetailsCard from '../components/moviedetailscard/MovieDetailsCard';
+import ActorList from '../components/actorlist/ActorList';
+import RecommendationList from '../components/recommendationlist/RecommendationList';
 
-function MovieDetails() {
-  //Right now, I'm emulating the MovieDetailsPage. Technically, it will get a prop to set movieID initial state width.
-  let [movieID, setMovieID] = useState(315162);
+function MovieDetails(props) {
+  //Right now, I'm emulating the MovieDetailsPage. Technically, it will get a prop to set movieID initial state with.
+  const { id } = useParams();
+  console.log(id);
+  let [movieID, setMovieID] = useState(id);
   let [history, setHistory] = useState([]);
 
   //Go back to search results page
