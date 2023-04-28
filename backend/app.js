@@ -19,12 +19,12 @@ require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
 // Setup Cors options
 const corsOptions = {
-    origin: '*',
-    credentials: true,
-    optionSuccessStatus: 200
-};
+    origin:'*',
+    credentials:true,
+    optionSuccessStatus:200
+  };
 
-const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
+const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
 
 // setting up middlewares
 app.use(cors(corsOptions));
@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(csrfMiddleware);
-app.use("/Login", Login);
+app.use("/Login",Login );
 app.use("/Signout", Signout);
 
 
@@ -53,14 +53,14 @@ const checkSession = (req, res, next) => {
     console.log("checkingSession")
 
     admin.auth().verifySessionCookie(sessionCookie, true)
-        .then(() => {
-            console.log("next")
-            next();
-        })
-        .catch((error) => {
-            console.log(error)
-            res.send("UNAUTHORIZED REQUEST!");
-        });
+    .then(()=> {
+        console.log("next")
+        next();
+    })
+    .catch((error) => {
+        console.log(error)
+        res.send("UNAUTHORIZED REQUEST!");
+    });
 }
 // Add decodeToken and routes middleware to stack 
 
@@ -134,6 +134,7 @@ app.get('/movie/now_playing', function (req, res) {
             if (error.response)
                 return res.status(error.response.status).send(error.response.data);
         });
+
 
 });
 
