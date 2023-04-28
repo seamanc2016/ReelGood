@@ -10,7 +10,7 @@ const csrf = require("csurf");
 const multer = require('multer');
 const cors = require('cors');
 const admin = require('./src/config/firebase-config');
-
+const mongoose = require('mongoose');
 const Login = require('./Routes/Login');
 const Signout = require('./Routes/Signout');
 
@@ -36,7 +36,7 @@ app.use("/Login", Login);
 app.use("/Signout", Signout);
 
 
-const upload = multer();    // Allows for form submitions
+const upload = multer();    // Allows for form submissions
 
 // routing For endpoints
 
@@ -66,6 +66,38 @@ const checkSession = (req, res, next) => {
 
 // add checkSession after login. Do not need to check session cookies if user isn't logged in yet!
 app.use(checkSession);
+
+//MongoDB API endpoints
+/**
+// Create a schema for the movie collection
+const movieSchema = new mongoose.Schema({
+  title: String,
+  director: String,
+  year: Number,
+});
+
+// Create a model for the movie collection
+const Movie = mongoose.model('Movie', movieSchema);
+
+// Define the route to add a new movie to the database
+app.post('/movies', (req, res) => {
+  // Get the movie details from the request body
+  const { title, director, year } = req.body;
+
+  // Create a new movie instance
+  const movie = new Movie({ title, director, year });
+
+  // Save the movie to the database
+  movie.save((err, movie) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(movie);
+  });
+});
+
+
+
 
 //MovieDB endpoints
 /** 
