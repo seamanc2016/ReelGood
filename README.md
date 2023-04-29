@@ -1,16 +1,22 @@
-# Starter Readme
+# ReelGood
 
-# Git Terminal/CLI Commands to Remember:
-## Pushing from alternate branches to the main branch - Git Pull FIRST then Git Push ( this allows you to pull in the most recent changes for the main branch before commiting and pushing any later changes to the default branch on github)
-## 'git prune' command will resolve the 'too many unreachable loos objects' error that may occur
+ReelGood is a web application for movie enthusiasts that provides users with the ability to browse info on the latest movies, manage a favorites list and find a nearby theater to visit in order to see what’s now playing.
 
-## git commit -m (message_name) - command needed to commit changes with commit message
-## git commit (standard command for commits from terminal)
+![reelgood-usage]()
 
-## 'git add .' (adds all unmerged files at one time)
+## Table of Contents
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Technology Used](#technologies-used)
+4. [Licenses](#licenses)
 
-## 'git add <filename>' (adds a single unmerged file)
 
-## 'git status' (shows the status of the files in the repository)
+## Installation
 
-## 'git push' (pushes the changes to the repository)
+## Usage
+
+
+## Technologies Used
+
+
+## Licenses
