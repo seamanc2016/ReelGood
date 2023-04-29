@@ -11,6 +11,7 @@ import Register from '../userauth/Register';
 import Error from '../Error/Error';
 import MovieDetails from '../../pages/MovieDetails';
 import MovieSearch from '../../pages/MovieSearch';
+import Profile from '../../pages/Profile';
 
 import { useContext } from 'react';
 import { UserContext } from '../../Context/UserContext';
@@ -32,6 +33,7 @@ export default function MyRouter() {
                     <Route exact path='/Register' element={<Register />}></Route>
                     <Route path="/movies/:id" element={<MovieDetails />} />
                     <Route path="/search/:query" element={<MovieSearch />}></Route>
+                    <Route path="/profile" element={<Profile/>}></Route>
                 </Routes>
             </>);
     } else if (!User) {
@@ -47,6 +49,7 @@ export default function MyRouter() {
                     <Route exact path='/Register' element={<Register />}></Route>
                     <Route path="/movies/:id" element={<Error />} />
                     <Route path="/search/:query" element={<Error />}></Route>
+                    <Route path="/profile" element={<Error/>}></Route>
                 </Routes>
             </>
         );
