@@ -48,7 +48,7 @@ function Register() {
       const token_auth = await usercredentials.user.getIdToken()
       if (usercredentials) {
         setUser(usercredentials.user)
-        const response = await axios.post('/register', {
+        const response = await axios.post('/Register', {
           first_name: first_name,
           last_name: last_name,
           zipcode: zipcode,

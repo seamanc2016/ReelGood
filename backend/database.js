@@ -52,7 +52,7 @@ const writeToCollection = async function (obj, db, collection) {
 
     if (collection == USERCOLLECTION) {
       console.log("insert")
-      await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "username": obj.username, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
+      await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
           console.log("Error - Could not insert document");
@@ -185,9 +185,10 @@ const Readdocument = async function (objId, db, collection, query) {
 
     var myCursorAry = await myColl.find(newQuery).toArray();
     
-    if (myCursorAry.length === 0)
+    if (myCursorAry.length === 0){
       console.log(`There are no document with record id ${newQuery._id} in ${myColl.collectionName} collection`);
-    else {
+      return null
+    } else {
       myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
     }
@@ -219,10 +220,14 @@ const updatedocument = async function (queryid, db, collection, query) {
     const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
 
       // If returned response is false, print error
-      if (valueOrbool.acknowledged == false)
+      if (valueOrbool.acknowledged == false){
         console.log("Error - Could not update document");
-      else
+        return false;
+      }
+      else{
         console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+        return true;
+      }
     });
 
   } catch (error) {
@@ -237,4 +242,40 @@ const updatedocument = async function (queryid, db, collection, query) {
   }
 }
 
-module.exports = { client, PingDatabase, writeToCollection, DeleteFromCollection, ReadCollection, Readdocument, updatedocument }
+
+/**
+ * @description Deletes Favorited movie Id in Favorited movie array
+ * @param {JSON} queryid - id of userid
+ * @param {String} db - name of database
+ * @param {String} collection - name of collection
+ * @param {JSON} query - query that pushes object to end of UserFavorites Array
+ */
+const DeleteFavoritedMovie = async (queryid, db, collection, query) => {
+  try{
+    await client.connect();
+
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
+
+    const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
+
+      // If returned response is false, print error
+      if (valueOrbool.acknowledged == false)
+        console.log("Error - Could not update document");
+      else
+        console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+    });
+
+  } catch(error){
+    
+    if (error instanceof MongoServerError) {
+      console.log(`Error - ${error}`); // special case for some reason
+    }
+  } finally{
+
+    // Close Client
+    await client.close()
+  }
+}
+
+module.exports = { client, PingDatabase, writeToCollection, DeleteFromCollection, ReadCollection, Readdocument, updatedocument, DeleteFavoritedMovie }
