@@ -10,6 +10,7 @@ function MovieDetails(props) {
   console.log(id);
   let [movieID, setMovieID] = useState(id);
   let [history, setHistory] = useState([]);
+  let [loading, setLoading] = useState(false);
 
   //Go back to search results page
   //Not added yet
@@ -24,15 +25,24 @@ function MovieDetails(props) {
   return (
     <>
       {/*Navigation Buttons*/}
-      <div className="text-center mt-3">
-        <button className="btn btn-dark me-1">Go Back To Search Results</button>
-        {history && history.length > 0 && (<button className="btn btn-dark me-1" onClick={() => goToPreviousMovie(history)}>View Previous</button>)}
-      </div>
-      
+      {!loading && (
+        <div className="text-center mt-3">
+          <button className="btn btn-dark me-1">Go Back To Search Results</button>
+          {history && history.length > 0 && (<button className="btn btn-dark me-1" onClick={() => goToPreviousMovie(history)}>View Previous</button>)}
+        </div>
+      )}
+
+
+      {/*Show this while the request is loading*/}
+      {/*If at least one of the loadingStates are true, then this should show*/}
+      {loading && (
+        <h4 className='loading-info text-center my-2'>Please wait...</h4>
+      )}
+
       {/*Main content*/}
-      <MovieDetailsCard movieID={movieID} />
-      <ActorList movieID={movieID} />
-      <RecommendationList setMovieID={setMovieID} setHistory={setHistory} movieID={movieID} history={history} />
+      <MovieDetailsCard movieID={movieID} setLoading={setLoading} />
+      <ActorList movieID={movieID} setLoading={setLoading} />
+      <RecommendationList setLoading={setLoading} setMovieID={setMovieID} setHistory={setHistory} movieID={movieID} history={history} />
 
     </>
   );

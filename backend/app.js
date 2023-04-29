@@ -331,6 +331,7 @@ app.get('/theatres', function (req, res) {
         })
         .catch(function (error) {
             // If a response has been received from the request server, the error object will contain the response property.
+            console.log(error);
             if (error.response)
                 return res.status(error.response.status).send(error.response.data);
         });
