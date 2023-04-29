@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
+// import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { Container, Row, Col } from 'react-bootstrap';
 import PageNavigation from '../pagenavigation/PageNavigation.js';
 import MovieCard from '../moviecard/MovieCard.js';
 
 
-const UpcomingMovieList = () => {
+const MovieSearchList = (props) => {
+    //Get props
+    const query = props.query;
+
     //Set states
     let [response, setResponse] = useState(null);
     let [error, setError] = useState(null);
     let [loading, setLoading] = useState(false);
     let [page, setPage] = useState(1);
 
-    //Function for Axios call to backend server to get Upcoming Movies
-    function getUpcomingMovies(page) {
+    //Function for Axios call to backend server to search TMBD for movies based on a query
+    function searchMovies(query, page) {
 
         //Clearing old response data and resetting loading state
         setLoading(true);
@@ -21,10 +25,10 @@ const UpcomingMovieList = () => {
         setError(null);
 
         //Make call to backend server
-        axios.get(`/movie/upcoming`, {
+        axios.get(`/search/movie`, {
             params: {
-                page: page,
-                withCredentials: true,
+                query: query,
+                page: page
             }
         })
             .then(function (response) {
@@ -45,13 +49,13 @@ const UpcomingMovieList = () => {
             });
     }
 
-    //Call function to get upcoming movies whenever this component re-renders
+    //Call function to search movies whenever this component re-renders
     useEffect(() => {
-        getUpcomingMovies(page)
-    }, [page])
+        searchMovies(query, page)
+    }, [query, page])
 
 
-    //Generate the Upcoming movie list
+    //Generate the search list
     return (
         <>
             {/*Show this while the request is loading*/}
@@ -63,7 +67,7 @@ const UpcomingMovieList = () => {
             {response && (
                 <>
                     <h4 className='result-info text-center my-2'>
-                        {response.total_results > 10000 ? 10000 : response.total_results} results found for Upcoming movies.
+                        {response.total_results > 10000 ? 10000 : response.total_results} results found for query: "{query}".
                         Showing page {response.page} of {response.total_pages > 500 ? 500 : response.total_pages}.
                     </h4>
                     <Container>
@@ -93,4 +97,4 @@ const UpcomingMovieList = () => {
     );
 };
 
-export default UpcomingMovieList;
+export default MovieSearchList;
