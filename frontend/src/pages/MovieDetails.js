@@ -23,6 +23,7 @@ function MovieDetails(props) {
     console.log(history);
     setHistory(history.slice(0, -1));
     setMovieID(history[history.length - 1]);
+    navigate(`/movies/${history[history.length - 1]}`,{ replace: true })
   }
 
   return (
