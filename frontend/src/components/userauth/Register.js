@@ -8,6 +8,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import '../../config/firebase-config';
 
 import { UserContext } from '../../Context/UserContext';
+import axios from 'axios';
 
 function Register() {
 
@@ -21,7 +22,8 @@ function Register() {
   const [state, setstate] = useState('');
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
-
+  const [response, setResponse] = useState('');
+  const [error, setError] = useState(null);
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => { // when users login state changes...
@@ -35,21 +37,35 @@ function Register() {
     })
   }, [])
 
-  const reg = (e) => {
+  const reg = async (e) => {
     e.preventDefault();
 
     // authenticates with google using api credentals
     const auth = getAuth()
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
-        if (usercredentials) {
-          setUser(usercredentials.user)
-        }
-      }).catch((e) => { // else catch and print errors
-        console.log(e.code)
-        console.log(e.message);
-      });
+    try {
+      const usercredentials = await createUserWithEmailAndPassword(auth, email, password);
+      // If usercredentials are returned, user exists, hence get token and send data to server
+      const token_auth = await usercredentials.user.getIdToken()
+      if (usercredentials) {
+        setUser(usercredentials.user)
+        const response = await axios.post('/register', {
+          first_name: first_name,
+          last_name: last_name,
+          zipcode: zipcode,
+          state: state,
+          token: token_auth
+        });
+        setResponse(response);
+        console.log("Register data sent: ");
+        console.dir(response);
+      }
+    } catch (error) {
+      setResponse(error);
+      setError(true);
+      console.log("The error during an error is: " + error);
+    }
   }
+
 
   return (
     <>
