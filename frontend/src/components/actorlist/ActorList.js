@@ -52,7 +52,7 @@ const ActorList = (props) => {
                         <h4 className='text-center'>Actor List</h4>
                         <div className="d-flex flex-row cover-container">
                             {/*Only showing first 10*/}
-                            {response.cast.slice(0, 10).map((actor) => (
+                            {response.cast.map((actor) => (
                                 <div key={actor.id}>
                                     <ActorCard actor={actor}></ActorCard>
                                 </div>

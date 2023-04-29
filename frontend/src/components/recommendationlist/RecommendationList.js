@@ -55,7 +55,7 @@ const RecommendationList = (props) => {
                     <div className="container border border-gray my-2">
                         <div className="d-flex flex-row cover-container">
                             {/*Only showing first 10*/}
-                            {response.results.slice(0, 10).map((movie) => (
+                            {response.results.map((movie) => (
                                 <div key={movie.id}>
                                     <RecommendationCard
                                         movie={movie}

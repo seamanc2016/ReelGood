@@ -139,9 +139,9 @@ const MovieDetailsCard = (props) => {
                                             <b>Production Companies: </b>
                                             {response.production_companies && response.production_companies.length !== 0 ? (
                                                 <div className="d-flex flex-row">
-                                                    {response.production_companies.map((company) => (
-                                                        <div key={company.id} className="me-2">
-                                                            <p>{company.name}.</p>
+                                                    {response.production_companies.map((company, index) => (
+                                                        <div key={index} className="me-2">
+                                                            <p key={company.id}>{company.name}.</p>
                                                         </div>
                                                     ))}
                                                 </div>
@@ -154,9 +154,9 @@ const MovieDetailsCard = (props) => {
                                         <b>Production Countries: </b>
                                         {response.production_countries && response.production_countries.length !== 0 ? (
                                             <div className="d-flex flex-row">
-                                                {response.production_countries.map((country) => (
-                                                    <div key={country.id} className="me-2">
-                                                        <p>{country.name}. &nbsp;</p>
+                                                {response.production_countries.map((country, index) => (
+                                                    <div key={index} className="me-2">
+                                                        <p key={country.id}>{country.name}. &nbsp;</p>
                                                     </div>
                                                 ))}
                                             </div>

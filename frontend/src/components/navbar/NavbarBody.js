@@ -74,7 +74,7 @@ export default function MyNavbar() {
                     </>
                 )}
 
-                <Form inline className="mx-3">
+                <Form  className="mx-3">
                     {authbutton()}
                 </Form>
             </Container>

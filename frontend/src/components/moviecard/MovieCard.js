@@ -1,8 +1,20 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
+import {useLocation, useNavigate} from 'react-router-dom';
 import emptyImage from '../../images/no-image-available.jpg';
 
 function MovieCard(props) {
+
+    const location = useLocation();
+    const pathname = location.pathname;
+    const navigate = useNavigate();
+
+    function goToMovieDetailsPage() {
+
+        sessionStorage.setItem('lastPath', pathname);
+        navigate(`/movies/${props.movie.id}`);
+    }   
+
     return (
         <Card style={{ width: '100%', maxWidth: '22rem', }}>
             {props.movie.poster_path ? (
@@ -18,7 +30,7 @@ function MovieCard(props) {
                 </Card.Text>
             </Card.Body>
             <Card.Footer>
-                <Button className="d-block mx-auto" variant="dark" href={`/movies/${props.movie.id}`}>View Details</Button>
+                <Button className="d-block mx-auto" variant="dark" onClick={goToMovieDetailsPage}>View Details</Button>
             </Card.Footer>
         </Card>
 
