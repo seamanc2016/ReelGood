@@ -9,10 +9,18 @@ const NowPlayingMovieList = () => {
     //Set states
     let [response, setResponse] = useState(null);
     let [error, setError] = useState(null);
+    let [loading, setLoading] = useState(false);
     let [page, setPage] = useState(1);
 
     //Function for Axios call to backend server to get Now Playing Movies
     function getNowPlayingMovies(page) {
+
+        //Clearing old response data and resetting loading state
+        setLoading(true);
+        setResponse(null);
+        setError(null);
+
+        //Make call to backend server
         axios.get(`/movie/now_playing`, {
             params: {
                 page: page
@@ -20,23 +28,18 @@ const NowPlayingMovieList = () => {
         })
             .then(function (response) {
                 //On success
-                //Change unused states accordingly
-                setError(null);
-
-                // Get response data and update accordingly
                 // console.log(response);
                 setResponse(response.data);
+                setLoading(false);
             })
             .catch(function (error) {
                 // On error
                 // console.log(error);
                 if (error.response) {
-                    //Change unused states accordingly
-                    setResponse(null);
-
                     // Get error data and display error message accordingly
                     const errorMessage = error.response.data.status_message;
                     setError(errorMessage);
+                    setLoading(false);
                 }
             });
     }
@@ -50,11 +53,16 @@ const NowPlayingMovieList = () => {
     //Generate the Now Playing movie list
     return (
         <>
+            {/*Show this while the request is loading*/}
+            {loading && (
+                <h4 className='loading-info text-center my-2'>Please wait...</h4>
+            )}
+
             {/*If the response object isn't null, generate the movie list */}
             {response && (
                 <>
                     <h4 className='result-info text-center my-2'>
-                        {response.total_results > 10000 ? 10000 : response.total_results} results found.
+                        {response.total_results > 10000 ? 10000 : response.total_results} results found for Now Playing movies.
                         Showing page {response.page} of {response.total_pages > 500 ? 500 : response.total_pages}.
                     </h4>
                     <Container>
@@ -79,7 +87,7 @@ const NowPlayingMovieList = () => {
             )}
 
             {/*If an error occured, report it to the client*/}
-            {error && (<div className='error-message text-center' style={{color: 'red'}}>{error}</div>)}
+            {error && (<div className='error-message text-center' style={{ color: 'red' }}>{error}</div>)}
         </>
     );
 };
