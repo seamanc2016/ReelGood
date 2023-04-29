@@ -9,28 +9,30 @@ const MovieDetailsCard = (props) => {
 
     //Write function to get Movie Details using the Passed ID
     function getMovieDetails(movieID) {
+
+        //Clearing old response data and resetting loading state
+        props.setLoading(true);
+        setResponse(null);
+        setError(null);
+
+        //Make call to backend server
         axios.get(`/movie/${movieID}`, {
 
         })
             .then(function (response) {
                 //On success
-                //Change unused states accordingly
-                setError(null);
-
-                // Get response data and update accordingly
                 // console.log(response);
                 setResponse(response.data);
+                props.setLoading(false);
             })
             .catch(function (error) {
                 // On error
                 // console.log(error);
                 if (error.response) {
-                    //Change unused states accordingly
-                    setResponse(null);
-
                     // Get error data and display error message accordingly
                     const errorMessage = error.response.data.status_message;
                     setError(errorMessage);
+                    props.setLoading(false);
                 }
             });
     }
