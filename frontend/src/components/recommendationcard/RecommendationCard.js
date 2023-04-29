@@ -9,6 +9,7 @@ function RecommendationCard(props) {
             historyCopy.push(props.movieID);
             props.setHistory(historyCopy);
             props.setMovieID(props.movie.id);
+            window.scroll(0, 0);
         }}>
             {/*For the source we're using, actor images come in 278x185 px sizes.*/}
             {props.movie.poster_path ? (
