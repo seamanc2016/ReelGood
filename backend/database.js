@@ -1,6 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 const { MongoClient, serverApiVersion, MongoServerError, ListCollectionsCursor } = require("mongodb");
+const { query } = require('express');
 
 // Create Uri
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@studentcluster.fwd4l95.mongodb.net/?retryWrites=true&w=majority`
@@ -24,8 +25,10 @@ const PingDatabase = async function () {
 PingDatabase()
 
 /**
- * @Description adds a studentRecord document to students collection.
- * @param {studentRecord} obj - is a studentRecord.
+ * @Description Writes to user to usercollection to retrieve for user info page
+ * @param {String} obj - User Id
+ * @param {String} db - name of database
+ * @param {String} collection - name of collection
  */
 const writeToCollection = async function (obj, db, collection) {
   try {
@@ -83,8 +86,10 @@ const writeToCollection = async function (obj, db, collection) {
 }
 
 /**
- * @Description Deletes a studentRecord from collection
- * @param {Int} objId - Student Record Id.
+ * @Description Deletes user from usercollection
+ * @param {String} Id - User Id.
+ * @param {String} db - name of database
+ * @param {String} collection - name of collection
  * @returns {Promise<string>} - returns resonse string
  */
 const DeleteFromCollection = async function (Id, db, collection) {
@@ -119,9 +124,6 @@ const DeleteFromCollection = async function (Id, db, collection) {
           console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
       });
 
-
-
-
     };
     return result;
   } catch (error) {
@@ -138,12 +140,12 @@ const DeleteFromCollection = async function (Id, db, collection) {
  * @descripton Reads all values in student collection.
  * @returns Returns Array of all studentRecords in collection.
  */
-const ReadCollection = async function () {
+const ReadCollection = async function (Id, db, collection) {
   try {
     await client.connect();
 
-    const myDB = await client.db("myDB");
-    const myColl = myDB.collection("students");
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
 
     // Returns entire collection
     var myCursorAry = await myColl.find().toArray();
@@ -165,22 +167,26 @@ const ReadCollection = async function () {
 }
 
 /**
- * @description Reads a matching Student Record
- * @param {Int} objId - StudentRecord Id.
+ * @description Returns Movie Array of user that matches user_id and array has movieid
+ * @param {String} objId - id of userid
+ * @param {String} db - name of database
+ * @param {String} collection - name of collection
+ * @param {JSON} query - query that finds if a value exist in UserFavorites array 
  */
-const Readdocument = async function (objId) {
+const Readdocument = async function (objId, db, collection, query) {
   try {
     await client.connect();
 
-    const myDB = await client.db("myDB");
-    const myColl = myDB.collection("students");
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
 
-    const query = { _id: parseInt(objId) }
-    console.log(query)
+    const newQuery = query
+    console.log(newQuery)
 
-    var myCursorAry = await myColl.find(query).toArray();
+    var myCursorAry = await myColl.find(newQuery).toArray();
+    
     if (myCursorAry.length === 0)
-      console.log(`There are no document with record id ${query._id} in ${myColl.collectionName} collection`);
+      console.log(`There are no document with record id ${newQuery._id} in ${myColl.collectionName} collection`);
     else {
       myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
@@ -197,23 +203,20 @@ const Readdocument = async function (objId) {
 }
 
 /**
- * @description Updates matching StudentRecord.
- * @param {Int} objId - StudentRecord Id.
- * @param {JSON} query - Json object of key/value pairs to be changed.
+ * @description Finds Favorite movies document and then appends value to end of the array
+ * @param {JSON} queryid - id of userid
+ * @param {String} db - name of database
+ * @param {String} collection - name of collection
+ * @param {JSON} query - query that pushes object to end of UserFavorites Array
  */
-const updatedocument = async function (id, query) {
+const updatedocument = async function (queryid, db, collection, query) {
   try {
     await client.connect();
 
-    const myDB = await client.db("myDB");
-    const myColl = myDB.collection("students");
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
 
-    const newquery = {
-      $set: query,
-    };
-
-    const queryid = { _id: parseInt(id) };
-    const result = await myColl.updateOne(queryid, newquery).then((valueOrbool) => {
+    const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
 
       // If returned response is false, print error
       if (valueOrbool.acknowledged == false)
