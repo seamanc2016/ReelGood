@@ -45,7 +45,6 @@ router.get('/', decodeToken, async (req, res) => {
         "first_name": "Eyan",
         "last_name": "Eubanks",
         "email": decodedtoken.email,
-        "username": "eeubanks",
         "zipcode": 33212,
         "state": "Florida",
     }

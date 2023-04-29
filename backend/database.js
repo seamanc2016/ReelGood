@@ -52,7 +52,7 @@ const writeToCollection = async function (obj, db, collection) {
 
     if (collection == USERCOLLECTION) {
       console.log("insert")
-      await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "username": obj.username, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
+      await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
           console.log("Error - Could not insert document");
