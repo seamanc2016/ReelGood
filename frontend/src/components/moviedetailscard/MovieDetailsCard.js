@@ -6,7 +6,7 @@ const MovieDetailsCard = (props) => {
     //Set states
     let [response, setResponse] = useState(null);
     let [error, setError] = useState(null);
-
+    let [favorite, setFavorite] = useState(true);
     //Write function to get Movie Details using the Passed ID
     function getMovieDetails(movieID) {
 
@@ -35,6 +35,11 @@ const MovieDetailsCard = (props) => {
                     props.setLoading(false);
                 }
             });
+    }
+
+
+    function handleFavorite(){
+        setFavorite(!favorite);
     }
 
     //Call function to get movie details whenever this component re-renders
@@ -71,7 +76,9 @@ const MovieDetailsCard = (props) => {
                                                 </div>
 
                                                 <div>
-                                                    <button type="button" className="btn btn-dark me-1">Favorite</button>
+                                                    {favorite ? ( <button type="button" className="btn btn-dark me-1" onClick={handleFavorite}>Favorite</button>) 
+                                                    : 
+                                                    ( <button type="button" className="btn btn-dark me-1" onClick={handleFavorite}>Unfavorite</button>)}
                                                 </div>
                                             </div>
 
