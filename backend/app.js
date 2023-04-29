@@ -13,6 +13,7 @@ const admin = require('./src/config/firebase-config');
 const mongoose = require('mongoose');
 const Login = require('./Routes/Login');
 const Signout = require('./Routes/Signout');
+const Register = require('./Routes/Register');
 
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
@@ -30,13 +31,15 @@ const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use('/Register', Register);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(csrfMiddleware);
 app.use("/Login",Login );
 app.use("/Signout", Signout);
 
 
-const upload = multer();    // Allows for form submissions
+
+const upload = multer();    // Allows for form submitions
 
 // routing For endpoints
 
