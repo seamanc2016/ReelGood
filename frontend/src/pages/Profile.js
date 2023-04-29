@@ -6,9 +6,8 @@ function Profile() {
 
     return (
         <>
+            <AccountInfo />
             <MyFavoriteList />
-            {/*Put stuff here */}
-            <AccountInfo/>
         </>
     )
 }
