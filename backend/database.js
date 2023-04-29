@@ -185,9 +185,10 @@ const Readdocument = async function (objId, db, collection, query) {
 
     var myCursorAry = await myColl.find(newQuery).toArray();
     
-    if (myCursorAry.length === 0)
+    if (myCursorAry.length === 0){
       console.log(`There are no document with record id ${newQuery._id} in ${myColl.collectionName} collection`);
-    else {
+      return null
+    } else {
       myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
     }
@@ -219,10 +220,14 @@ const updatedocument = async function (queryid, db, collection, query) {
     const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
 
       // If returned response is false, print error
-      if (valueOrbool.acknowledged == false)
+      if (valueOrbool.acknowledged == false){
         console.log("Error - Could not update document");
-      else
+        return false;
+      }
+      else{
         console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+        return true;
+      }
     });
 
   } catch (error) {

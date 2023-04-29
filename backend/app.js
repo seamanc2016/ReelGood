@@ -373,6 +373,42 @@ app.get('/theatres', function (req, res) {
 
 });
 
+app.post("/Favorite", async (req,res,next) => {
+
+    // Setup variables
+    const uid = String(req.body.uid)
+    const movieId = parseInt(req.body.movieId)
+
+    // see if this user already has a favoriteMovie movie list
+    let result = await Readdocument(String(req.body.uid), "UsersDB", "FavoritedMovies", { _id: String(req.decodeValue.user_id)});
+
+    // If null response, create a new favoriteMovie list 
+    if(result == null){
+        const FavoriteMovies = {
+            _id: uid,
+            movieId: [],    // make a empty array
+        }
+
+        await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+    }
+
+    // After creating favorite movies list or determining if user already has one...
+
+    // Create query parameters
+    const UserFavoriteId = {_id: uid};
+    const UserFavoriteMovieId = {$pull: {"FavoriteMovie_Id": movieId}}
+
+    result = await updatedocument( UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId );
+
+    if(result)
+        res.send({msg: "Successfullly updated"});
+    else
+        res.send({msg: "Error updating favorites list"});
+
+});
+
+//app.delete()
+
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
 

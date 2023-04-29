@@ -38,8 +38,6 @@ router.post('/', decodeTokenForReg, async (req, res, next) => {
         "state": req.body.state,
     }
 
-    console.log(User)
-
     // Writes to user to usercollection to retrieve for user info page
     await writeToCollection(User, "UsersDB", "Users");
 
