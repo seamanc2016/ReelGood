@@ -27,8 +27,8 @@ PingDatabase()
  * @Description adds a studentRecord document to students collection.
  * @param {studentRecord} obj - is a studentRecord.
  */
-const writeToCollection = async function(obj, db, collection) {
-  try{
+const writeToCollection = async function (obj, db, collection) {
+  try {
 
     await client.connect();
 
@@ -47,9 +47,9 @@ const writeToCollection = async function(obj, db, collection) {
     //********************************************************************************************/
 
 
-    if(collection == USERCOLLECTION){
+    if (collection == USERCOLLECTION) {
       console.log("insert")
-      await myColl.insertOne({_id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "username": obj.username, "zipcode": obj.zipcode, "state": obj.state},).then((valueOrbool) => {
+      await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "username": obj.username, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
           console.log("Error - Could not insert document");
@@ -60,7 +60,7 @@ const writeToCollection = async function(obj, db, collection) {
       // If writing to FavoritedMovies
     } else if (collection == FAVORITEDMOVIES) {
 
-      await myColl.insertOne({_id: obj._id, "FavoriteMovie_Id": obj.movieId},).then((valueOrbool) => {
+      await myColl.insertOne({ _id: obj._id, "FavoriteMovie_Id": obj.movieId },).then((valueOrbool) => {
 
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
@@ -87,28 +87,42 @@ const writeToCollection = async function(obj, db, collection) {
  * @param {Int} objId - Student Record Id.
  * @returns {Promise<string>} - returns resonse string
  */
-const DeleteFromCollection = async function (objId) {
+const DeleteFromCollection = async function (Id, db, collection) {
   try {
     await client.connect();
 
-    const myDB = await client.db("myDB");
-    const myColl = myDB.collection("students");
-
-    // Create query
-    const query = { _id: parseInt(objId) };
-
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
     // stores result of document being deleted
     var result;
+    // Create query
+    const query = { _id: parseInt(Id) };
+    if (collection == USERCOLLECTION) {
+      console.log("insert")
+      await myColl.findOneAndDelete(query).then((valueOrbool) => {
+        // If returned response is false, print error
+        if (valueOrbool.acknowledged == false)
+          console.log("Error - Could not insert document");
+        else
+          console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+      });
 
-    // Delete student record in collection
-    await myColl.findOneAndDelete(query).then(async (document) => {
-      if (document.value == null)
-        console.log("Error - The document was not found");
-      else {
-        const responsestr = { status: "success", data: [document.value] }//"The following document has been deleted\n" + JSON.stringify(document.value);
-        result = responsestr;
-      }
-    });
+      // If writing to FavoritedMovies
+    } else if (collection == FAVORITEDMOVIES) {
+
+      await myColl.insertOne({ _id: obj._id, "FavoriteMovie_Id": obj.movieId },).then((valueOrbool) => {
+
+        // If returned response is false, print error
+        if (valueOrbool.acknowledged == false)
+          console.log("Error - Could not insert document");
+        else
+          console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+      });
+
+
+
+
+    };
     return result;
   } catch (error) {
 

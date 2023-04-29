@@ -10,10 +10,10 @@ export default function MyTheaterCard({ theater }) {
       <Card className="mb-3">
         <div className="row g-0">
           <div className="col-md-2 d-flex align-items-center justify-content-center bg-dark">
-            <Card.Img 
-              variant="top " 
-              src={image_url || EmptyImage} 
-              className="img-fluid rounded-start" 
+            <Card.Img
+              variant="top "
+              src={image_url || EmptyImage}
+              className="img-fluid rounded-start"
               alt="Theater"
               style={{ width: '100%', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
             />
