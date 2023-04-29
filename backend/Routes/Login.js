@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('../src/config/firebase-config');
-const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument } = require('../database.js');
+const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument, DeleteFavoritedMovie } = require('../database.js');
 
 const decodeToken = async (req, res, next) => {
     // retrieves token from user API call
@@ -74,9 +74,13 @@ router.get('/', decodeToken, async (req, res) => {
 
     // Finds Favorite movies document and then appends value to end of the array
     await updatedocument( queryid, "UsersDB", "FavoritedMovies", query )
+
+
+    queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query
+    query1 = {$pull: {"FavoriteMovie_Id": 919631}}
+
+    await DeleteFavoritedMovie(queryid1, "UsersDB", "FavoritedMovies", query1)
     /************************************ END OF MONGODB TESTING ********************************************************/
-
-
 
     admin
         .auth()

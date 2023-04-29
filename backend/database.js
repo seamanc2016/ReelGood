@@ -237,4 +237,40 @@ const updatedocument = async function (queryid, db, collection, query) {
   }
 }
 
-module.exports = { client, PingDatabase, writeToCollection, DeleteFromCollection, ReadCollection, Readdocument, updatedocument }
+
+/**
+ * @description Deletes Favorited movie Id in Favorited movie array
+ * @param {JSON} queryid - id of userid
+ * @param {String} db - name of database
+ * @param {String} collection - name of collection
+ * @param {JSON} query - query that pushes object to end of UserFavorites Array
+ */
+const DeleteFavoritedMovie = async (queryid, db, collection, query) => {
+  try{
+    await client.connect();
+
+    const myDB = await client.db(String(db));
+    const myColl = myDB.collection(String(collection));
+
+    const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
+
+      // If returned response is false, print error
+      if (valueOrbool.acknowledged == false)
+        console.log("Error - Could not update document");
+      else
+        console.log(`document is writen to ${myDB.databaseName} in collection ${myColl.collectionName}`);
+    });
+
+  } catch(error){
+    
+    if (error instanceof MongoServerError) {
+      console.log(`Error - ${error}`); // special case for some reason
+    }
+  } finally{
+
+    // Close Client
+    await client.close()
+  }
+}
+
+module.exports = { client, PingDatabase, writeToCollection, DeleteFromCollection, ReadCollection, Readdocument, updatedocument, DeleteFavoritedMovie }
