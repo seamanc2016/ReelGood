@@ -1,10 +1,11 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
-
+import { Link, useNavigate } from 'react-router-dom'
 import {useState, useEffect, useContext} from 'react';
 import {getAuth, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
 import '../config/firebase-config';
+import Alert from 'react-bootstrap/Alert';
 
 import { UserContext } from '../Context/UserContext';
 
@@ -14,21 +15,22 @@ import Cookies from 'js-cookie';
 function Login(){
 
   const {User, setUser,Token, setToken, CheckAuthStateChanged} = useContext(UserContext);
-
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
+
+  // used to naviate to different locations
+  const navigate = useNavigate();
 
   // called when user logs in
   const login = async (e) => {
     e.preventDefault();
-
+    navigate('/');  // navigate back to home page   
     // authenticates with google using api credentals
     const auth = getAuth()
 
     const Token = await signInWithEmailAndPassword(auth, email, password)
     .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
       if(usercredentials){
-
         // If user exist, set user
         setUser(usercredentials.user);
 
@@ -63,9 +65,11 @@ function Login(){
     }
 
     // check to see if users state has changed
-    CheckAuthStateChanged();
+    CheckAuthStateChanged(); 
     
   }
+
+  
   return(
     <Container className='p-5'  fluid>
       <h1>Login</h1>

@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../../images/reelgood_logo.png';
 import { Navbar, Nav, Form, Button, ButtonGroup, Image, Container } from 'react-bootstrap'
 import MySearchBar from './SearchBar';
-
+import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useEffect, useContext } from 'react';
@@ -36,6 +36,10 @@ export default function MyNavbar() {
             });
     }
 
+    const profile = (e) => {
+        navigate('/profile');  // navigate back to home page
+    }
+
     const authbutton = () => {
         if (!User) {  // If Not Authenticated Show Login and Signup
             return (
@@ -45,7 +49,20 @@ export default function MyNavbar() {
                 </ButtonGroup>
             );
         } else {  // If Authenticated Show Logout
-            return (<Button variant="warning" onClick={signout}>Logout</Button>);
+            return (
+                <>
+                    <Dropdown className="d-inline mx-2">
+                        <Dropdown.Toggle variant="warning" id="dropdown-autoclose-true">
+                            Settings
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                        <Dropdown.Item onClick={profile}>Profile</Dropdown.Item>
+                        <Dropdown.Item onClick={signout}>Logout</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </>
+            );
         }
 
     }
@@ -74,7 +91,7 @@ export default function MyNavbar() {
                     </>
                 )}
 
-                <Form  className="mx-3">
+                <Form className="mx-3">
                     {authbutton()}
                 </Form>
             </Container>
