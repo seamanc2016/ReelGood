@@ -500,7 +500,8 @@ app.get("/accountinfo/:uid", async (req, res, next) => {
         // Retrieve user's account information from database
         const result = await Readdocument(uid, "UsersDB", "Users", { _id: uid });
         // Send response with account information
-        res.status(200).json(result);
+        console.log(result);
+        res.status(200).send(result);
     } catch (error) {
         // Handle error
         console.error(error);
