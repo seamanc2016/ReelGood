@@ -32,7 +32,9 @@ export const UserContextProvider = ({children}) => {
         const StringUser = JSON.stringify(user)
         setUser(StringUser);
         setToken(Token)
-        localStorage.setItem("user", StringUser);
+        //localStorage.setItem("user", StringUser);
+        // StringUser has a lot of information, we only use userID to parse profile component, here we slice it so it only has that avaiable.
+        localStorage.setItem("user", StringUser.slice(0,37) + "}"); 
       }else
         setUser(null)
     })
