@@ -40,45 +40,45 @@ router.get('/', decodeToken, async (req, res) => {
 
 
     // Practice Data
-    const User = {
-        _id: String(req.decodeValue.user_id),
-        "first_name": "Eyan",
-        "last_name": "Eubanks",
-        "email": decodedtoken.email,
-        "zipcode": 33212,
-        "state": "Florida",
-    }
+    // const User = {
+    //     _id: String(req.decodeValue.user_id),
+    //     "first_name": "Eyan",
+    //     "last_name": "Eubanks",
+    //     "email": decodedtoken.email,
+    //     "zipcode": 33212,
+    //     "state": "Florida",
+    // }
 
-    const FavoriteMovies = {
-        _id: String("us8daf9h289rt3r983jhoiwjf"/*req.decodeValue.user_id*/),
-        movieId: [142684, 681341, 402760, 919631],
-    }
-
-
-    // Writes to user to usercollection to retrieve for user info page
-    await writeToCollection(User, "UsersDB", "Users");
-
-    // Deletes user from usercollection
-    await DeleteFromCollection(req.decodeValue.user_id, "UsersDB", "Users");
-
-    // Writes to favoriteMovies document to favorite movies collection
-    await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
-
-    // Returns Movie Array of user that matches user_id and array has movie id
-    await Readdocument(String(req.decodeValue.user_id), "UsersDB", "FavoritedMovies", { $and: [{ _id: String(req.decodeValue.user_id) }, { "FavoriteMovie_Id": 142684 }] })
+    // const FavoriteMovies = {
+    //     _id: String("us8daf9h289rt3r983jhoiwjf"/*req.decodeValue.user_id*/),
+    //     movieId: [142684, 681341, 402760, 919631],
+    // }
 
 
-    queryid = { _id: String(req.decodeValue.user_id) } // Userid query 
-    query = { $push: { "FavoriteMovie_Id": 182612 } }  // statement that pushes value to end of array
+    // // Writes to user to usercollection to retrieve for user info page
+    // await writeToCollection(User, "UsersDB", "Users");
 
-    // Finds Favorite movies document and then appends value to end of the array
-    await updatedocument(queryid, "UsersDB", "FavoritedMovies", query)
+    // // Deletes user from usercollection
+    // await DeleteFromCollection(req.decodeValue.user_id, "UsersDB", "Users");
+
+    // // Writes to favoriteMovies document to favorite movies collection
+    // await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+
+    // // Returns Movie Array of user that matches user_id and array has movie id
+    // await Readdocument(String(req.decodeValue.user_id), "UsersDB", "FavoritedMovies", { $and: [{ _id: String(req.decodeValue.user_id) }, { "FavoriteMovie_Id": 142684 }] })
 
 
-    queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query
-    query1 = {$pull: {"FavoriteMovie_Id": 919631}}  
+    // queryid = { _id: String(req.decodeValue.user_id) } // Userid query 
+    // query = { $push: { "FavoriteMovie_Id": 182612 } }  // statement that pushes value to end of array
 
-    await DeleteFavoritedMovie(queryid1, "UsersDB", "FavoritedMovies", query1)
+    // // Finds Favorite movies document and then appends value to end of the array
+    // await updatedocument(queryid, "UsersDB", "FavoritedMovies", query)
+
+
+    // queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query
+    // query1 = {$pull: {"FavoriteMovie_Id": 919631}}  
+
+    // await DeleteFavoritedMovie(queryid1, "UsersDB", "FavoritedMovies", query1)
     /************************************ END OF MONGODB TESTING ********************************************************/
 
     admin
