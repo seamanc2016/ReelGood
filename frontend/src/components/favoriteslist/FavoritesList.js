@@ -1,58 +1,84 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from "axios";
-import ActorCard from '../actorcard/ActorCard';
+import { useContext, useState } from 'react';
+import { UserContext } from "../../Context/UserContext";
+import FavoriteCard from '../favoritecard/FavoriteCard';
 
 const FavoriteList = (props) => {
     //Set states
-    let [response, setResponse] = useState(null);
-    let [error, setError] = useState(null);
+    const [response1, setResponse1] = useState(null);
+    const [response2, setResponse2] = useState(null);
+    const [error, setError] = useState(null);
 
-    //Function for Axios call to backend server to get Actors
-    function getActors(movieID) {
-        axios.get(`/movie/${movieID}/credits`, {
-        })
-            .then(function (response) {
-                //On success
-                //Change unused states accordingly
-                setError(null);
+    //Getting userID
+    const { User } = useContext(UserContext);
+    let userID = JSON.parse(User).uid;
 
-                // Get response data and update accordingly
-                // console.log(response);
-                setResponse(response.data);
-            })
-            .catch(function (error) {
-                // On error
-                // console.log(error);
-                if (error.response) {
-                    //Change unused states accordingly
-                    setResponse(null);
 
-                    // Get error data and display error message accordingly
-                    const errorMessage = error.response.data.status_message;
-                    setError(errorMessage);
-                }
-            });
-    }
+    //Function for Axios call to backend server to get favorite movies from user:
+    async function getFavorites() {
+        try {
+          const response1 = await axios.get(`/favorites/${userID}`);
+          setError(null);
+          setResponse1(response1.data);
+          const moviePromises = response1.data.map((movie_mongo) =>
+            axios.get(`/movie/${movie_mongo}`)
+          );
+          const movieResponses = await Promise.all(moviePromises);
+          const movies = movieResponses.map((movieResponse) => movieResponse.data);
+          setResponse2({ results: movies });
+        } catch (error) {
+          if (error.response) {
+            setResponse1(null);
+            const errorMessage = error.response.data.status_message;
+            setError(errorMessage);
+          }
+        }
+      }
 
     //Call function to get actors whenever this component re-renders
     useEffect(() => {
-        getActors(props.movieID)
-    }, [props.movieID])
+        getFavorites()
+    }, [])
 
+    // useEffect(() => {
+    //     console.log(response1);
+    //     response1.map((movie_mongo) => {
+    //         console.log(movie_mongo);
+    //     })
+    //     // response1.map((mongo_movie) => {
+    //     //     console.log(mongo_movie);
+    //     //     console.log(typeof mongo_movie);
+    //     //     axios.get(`/movie/:${mongo_movie}`, {}
+    //     //     )
+    //     //     .then(function (movie_json) {
+    //     //         setResponse2(response2.append(movie_json.data));
+    //     //     })
+    //     //     .catch(function (error) {
+    //     //         console.log("Error :)");
+    //     //     })
+    //     // })
+    //   }, [response1]);
 
     //Generate the actor list
     return (
-        <div className="container border border-gray my-2">
-            {/*If the response object isn't null and has at least one item, generate the actor list */}
-            {response && response.cast.length > 0 && (
+        <>
+            {/*If the response object isn't null and has at least one item, generate the movie list */}
+            {response2 && response2.results && response2.results.length > 0 && (
                 <>
-                    <div className="container">
-                        <h4 className='text-center'>Actor List</h4>
+                    <h4 className='text-center'>Recommendation List</h4>
+                    <div className="container border border-gray my-2">
                         <div className="d-flex flex-row cover-container">
                             {/*Only showing first 10*/}
-                            {response.cast.slice(0, 10).map((actor) => (
-                                <div key={actor.id}>
-                                    <ActorCard actor={actor}></ActorCard>
+                            {response2.results.map((movie) => (
+                                <div key={movie.id}>
+                                    <FavoriteCard
+                                        movie={movie}
+                                        movieID={props.movieID}
+                                        setMovieID={props.setMovieID}
+                                        history={props.history}
+                                        setHistory={props.setHistory}
+                                    ></FavoriteCard>
                                 </div>
                             ))}
                         </div>
@@ -61,10 +87,10 @@ const FavoriteList = (props) => {
             )}
 
             {/*If the response object isn't null and has at least one item, generate the actor list */}
-            {response && response.cast.length === 0 && (
+            {response2 && response2.results.length === 0 && (
                 <>
-                    <h4 className='text-center'>Actor List</h4>
-                    <p className='text-center'>Unknown.</p>
+                    <h4 className='text-center'>Favorite List</h4>
+                    <p className='text-center'>No favorite movies, go add some :)</p>
                 </>
 
             )}
@@ -72,11 +98,11 @@ const FavoriteList = (props) => {
             {/*If an error occured, report it to the client*/}
             {error && (
                 <>
-                    <h4 className='text-center'>Actor List</h4>
-                    <div className='error-message text-center' style={{ color: 'red' }}>Actor List Error: {error}</div>
+                    <h4 className='text-center'>Favorite List</h4>
+                    <div className='error-message text-center' style={{ color: 'red' }}>Favorites List Error: {error}</div>
                 </>
             )}
-        </div>
+        </>
     );
 };
 
