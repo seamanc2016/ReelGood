@@ -24,7 +24,7 @@ const FavoriteList = (props) => {
           const moviePromises = response1.data.map((movie_mongo) =>
             axios.get(`/movie/${movie_mongo}`)
           );
-          const movieResponses = await Promise.all(moviePromises);
+          const movieResponses = await Promise.all(moviePromises); // MovieDB reponse must be allocated to interal moviePromises array. (Await)
           const movies = movieResponses.map((movieResponse) => movieResponse.data);
           setResponse2({ results: movies });
         } catch (error) {
@@ -66,7 +66,7 @@ const FavoriteList = (props) => {
             {/*If the response object isn't null and has at least one item, generate the movie list */}
             {response2 && response2.results && response2.results.length > 0 && (
                 <>
-                    <h4 className='text-center'>Recommendation List</h4>
+                    <h4 className='text-center'>Favorites List</h4>
                     <div className="container border border-gray my-2">
                         <div className="d-flex flex-row cover-container">
                             {/*Only showing first 10*/}
