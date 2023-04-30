@@ -13,23 +13,39 @@ export default function MyCarousel() {
     };
 
     return (
-        <Carousel activeIndex={index} onSelect={handleSelect}>
+        <Carousel 
+            activeIndex={index} 
+            onSelect={handleSelect} 
+            style={{ maxWidth: '1000px', maxHeight: '500px', margin: '0 auto' }}
+        >
             <Carousel.Item>
-                <Image src={logo_movie} fluid contain/>
+                <Image 
+                    src={logo_movie} 
+                    fluid 
+                    style={{ height: '500px', width: '1000px', objectFit: 'cover' }} 
+                />
                 <Carousel.Caption>
                     <h3>Search Movies</h3>
                     <p>Discover your favourites, trending, upcoming, and add any of them to your own list.</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
-            <Image src={logo_theater} fluid contain/>
+                <Image 
+                    src={logo_theater} 
+                    fluid 
+                    style={{ height: '500px', width: '1000px', objectFit: 'cover' }} 
+                />
                 <Carousel.Caption>
-                    <h3>Search Theathers</h3>
+                    <h3>Search Theaters</h3>
                     <p>Find the place to see them in the big screen.</p>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
-            <Image src={logo_favorites} fluid contain/>
+                <Image 
+                    src={logo_favorites} 
+                    fluid 
+                    style={{ height: '500px', width: '1000px', objectFit: 'cover' }} 
+                />
                 <Carousel.Caption>
                     <h3>Make it your collection</h3>
                     <p>Add your favorites to your own collection!</p>
@@ -38,5 +54,3 @@ export default function MyCarousel() {
         </Carousel>
     );
 }
-
-
