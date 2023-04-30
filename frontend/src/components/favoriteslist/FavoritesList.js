@@ -90,7 +90,7 @@ const FavoriteList = (props) => {
             {response2 && response2.results.length === 0 && (
                 <>
                     <h4 className='text-center'>Favorite List</h4>
-                    <p className='text-center'>No favorite movies, go add some :)</p>
+                    <p className='text-center'>Loading...</p>
                 </>
 
             )}
