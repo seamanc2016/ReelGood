@@ -32,7 +32,10 @@ const decodeTokenForReg = async (req, res, next) => {
     }
 }
 
-
+/**
+ * @method /Register
+ * 
+ */
 router.post('/', decodeTokenForReg, async (req, res, next) => {
     console.log(req.body);
     console.log(req.decodeValue);
