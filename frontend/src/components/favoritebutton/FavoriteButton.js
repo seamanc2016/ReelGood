@@ -9,7 +9,7 @@ function FavoriteButton(props) {
     //Also getting setLoading as a prop
 
     //Getting userID
-    const { User, setUser, Token, setToken, CheckAuthStateChanged } = useContext(UserContext);
+    const { User } = useContext(UserContext);
     let userID = JSON.parse(User).uid;
 
     //Set states
@@ -31,20 +31,15 @@ function FavoriteButton(props) {
             .then(function (response) {
                 //On success
                 //Take the response array and try to find the current movie ID in it.
-
-                // setFavorite(!response.data.includes(movieID));
+                //If it's in there, that movie was favorited. So the initial state needs to be setFavorite(true)
+                //Else set it to false
                 setResponse(response.data);
                 setFavorite(response.data.includes(Number(movieID)));
                 setLoading(false);
-                //If it's in there, that movie was favorited. So the initial state needs to be setFavorite(true)
-                //Else, setFavorite(false)
             })
             .catch(function (error) {
                 // On error
-                //Assume the code doesn't have a stroke for now
-                setError(error.response.data);
-
-                console.log(error);
+                setError(error); //View this in the Network tab, don't intend on showing it on this page.
             });
     }
 
@@ -52,6 +47,7 @@ function FavoriteButton(props) {
     useEffect(() => {
         getFavorites(movieID);
     }, [movieID])
+
 
     //Now after the button's state is initially set, here's how the user can change it dynamically
     //For favoriting the movie
@@ -99,18 +95,31 @@ function FavoriteButton(props) {
     return (
 
         <>
+            {/*Display this while the request is still loading*/}
             {loading && (
                 <button type="button" className="btn btn-dark me-1" disabled>Checking...</button>
             )}
 
+            {/*Display once the response comes in*/}
             {response && (
                 <>
                     {favorite ? (
-                        <button type="button" className="btn btn-danger me-1" onClick={removeFromFavorites}>Unfavorite</button>
-                    ): (
-                        <button type="button" className="btn btn-success me-1" onClick={addToFavorites}>Favorite</button>
+                        <>
+                            {/*If the current movie is a favorite, show the unfavorite button*/}
+                            <button type="button" className="btn btn-danger me-1" onClick={removeFromFavorites}>Unfavorite</button>
+                        </>
+                    ) : (
+                        <>
+                            {/*If the current movie is not a favorite, show the favorite button*/}
+                            <button type="button" className="btn btn-success me-1" onClick={addToFavorites}>Favorite</button>
+                        </>
                     )}
                 </>
+            )}
+
+            {/*Display this if something went wrong during the request*/}
+            {error && (
+                <button type="button" className="btn btn-dark me-1" disabled>???</button>
             )}
         </>
     )
