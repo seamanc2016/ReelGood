@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from "../../Context/UserContext";
+import { useEffect, useState } from 'react';
 import EmptyImage from "../../images/no-image-available.jpg";
 import FavoriteButton from '../favoritebutton/FavoriteButton';
 
@@ -76,7 +75,7 @@ const MovieDetailsCard = (props) => {
 
                                                 <div>
                                                     {/*Favorite button goes here*/}
-                                                    <FavoriteButton setLoading={props.setLoading} movieID={props.movieID}/>
+                                                    <FavoriteButton movieID={props.movieID}/>
                                                 </div>
                                             </div>
 
