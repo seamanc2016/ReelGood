@@ -35,9 +35,10 @@ const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
+//app.use(csrfMiddleware);
 app.use('/Register', Register);
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(csrfMiddleware);
+
 app.use("/Login", Login);
 app.use("/Signout", Signout);
 
@@ -56,8 +57,8 @@ app.use(Signout)
 const checkSession = (req, res, next) => {
 
     const sessionCookie = req.cookies.session || "a";
-    console.log(req.cookies.session)
     console.log("checkingSession")
+    // console.log("This is csrfToken" + req.csrfToken());
 
     admin.auth().verifySessionCookie(sessionCookie, true)
         .then(() => {
@@ -378,6 +379,7 @@ app.get('/theatres', function (req, res) {
 });
 
 app.post("/Favorite", async (req, res, next) => {
+
 
     // Setup variables
     const uid = String(req.body.uid)
