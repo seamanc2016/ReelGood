@@ -24,7 +24,7 @@ const FavoriteList = (props) => {
           const moviePromises = response1.data.map((movie_mongo) =>
             axios.get(`/movie/${movie_mongo}`)
           );
-          const movieResponses = await Promise.all(moviePromises);
+          const movieResponses = await Promise.all(moviePromises); // MovieDB reponse must be allocated to interal moviePromises array. (Await)
           const movies = movieResponses.map((movieResponse) => movieResponse.data);
           setResponse2({ results: movies });
         } catch (error) {
