@@ -66,7 +66,7 @@ const FavoriteList = (props) => {
             {/*If the response object isn't null and has at least one item, generate the movie list */}
             {response2 && response2.results && response2.results.length > 0 && (
                 <>
-                    <h4 className='text-center'>Recommendation List</h4>
+                    <h4 className='text-center'>Favorites List</h4>
                     <div className="container border border-gray my-2">
                         <div className="d-flex flex-row cover-container">
                             {/*Only showing first 10*/}
