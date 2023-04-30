@@ -138,7 +138,7 @@ body {
 
 /* Add a white background to the body for all pages except Home */
 body:not(.home-page) {
-  background-color: rgb(212, 212, 212);
+  background-color: rgb(255, 255, 255);
 }
 
 .centered {

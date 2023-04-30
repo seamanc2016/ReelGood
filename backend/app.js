@@ -38,7 +38,7 @@ app.use(cookieParser());
 //app.use(csrfMiddleware);
 app.use('/Register', Register);
 app.use(bodyParser.urlencoded({ extended: true }));
-
+// app.use(csrfMiddleware);
 app.use("/Login", Login);
 app.use("/Signout", Signout);
 
@@ -378,7 +378,9 @@ app.get('/theatres', function (req, res) {
 
 });
 
-app.post("/Favorite", async (req, res, next) => {
+
+//MongoDB endpoints
+app.post("/favorite", async (req, res, next) => {
 
 
     // Setup variables
@@ -422,7 +424,7 @@ app.post("/Favorite", async (req, res, next) => {
  * @param {Function} next - The next middleware function
  * @returns {void}
  */
-app.put("/Favorite", async (req, res, next) => {
+app.put("/favorite", async (req, res, next) => {
     // Setup variables
     const uid = String(req.body.uid)
     const movieId = parseInt(req.body.movieId)
@@ -456,7 +458,7 @@ Handle a GET request to retrieve a user's favorite movies from the database.
 @throws {error} - Error retrieving favorite movies.
 @returns {json} - A JSON object containing the user's favorite movies.
 */
-app.get("/Favorites/:uid", async (req, res, next) => {
+app.get("/favorites/:uid", async (req, res, next) => {
     try {
         const uid = req.params.uid;
         console.log(req.params.uid)
