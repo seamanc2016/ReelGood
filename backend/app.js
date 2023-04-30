@@ -420,7 +420,7 @@ app.post("/Favorite", async (req, res, next) => {
  * @param {Function} next - The next middleware function
  * @returns {void}
  */
-app.delete("/Favorite", async (req, res, next) => {
+app.put("/Favorite", async (req, res, next) => {
     // Setup variables
     const uid = String(req.body.uid)
     const movieId = parseInt(req.body.movieId)
@@ -428,21 +428,10 @@ app.delete("/Favorite", async (req, res, next) => {
     // see if this user already has a favoriteMovie movie list
     let result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
 
-    // If null response, create a new favoriteMovie list 
-    if (result == null) {
-        const FavoriteMovies = {
-            _id: uid,
-            movieId: [],    // make a empty array
-        }
-
-        await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
-    }
-
-    // After creating favorite movies list or determining if user already has one...
-
+    
     // Create query parameters
     const UserFavoriteId = { _id: uid };
-    const UserFavoriteMovieId = { $pull: { "movieId": movieId } }
+    const UserFavoriteMovieId = { $pull: { "FavoriteMovie_Id": movieId } }
 
     result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
 
@@ -465,13 +454,15 @@ Handle a GET request to retrieve a user's favorite movies from the database.
 @throws {error} - Error retrieving favorite movies.
 @returns {json} - A JSON object containing the user's favorite movies.
 */
-app.get("/favorites/:uid", async (req, res, next) => {
+app.get("/Favorites/:uid", async (req, res, next) => {
     try {
         const uid = req.params.uid;
+        console.log(req.params.uid)
         // Retrieve user's favorite movies from database
         const result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
+
         // Send response with favorite movies
-        res.status(200).json(result);
+        res.status(200).json(result[0].FavoriteMovie_Id);
     } catch (error) {
         // Handle error
         console.error(error);
@@ -492,7 +483,7 @@ app.get("/accountinfo/:uid", async (req, res, next) => {
     try {
         const uid = req.params.uid;
         // Retrieve user's account information from database
-        const result = await Readdocument(uid, "UsersDB", "Accounts", { _id: uid });
+        const result = await Readdocument(uid, "UsersDB", "Users", { _id: uid });
         // Send response with account information
         res.status(200).json(result);
     } catch (error) {
