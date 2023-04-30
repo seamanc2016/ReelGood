@@ -76,7 +76,7 @@ router.get('/', decodeToken, async (req, res) => {
 
 
     queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query
-    query1 = {$pull: {"FavoriteMovie_Id": 919631}}
+    query1 = {$pull: {"FavoriteMovie_Id": 919631}}  
 
     await DeleteFavoritedMovie(queryid1, "UsersDB", "FavoritedMovies", query1)
     /************************************ END OF MONGODB TESTING ********************************************************/
