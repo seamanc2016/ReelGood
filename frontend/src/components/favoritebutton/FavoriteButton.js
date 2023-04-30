@@ -63,7 +63,7 @@ function FavoriteButton(props) {
         setFavorite(false);
 
         //Make axios call to add favorite endpoint
-        axios.post(`/Favorite`, {
+        axios.put(`/Favorite`, {
             movieId: props.movieID,
             uid: userID
         })
