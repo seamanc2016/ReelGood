@@ -4,110 +4,73 @@ import { UserContext } from "../../Context/UserContext";
 import DefaultProfPic from "../../images/default-prof-pic.PNG";
 
 function AccountInfo(props) {
-    //Getting userID
-    let { User } = useContext(UserContext);
-    let userID = JSON.parse(User).uid;
+  // Getting userID
+  let { User } = useContext(UserContext);
+  let userID = JSON.parse(User).uid;
 
-    //Set states
-    let [response, setResponse] = useState(null);
-    let [error, setError] = useState(null);
-    let [loading, setLoading] = useState(false);
+  // Set states
+  let [response, setResponse] = useState(null);
+  let [error, setError] = useState(null);
+  let [loading, setLoading] = useState(false);
 
-    //Write function to get Account Information for the current user with the passed ID
-    function getAccountInfo(userID) {
+  // Write function to get Account Information for the current user with the passed ID
+  async function getAccountInfo(userID) {
+    // Clearing old response data and resetting loading state
+    setLoading(true);
+    setResponse(null);
+    setError(null);
 
-        //Clearing old response data and resetting loading state
-        setLoading(true);
-        setResponse(null);
-        setError(null);
-
-        //Make call to backend server
-        axios.get(`/profile/${userID}`, {
-
-        })
-            .then(function (response) {
-                //On success
-                // console.log(response);
-                setResponse(props.data);
-                setLoading(false);
-            })
-            .catch(function (error) {
-                // On error
-                // console.log(error);
-                if (error.response) {
-                    // Get error data and display error message accordingly
-                    const errorMessage = error.response.data.status_message;
-                    setError(errorMessage);
-                    setLoading(false);
-                }
-
-            });
+    try {
+      // Make call to backend server
+      const response = await axios.get(`/accountinfo/${userID}`);
+      // On success
+      console.log(response);
+      setResponse(response.data);
+      setLoading(false);
+    } catch (error) {
+      // On error
+      // console.log(error);
+      if (error.response) {
+        // Get error data and display error message accordingly
+        const errorMessage = error.response.data.status_message;
+        setError(errorMessage);
+        setLoading(false);
+      }
     }
+  }
 
-    //Call function to get movie details whenever this component re-renders
-    useEffect(() => {
-        getAccountInfo(userID);
-    }, [userID])
+  // Call function to get account details whenever this component re-renders or userID changes
+  useEffect(() => {
+    getAccountInfo(userID);
+  }, [userID]);
 
-    //Generate the Account Information
-    return (
-        <>
-            {loading && (<h4 className="text-center">Please wait...</h4>)}
+  // Render loading state
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-            {!response && (
-                <div className="container border border-gray my-2">
-                    <div className="text-center">
-                        <h4 className="text-center">Account Information</h4>
-                        <img className="img-fluid img-thumbnail h-25 w-25" src={DefaultProfPic} alt="..." /> 
-                    </div>
-                    <div className="d-flex flex-row justify-content-between mx-3">
-                            <div>
-                                <b>First Name: </b>{props.data.first_name}
-                            </div>
-                            <div>
-                                <b>Last Name: </b>{props.data.last_name}
-                            </div>
-                    </div>
-                    <div className="d-flex flex-row justify-content-between mx-3">
-                            <div>
-                                <b>Email: </b>{props.data.email}
-                            </div>
-                            <div>
-                                <b>Username: </b>{props.data.username}
-                            </div>
-                    </div>
-                    <div className="d-flex flex-row justify-content-between mx-3">
-                            <div>
-                                <b>State: </b>{props.data.state}
-                            </div>
-                            <div>
-                                <b>ZIP: </b>{props.data.zipcode}
-                            </div>
-                    </div>
+  // Render error state
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-
-                </div>
-            )}
-
-            {/*If an error occured, report it to the client*/}
-            {error && (
-                <>
-                    <div className='error-message text-center' style={{ color: 'red' }}>Profile Page Error: {error}</div>
-                </>
-            )}
-        </>
-    )
+  // Generate the account information
+  return (
+    <div>
+      <h1>Account Information</h1>
+      {response && response.data && response.data.length > 0 ? (
+        <ul>
+          <li>First Name: {response.data[0].first_name}</li>
+          <li>Last Name: {response.data[0].last_name}</li>
+          <li>Zip code: {response.data[0].zipcode}</li>
+          <li>State: {response.data[0].state}</li>
+          <li>Email: {response.data[0].email}</li>
+        </ul>
+      ) : (
+        <div>No account information found</div>
+      )}
+    </div>
+  );
 }
 
 export default AccountInfo;
-
-AccountInfo.defaultProps = {
-    data: {
-        "first_name": "Eyan",
-        "last_name": "Eubanks",
-        "email": "eeubanks2016@fau.edu",
-        "username": "eeubanks",
-        "zipcode": 33212,
-        "state": "Florida",
-    }
-}
