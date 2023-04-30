@@ -499,7 +499,7 @@ app.get("/accountinfo/:uid", async (req, res, next) => {
         const result = await Readdocument(uid, "UsersDB", "Users", { _id: uid });
         // Send response with account information
         console.log(result);
-        res.status(200).json(result);
+        res.status(200).send(result);
     } catch (error) {
         // Handle error
         console.error(error);
