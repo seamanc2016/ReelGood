@@ -9,7 +9,7 @@ function FavoriteButton(props) {
     //Also getting setLoading as a prop
 
     //Getting userID
-    const {User, setUser,Token, setToken, CheckAuthStateChanged} = useContext(UserContext);
+    const { User, setUser, Token, setToken, CheckAuthStateChanged } = useContext(UserContext);
     let userID = JSON.parse(User).uid;
 
     //Set states
@@ -24,7 +24,7 @@ function FavoriteButton(props) {
             .then(function (response) {
                 //On success
                 //Take the response array and try to find the current movie ID in it.
-                //If it's in there, that movie was favorited. So the intial state needs to be setFavorite(true)
+                //If it's in there, that movie was favorited. So the initial state needs to be setFavorite(true)
                 //Else, setFavorite(false)
                 console.log(response); //Or just check the response in Network
             })
