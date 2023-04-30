@@ -10,7 +10,7 @@ export default function MyFooter() {
         <>
             <div className="main-footer"> {/* This div holds a class towards the div's for footer. */}
                 <div className="text-center col-sm">
-                    <a href="/" target="_blank" rel="noopener noreferrer">
+                    <a href="/" target="_self" rel="noopener noreferrer">
                         <Image src={logo_ours} alt="Logo_ours" width={175} height={85} />
                     </a>
                     <a href="https://www.yelp.com/" target="_blank" rel="noopener noreferrer">
