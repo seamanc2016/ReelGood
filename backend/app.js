@@ -32,6 +32,7 @@ const corsOptions = {
 const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
 
 // setting up middlewares
+app.use(express.static(join(__dirname, 'build')));
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -514,6 +515,11 @@ const accountInfo = (result) => {
         email; result.email
         ;
 }
+
+
+app.get('*', function (req, res){
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
