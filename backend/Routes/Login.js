@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('../src/config/firebase-config');
-const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument, DeleteFavoritedMovie } = require('../database.js');
 
+/**
+ * @description - Middleware function that handles token decoding
+ * @param {JSON} req - request object 
+ * @param {JSON} res - response object
+ * @param {JSON} next - next object
+ * @returns gives control to next middleware call
+ */
 const decodeToken = async (req, res, next) => {
     // retrieves token from user API call
 
@@ -22,65 +28,23 @@ const decodeToken = async (req, res, next) => {
     }
 }
 
+/**
+ * GET - Allows for users to login
+ * @method /Login
+ * @param {JsonWebKey} Req.token - encoded token. Has uid and other important parameters
+ * @param {JSON} Req.decodeValue - decoded token.
+ * @returns {Response} - Returns a success status or a "UNAUTHORIZED REQUEST!"
+ */
 router.get('/', decodeToken, async (req, res) => {
 
     const idToken = req.token;   // get un-decoded idToken
     const decodedtoken = req.decodeValue
     console.log(idToken)
+    
     // setting time for cookie expiring in 5 days
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
-    //*******************************THIS IS JUST FOR TESTING*************************************************/
-    /**
-     * Here are the functions that will be called for crud operations for database. The queries need to be
-     * build before passed into the function. Please user the example query templates provided to create
-     * queries to certain user data. The data in fields are just temporary data. Please change to fit needed
-     * query requirements
-     */
-
-
-    // Practice Data
-    // const User = {
-    //     _id: String(req.decodeValue.user_id),
-    //     "first_name": "Eyan",
-    //     "last_name": "Eubanks",
-    //     "email": decodedtoken.email,
-    //     "zipcode": 33212,
-    //     "state": "Florida",
-    // }
-
-    // const FavoriteMovies = {
-    //     _id: String("us8daf9h289rt3r983jhoiwjf"/*req.decodeValue.user_id*/),
-    //     movieId: [142684, 681341, 402760, 919631],
-    // }
-
-
-    // // Writes to user to usercollection to retrieve for user info page
-    // await writeToCollection(User, "UsersDB", "Users");
-
-    // // Deletes user from usercollection
-    // await DeleteFromCollection(req.decodeValue.user_id, "UsersDB", "Users");
-
-    // // Writes to favoriteMovies document to favorite movies collection
-    // await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
-
-    // // Returns Movie Array of user that matches user_id and array has movie id
-    // await Readdocument(String(req.decodeValue.user_id), "UsersDB", "FavoritedMovies", { $and: [{ _id: String(req.decodeValue.user_id) }, { "FavoriteMovie_Id": 142684 }] })
-
-
-    // queryid = { _id: String(req.decodeValue.user_id) } // Userid query 
-    // query = { $push: { "FavoriteMovie_Id": 182612 } }  // statement that pushes value to end of array
-
-    // // Finds Favorite movies document and then appends value to end of the array
-    // await updatedocument(queryid, "UsersDB", "FavoritedMovies", query)
-
-
-    // queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query
-    // query1 = {$pull: {"FavoriteMovie_Id": 919631}}  
-
-    // await DeleteFavoritedMovie(queryid1, "UsersDB", "FavoritedMovies", query1)
-    /************************************ END OF MONGODB TESTING ********************************************************/
-
+    // creates a session cookie
     admin
         .auth()
         .createSessionCookie(idToken, { expiresIn })
@@ -93,7 +57,6 @@ router.get('/', decodeToken, async (req, res) => {
             console.log("not working")
             res.send("UNAUTHORIZED REQUEST!");
         });
-
 })
 
 module.exports = router;
