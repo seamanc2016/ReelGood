@@ -1,23 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('../src/config/firebase-config');
-const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument, DeleteFavoritedMovie } = require('../database.js');
+const { writeToCollection} = require('../database.js');
 
+/**
+ * @description - Middleware function that handles token decoding
+ * @param {JsonWebKey} req.body.token - Firebase API JWT Token
+ * @param {String} req.decodeValue - Decoded API JWT Token
+ * @param {JSON} next - next object
+ * @returns - Returns "unaurhotize message" or "Internal Error" message
+ */
 const decodeTokenForReg = async (req, res, next) => {
+    
     // retrieves token from user API call
-
-    const token = req.body.token
-    console.log(req.body.token)
+    const token = req.body.token;
     try {
+
+        // Generated decoded JWT token
         const decodeValue = await admin.auth().verifyIdToken(token);
         if (decodeValue) {
-            console.log("trying to decode value")
-            console.log(decodeValue);
+            console.log("trying to decode value");
+
+            // append decodeValue and token onto req response for use in other middleware methods
             req.decodeValue = decodeValue;
             req.token = token.toString();
-            return next();
+            return next();  // Go to next request handler
         }
-        return res.json({ message: 'unauthorize' })
+        return res.json({ message: 'unauthorize' });
     } catch (e) {
         return res.json({ message: 'Internal Error' });
     }

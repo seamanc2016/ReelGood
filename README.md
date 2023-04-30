@@ -41,6 +41,71 @@ $ npm start
 
 Stuff goes here...
 
+## Mongodb CRUD operations
+
+Here are the functions that will be called for crud operations for database. The queries need to be build before passed into the function. Please user the example query templates provided to create queries to certain user data. The data in fields are just temporary data. Please change to fit needed query requirements
+    
+
+
+Practice Data
+```javascript
+const User = {
+    _id: String(req.decodeValue.user_id),
+    "first_name": "Eyan",
+    "last_name": "Eubanks",
+    "email": decodedtoken.email,
+    "zipcode": 33212,
+    "state": "Florida",
+}
+
+    const FavoriteMovies = {
+        _id: String("us8daf9h289rt3r983jhoiwjf"/*req.decodeValue.user_id*/),
+        movieId: [142684, 681341, 402760, 919631],
+    }
+```
+
+Writes to user to usercollection to retrieve for user info page
+
+```javascript
+await writeToCollection(User, "UsersDB", "Users");
+```
+
+Deletes user from usercollection
+```javascript
+await DeleteFromCollection(req.decodeValue.user_id, "UsersDB", "Users");
+```
+
+Writes to favoriteMovies document to favorite movies collection
+```javascript
+await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+```
+
+Returns Movie Array of user that matches user_id and array has movie id
+```javascript
+await Readdocument(String(req.decodeValue.user_id), "UsersDB", "FavoritedMovies", { $and: [{ _id: String(req.decodeValue.user_id) }, { "FavoriteMovie_Id": 142684 }] })
+```
+
+
+```javascript
+queryid = { _id: String(req.decodeValue.user_id) } // Userid query 
+query = { $push: { "FavoriteMovie_Id": 182612 } }  // statement that pushes value to end of array
+```
+
+```javascript
+//Finds Favorite movies document and then appends value to end of the array
+await updatedocument(queryid, "UsersDB", "FavoritedMovies", query)
+```
+
+
+```javascript
+queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query
+query1 = {$pull: {"FavoriteMovie_Id": 919631}}
+```
+
+```javascript
+await DeleteFavoritedMovie(queryid1, "UsersDB", "FavoritedMovies", query1)
+```
+
 ## Technologies Used
 - Axios v1.3.6
 - Bootstrap v5.2.3
