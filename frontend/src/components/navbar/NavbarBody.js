@@ -70,7 +70,9 @@ export default function MyNavbar() {
     return (
         <Navbar bg="dark" variant="dark" expand="lg"> {/* This component is a container towards the navbar. */}
             <Container fluid> {/* Warning: bottom marging might exceed visual.*/}
+            <a href="/" target="_self" rel="noopener noreferrer">
                 <Image src={logo} alt="Logo" width={80} height={60} />
+                </a>
                 <Navbar.Toggle aria-controls="basic-navbar=nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav>
