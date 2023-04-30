@@ -13,7 +13,7 @@ function FavoriteCard(props) {
             props.setHistory(historyCopy);
             props.setMovieID(props.movie.id);
             window.scroll(0, 0);
-            navigate(`/movies/${props.movie.id}`,{ replace: true })
+            navigate(`/movies/${props.movie.id}`, { replace: true })
         }}>
             {/*For the source we're using, movie images come in 278x185 px sizes.*/}
             {props.movie.poster_path ? (
