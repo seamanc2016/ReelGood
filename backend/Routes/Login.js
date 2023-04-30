@@ -29,12 +29,12 @@ router.get('/', decodeToken, async (req, res) => {
     console.log(idToken)
     // setting time for cookie expiring in 5 days
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
-    
+
     //*******************************THIS IS JUST FOR TESTING*************************************************/
     /**
      * Here are the functions that will be called for crud operations for database. The queries need to be
      * build before passed into the function. Please user the example query templates provided to create
-     * queries to certain user data. The data in fields are just tempory data. Please change to fit needed
+     * queries to certain user data. The data in fields are just temporary data. Please change to fit needed
      * query requirements
      */
 
@@ -64,15 +64,15 @@ router.get('/', decodeToken, async (req, res) => {
     // Writes to favoriteMovies document to favorite movies collection
     await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
 
-    // Returns Movie Array of user that matches user_id and array has movieid
-    await Readdocument(String(req.decodeValue.user_id), "UsersDB", "FavoritedMovies", {$and: [{ _id: String(req.decodeValue.user_id)}, {"FavoriteMovie_Id": 142684}]})
+    // Returns Movie Array of user that matches user_id and array has movie id
+    await Readdocument(String(req.decodeValue.user_id), "UsersDB", "FavoritedMovies", { $and: [{ _id: String(req.decodeValue.user_id) }, { "FavoriteMovie_Id": 142684 }] })
 
-    
-    queryid = { _id: String(req.decodeValue.user_id)} // Userid query 
-    query = {$push: {"FavoriteMovie_Id": 182612} }  // statement that pushes value to end of array
+
+    queryid = { _id: String(req.decodeValue.user_id) } // Userid query 
+    query = { $push: { "FavoriteMovie_Id": 182612 } }  // statement that pushes value to end of array
 
     // Finds Favorite movies document and then appends value to end of the array
-    await updatedocument( queryid, "UsersDB", "FavoritedMovies", query )
+    await updatedocument(queryid, "UsersDB", "FavoritedMovies", query)
 
 
     queryid1 = { _id: String(req.decodeValue.user_id)} // Userid query

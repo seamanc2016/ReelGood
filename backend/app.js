@@ -24,12 +24,12 @@ require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
 // Setup Cors options
 const corsOptions = {
-    origin:'*',
-    credentials:true,
-    optionSuccessStatus:200
-  };
+    origin: '*',
+    credentials: true,
+    optionSuccessStatus: 200
+};
 
-const csrfMiddleware = csrf({cookie: true}); // Sets csrf middleware
+const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
 
 // setting up middlewares
 app.use(cors(corsOptions));
@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use('/Register', Register);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(csrfMiddleware);
-app.use("/Login",Login );
+app.use("/Login", Login);
 app.use("/Signout", Signout);
 
 
@@ -60,14 +60,14 @@ const checkSession = (req, res, next) => {
     console.log("checkingSession")
 
     admin.auth().verifySessionCookie(sessionCookie, true)
-    .then(()=> {
-        console.log("next")
-        next();
-    })
-    .catch((error) => {
-        console.log(error)
-        res.send("UNAUTHORIZED REQUEST!");
-    });
+        .then(() => {
+            console.log("next")
+            next();
+        })
+        .catch((error) => {
+            console.log(error)
+            res.send("UNAUTHORIZED REQUEST!");
+        });
 }
 // Add decodeToken and routes middleware to stack 
 
@@ -377,7 +377,7 @@ app.get('/theatres', function (req, res) {
 
 });
 
-app.post("/Favorite", async (req,res,next) => {
+app.post("/Favorite", async (req, res, next) => {
 
     // Setup variables
     const uid = String(req.body.uid)
@@ -387,7 +387,7 @@ app.post("/Favorite", async (req,res,next) => {
     let result = await Readdocument(String(req.body.uid), "UsersDB", "FavoritedMovies", { _id: String(uid)});
 
     // If null response, create a new favoriteMovie list 
-    if(result == null){
+    if (result == null) {
         const FavoriteMovies = {
             _id: uid,
             movieId: [],    // make a empty array
@@ -402,16 +402,111 @@ app.post("/Favorite", async (req,res,next) => {
     const UserFavoriteId = {_id: uid};
     const UserFavoriteMovieId = {$push: {"FavoriteMovie_Id": movieId}}
 
-    result = await updatedocument( UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId );
+    result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
 
-    if(result)
-        res.send({msg: "Successfullly updated"});
+    if (result)
+        res.send({ msg: "Successfullly updated" });
     else
-        res.send({msg: "Error updating favorites list"});
+        res.send({ msg: "Error updating favorites list" });
 
 });
 
+/***********DELETE /favorites/:uid for remove.*/
 //app.delete()
+/**
+ * Handle the DELETE request to remove a user's favorite movie from the database
+ * @param {Object} req - The HTTP request object
+ * @param {Object} res - The HTTP response object
+ * @param {Function} next - The next middleware function
+ * @returns {void}
+ */
+app.delete("/Favorite", async (req, res, next) => {
+    // Setup variables
+    const uid = String(req.body.uid)
+    const movieId = parseInt(req.body.movieId)
+
+    // see if this user already has a favoriteMovie movie list
+    let result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
+
+    // If null response, create a new favoriteMovie list 
+    if (result == null) {
+        const FavoriteMovies = {
+            _id: uid,
+            movieId: [],    // make a empty array
+        }
+
+        await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+    }
+
+    // After creating favorite movies list or determining if user already has one...
+
+    // Create query parameters
+    const UserFavoriteId = { _id: uid };
+    const UserFavoriteMovieId = { $pull: { "movieId": movieId } }
+
+    result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
+
+    if (result) {
+        res.send({ msg: "Successfully deleted" });
+    } else {
+        res.send({ msg: "Error deleting favorite movie from your list" });
+    }
+});
+
+/***** chatgpt provided GET endpoints for user favorites and user account information */
+// Route handler for retrieving a user's favorite movies
+/**
+Handle a GET request to retrieve a user's favorite movies from the database.
+@function
+@async
+@param {object} req - The request object.
+@param {object} res - The response object.
+@param {function} next - The next middleware function.
+@throws {error} - Error retrieving favorite movies.
+@returns {json} - A JSON object containing the user's favorite movies.
+*/
+app.get("/favorites/:uid", async (req, res, next) => {
+    try {
+        const uid = req.params.uid;
+        // Retrieve user's favorite movies from database
+        const result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
+        // Send response with favorite movies
+        res.status(200).json(result);
+    } catch (error) {
+        // Handle error
+        console.error(error);
+        res.status(500).send({ error: "Error retrieving favorite movies" });
+    }
+});
+// Route handler for retrieving a user's account information
+/**
+ * Retrieve user's account information from database and send as response
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {function} next - The next middleware function
+ * @param {string} req.params.uid - The user ID parameter
+ * @returns {object} - The account information for the user as a JSON response
+ * @throws {error} - If an error occurs while retrieving account information, sends a 500 status code with an error message
+ */
+app.get("/accountinfo/:uid", async (req, res, next) => {
+    try {
+        const uid = req.params.uid;
+        // Retrieve user's account information from database
+        const result = await Readdocument(uid, "UsersDB", "Accounts", { _id: uid });
+        // Send response with account information
+        res.status(200).json(result);
+    } catch (error) {
+        // Handle error
+        console.error(error);
+        res.status(500).send({ error: "Error retrieving account information" });
+    }
+})
+// Extract the account information from the database document
+const accountInfo = (result) => {
+    name: result.name,
+        email; result.email
+        ;
+}
 
 app.listen(process.env.PORT || 5678); //start the server
 console.log('Server is running...');
