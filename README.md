@@ -2,7 +2,7 @@
 
 ReelGood is a web application for movie enthusiasts that provides users with the ability to browse info on the latest movies, manage a favorites list and find a nearby theater to visit in order to see what’s now playing.
 
-![reelgood-usage](frontend\src\images\reelgood-usage.gif)
+![reelgood-usage](./frontend/src/images/reelgood-usage.gif)
 
 ## Table of Contents
 1. [Installation](#installation)
