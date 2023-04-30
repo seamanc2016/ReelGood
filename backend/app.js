@@ -465,6 +465,17 @@ app.get("/favorites/:uid", async (req, res, next) => {
         // Retrieve user's favorite movies from database
         const result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
 
+        // If null response, create a new favoriteMovie list 
+        if (result == null) {
+            const FavoriteMovies = {
+                _id: uid,
+                movieId: [],    // make a empty array
+            }
+    
+            await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+            return res.status(200).send([]);
+        }
+
         // Send response with favorite movies
         res.status(200).json(result[0].FavoriteMovie_Id);
     } catch (error) {
