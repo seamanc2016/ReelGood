@@ -1,12 +1,15 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import EmptyImage from "../../images/no-image-available.jpg"
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from "../../Context/UserContext";
+import EmptyImage from "../../images/no-image-available.jpg";
+import FavoriteButton from '../favoritebutton/FavoriteButton';
 
 const MovieDetailsCard = (props) => {
+
     //Set states
     let [response, setResponse] = useState(null);
     let [error, setError] = useState(null);
-    let [favorite, setFavorite] = useState(true);
+
     //Write function to get Movie Details using the Passed ID
     function getMovieDetails(movieID) {
 
@@ -37,10 +40,6 @@ const MovieDetailsCard = (props) => {
             });
     }
 
-
-    function handleFavorite(){
-        setFavorite(!favorite);
-    }
 
     //Call function to get movie details whenever this component re-renders
     useEffect(() => {
@@ -76,9 +75,8 @@ const MovieDetailsCard = (props) => {
                                                 </div>
 
                                                 <div>
-                                                    {favorite ? ( <button type="button" className="btn btn-dark me-1" onClick={handleFavorite}>Favorite</button>) 
-                                                    : 
-                                                    ( <button type="button" className="btn btn-dark me-1" onClick={handleFavorite}>Unfavorite</button>)}
+                                                    {/*Favorite button goes here*/}
+                                                    <FavoriteButton setLoading={props.setLoading} movieID={props.movieID}/>
                                                 </div>
                                             </div>
 
