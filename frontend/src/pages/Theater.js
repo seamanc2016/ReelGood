@@ -42,7 +42,8 @@ export default function Theater() {
 
   return (
     <>
-      <Container className="my-5 ">
+      <Container className="my-3 ">
+        <h4 className="text-center">Theater Search</h4>
         <Form onSubmit={handleSearchSubmit} className="d-flex mx-auto" style={{ maxWidth: '700px' }}>
           <Form.Control
             type="search"
