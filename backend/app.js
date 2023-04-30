@@ -15,7 +15,11 @@ const Login = require('./Routes/Login');
 const Signout = require('./Routes/Signout');
 const Register = require('./Routes/Register');
 
+const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument, DeleteFavoritedMovie } = require('./database');
+
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
+
+
 
 
 // Setup Cors options
@@ -380,7 +384,7 @@ app.post("/Favorite", async (req, res, next) => {
     const movieId = parseInt(req.body.movieId)
 
     // see if this user already has a favoriteMovie movie list
-    let result = await Readdocument(String(req.body.uid), "UsersDB", "FavoritedMovies", { _id: String(req.decodeValue.user_id) });
+    let result = await Readdocument(String(req.body.uid), "UsersDB", "FavoritedMovies", { _id: String(uid)});
 
     // If null response, create a new favoriteMovie list 
     if (result == null) {
@@ -395,8 +399,8 @@ app.post("/Favorite", async (req, res, next) => {
     // After creating favorite movies list or determining if user already has one...
 
     // Create query parameters
-    const UserFavoriteId = { _id: uid };
-    const UserFavoriteMovieId = { $pull: { "FavoriteMovie_Id": movieId } }
+    const UserFavoriteId = {_id: uid};
+    const UserFavoriteMovieId = {$push: {"FavoriteMovie_Id": movieId}}
 
     result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
 
