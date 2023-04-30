@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
-
+import { Link, useNavigate } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import { useState, useEffect, useContext } from 'react';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
@@ -24,6 +24,7 @@ function Register() {
   const [password, setpassword] = useState('');
   const [response, setResponse] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => { // when users login state changes...
@@ -39,7 +40,7 @@ function Register() {
 
   const reg = async (e) => {
     e.preventDefault();
-
+    navigate('/'); 
     // authenticates with google using api credentals
     const auth = getAuth()
     try {
