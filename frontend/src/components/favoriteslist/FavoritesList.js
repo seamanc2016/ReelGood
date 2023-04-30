@@ -1,4 +1,4 @@
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import axios from "axios";
 import { useContext, useState } from 'react';
 import { UserContext } from "../../Context/UserContext";
@@ -6,9 +6,9 @@ import FavoriteCard from '../favoritecard/FavoriteCard';
 
 const FavoriteList = (props) => {
     //Set states
-    let [response1, setResponse1] = useState(null);
-    let [response2, setResponse2] = useState(null);
-    let [error, setError] = useState(null);
+    const [response1, setResponse1] = useState(null);
+    const [response2, setResponse2] = useState(null);
+    const [error, setError] = useState(null);
 
     //Getting userID
     const { User } = useContext(UserContext);
@@ -16,42 +16,55 @@ const FavoriteList = (props) => {
 
 
     //Function for Axios call to backend server to get favorite movies from user:
-    function getFavorites() {
-        axios.get(`/favorites/${userID}`, {
-        })
-            .then(function (response1) {
-                //On success
-                //Change unused states accordingly
-                setError(null);
-                // Get response data and update accordingly
-                // console.log(response);
-                setResponse1(response1.data);
-            })
-            .catch(function (error) {
-                // On error
-                // console.log(error);
-                if (error.response1) {
-                    //Change unused states accordingly
-                    setResponse1(null);
-
-                    // Get error data and display error message accordingly
-                    const errorMessage = error.response1.data.status_message;
-                    setError(errorMessage);
-                }
-            });
-    }
+    async function getFavorites() {
+        try {
+          const response1 = await axios.get(`/favorites/${userID}`);
+          setError(null);
+          setResponse1(response1.data);
+          const moviePromises = response1.data.map((movie_mongo) =>
+            axios.get(`/movie/${movie_mongo}`)
+          );
+          const movieResponses = await Promise.all(moviePromises);
+          const movies = movieResponses.map((movieResponse) => movieResponse.data);
+          setResponse2({ results: movies });
+        } catch (error) {
+          if (error.response) {
+            setResponse1(null);
+            const errorMessage = error.response.data.status_message;
+            setError(errorMessage);
+          }
+        }
+      }
 
     //Call function to get actors whenever this component re-renders
     useEffect(() => {
-        getFavorites(props.movieID)
-    }, [props.movieID])
+        getFavorites()
+    }, [])
 
+    // useEffect(() => {
+    //     console.log(response1);
+    //     response1.map((movie_mongo) => {
+    //         console.log(movie_mongo);
+    //     })
+    //     // response1.map((mongo_movie) => {
+    //     //     console.log(mongo_movie);
+    //     //     console.log(typeof mongo_movie);
+    //     //     axios.get(`/movie/:${mongo_movie}`, {}
+    //     //     )
+    //     //     .then(function (movie_json) {
+    //     //         setResponse2(response2.append(movie_json.data));
+    //     //     })
+    //     //     .catch(function (error) {
+    //     //         console.log("Error :)");
+    //     //     })
+    //     // })
+    //   }, [response1]);
 
     //Generate the actor list
     return (
         <>
             {/*If the response object isn't null and has at least one item, generate the movie list */}
-            {response2 && response2.results.length > 0 && (
+            {response2 && response2.results && response2.results.length > 0 && (
                 <>
                     <h4 className='text-center'>Recommendation List</h4>
                     <div className="container border border-gray my-2">
