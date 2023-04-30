@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
+import { Row, Col } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import {useState, useEffect, useContext} from 'react';
 import {getAuth, signInWithEmailAndPassword, onAuthStateChanged} from 'firebase/auth';
@@ -71,21 +72,27 @@ function Login(){
 
   
   return(
-    <Container className='p-5'  fluid>
-      <h1>Login</h1>
+    <Container className='py-5'  fluid>
+      <Row className='justify-content-center'>
+      <Col md={6}>
+      <h1 className='text-center mb-5'>Login</h1>
       <Form onSubmit={login}>
-        <Form.Group className='' controlId='formemail'>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="email address" onChange={(e) => {setEmail(e.target.value)}}/ >
+        <Form.Group className='pt-3' controlId='formemail'>
+          <Form.Label>Email address:</Form.Label>
+          <Form.Control type="email" placeholder="Email Address" onChange={(e) => {setEmail(e.target.value)}}/ >
         </Form.Group>
-        <Form.Group className='' controlId='formpassword'>
-          <Form.Label>password</Form.Label>
-          <Form.Control type="password" placeholder="password" onChange={(e) => {setpassword(e.target.value)}}/ >
+        <Form.Group className='pt-3' controlId='formpassword'>
+          <Form.Label>Password:</Form.Label>
+          <Form.Control type="password" placeholder="Password" onChange={(e) => {setpassword(e.target.value)}}/ >
         </Form.Group>
+        <div className='d-flex justify-content-end pt-3'>
         <Button variant="warning" type="submit">
           Submit
         </Button>
+        </div>
       </Form>
+      </Col>
+      </Row>
     </Container>
   );
 }
