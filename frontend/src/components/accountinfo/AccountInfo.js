@@ -17,17 +17,16 @@ function AccountInfo(props) {
     // Write function to get Account Information for the current user with the passed ID
     async function getAccountInfo(userID) {
         // Clearing old response data and resetting loading state
-        //setLoading(true);
         setResponse(null);
         setError(null);
+        setLoading(true);
 
         try {
             // Make call to backend server
             const response = await axios.get(`/accountinfo/${userID}`);
             // On success
-            setResponse(response.data);
-            console.log(response);
-            //setLoading(false);
+            setResponse(response.data[0]);
+            setLoading(false);
         } catch (error) {
             // On error
             // console.log(error);
@@ -45,47 +44,62 @@ function AccountInfo(props) {
         getAccountInfo(userID);
     }, [userID]);
 
-    // Render loading state
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    // Render error state
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
     // Generate the account information
     return (
-        <Container className="d-flex justify-content-center align-items-center h-100">
-            <Row>
-                <Col className="bg-white p-8 rounded-md">
-                    <h1 className="text-3xl font-bold mb-8">Account Information</h1>
-                    <ul>
-                        <li className="mb-2">
-                            <span className="font-semibold">First Name: </span>
-                            Work in progress
-                        </li>
-                        <li className="mb-2">
-                            <span className="font-semibold">Last Name: </span>
-                            Work in progress
-                        </li>
-                        <li className="mb-2">
-                            <span className="font-semibold">Zip code: </span>
-                            Work in progress
-                        </li>
-                        <li className="mb-2">
-                            <span className="font-semibold">State: </span>
-                            Work in progress
-                        </li>
-                        <li className="mb-2">
-                            <span className="font-semibold">Email: </span>
-                            Work in progress
-                        </li>
-                    </ul>
-                </Col>
-            </Row>
-        </Container>
+        <>
+            {/*Show when loading*/}
+            {loading && (
+                <>
+                    <h4 className='text-center'>Account Information</h4>
+                    <p className='text-center'>Loading...</p>
+                </>
+            )}
+
+            {/*If the response object isn't null and has at least one item, generate the movie list */}
+            {response && (
+                <>
+                    <Container className="d-flex justify-content-center align-items-center h-100">
+                        <Row>
+                            <Col className="bg-white p-8 rounded-md">
+                                <h4 className="text-3xl font-bold mb-8">Account Information</h4>
+                                <img src={DefaultProfPic} className="h-25 w-25" alt="..." />
+                                <ul>
+                                    <li className="mb-2">
+                                        <span className="font-semibold">First Name: </span>
+                                        {response.first_name}
+                                    </li>
+                                    <li className="mb-2">
+                                        <span className="font-semibold">Last Name: </span>
+                                        {response.last_name}
+                                    </li>
+                                    <li className="mb-2">
+                                        <span className="font-semibold">Zip code: </span>
+                                        {response.zipcode}
+                                    </li>
+                                    <li className="mb-2">
+                                        <span className="font-semibold">State: </span>
+                                        {response.state}
+                                    </li>
+                                    <li className="mb-2">
+                                        <span className="font-semibold">Email: </span>
+                                        {response.email}
+                                    </li>
+                                </ul>
+                            </Col>
+                        </Row>
+                    </Container>
+                </>
+            )}
+
+            {/*If an error occured, report it to the client*/}
+            {error && (
+                <>
+                    <h4 className='text-center'>Account Information</h4>
+                    <div className='error-message text-center' style={{ color: 'red' }}>Account Information Error: {error}</div>
+                </>
+            )}
+
+        </>
     );
 }
 
