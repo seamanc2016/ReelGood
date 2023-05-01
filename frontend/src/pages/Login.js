@@ -83,32 +83,32 @@ function Login() {
         // If user exist, set user
         setUser(usercredentials.user);
 
-        // Return Token
-        return usercredentials.user.getIdToken().then((token) => {
-          setToken(token)
-          return token;
-        });
+          // Return Token
+          return usercredentials.user.getIdToken().then((token) => {
+            setToken(token)
+            return token;
+          });
 
-      }
-    }).catch((e) => { // else catch and print errors
-      console.log(e.code)
-      console.log(e.message);
-      setToken(false);  // set token to false incase of error
-      return;
-    });
+        }
+      }).catch((e) => { // else catch and print errors
+        console.log(e.code)
+        console.log(e.message);
+        setToken(false);  // set token to false incase of error
+        return;
+      });
 
     const options ={
       headers: {
         Authorization: 'Bearer ' + Token,
         "Content-Type": "text/plain",
-        "CSRF-Token":Cookies.get("XSRF-TOKEN"),
+        "CSRF-Token": Cookies.get("XSRF-TOKEN"),
         withCredentials: true
       }
     }
 
     // if successfull login, sent request to backend for a session
-    if(Token){
-      const res = await axios.get('/Login',options);
+    if (Token) {
+      const res = await axios.get('/Login', options);
       console.log(res.data);
     }
 
@@ -117,9 +117,9 @@ function Login() {
 
   }
 
-  
-  return(
-    <Container className='py-5'  fluid>
+
+  return (
+    <Container className='py-5' fluid>
       <Row className='justify-content-center'>
         <Col md={6}>
           <h1 className='text-center mb-5'>Login</h1>
