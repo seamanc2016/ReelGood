@@ -521,7 +521,6 @@ app.get('*', function (req, res){
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
-
 app.listen(process.env.PORT || 5678); //start the server
 console.log(process.env.PORT);
 console.log('Server is running...');
