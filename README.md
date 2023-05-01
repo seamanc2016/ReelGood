@@ -14,10 +14,10 @@ ReelGood is a web application for movie enthusiasts that provides users with the
 
 ## Getting Started
 
-####Prerequisites
+#### Prerequisites
 - npm
 
-####Installation
+#### Installation
 1. **Navigate to the directory in which you want to clone the repository and do so.**
 
 ```sh
