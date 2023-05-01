@@ -7,7 +7,7 @@ function FavoriteCard(props) {
 
     return (
         <div className="d-flex flex-column border border-gray h-100 mx-1 recommendation-link" onClick={() => {
-            console.log(props.history);
+            // console.log(props.history);
             navigate(`/movies/${props.movie.id}`,{ replace: true })
         }}>
             {/*For the source we're using, movie images come in 278x185 px sizes.*/}

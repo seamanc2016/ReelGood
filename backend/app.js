@@ -382,6 +382,13 @@ app.get('/theatres', function (req, res) {
 
 
 //MongoDB endpoints
+/** 
+* POST - Adds a user's favorite movie to their spot in the database
+* @method /favorite
+* @param {string} Request.body.uid -  The unique user account ID.
+* @param {string} Request.body.movieId -  The unique ID for a movie provided by TMBD.
+* @return {Response} 200/304 on success. 400 on error.
+*/
 app.post("/favorite", async (req, res, next) => {
 
 
@@ -411,21 +418,20 @@ app.post("/favorite", async (req, res, next) => {
     result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
 
     if (result)
-        res.send({ msg: "Successfullly updated" });
+        res.status(200).send({ msg: "Successfullly updated" });
     else
-        res.send({ msg: "Error updating favorites list" });
+        res.status(400).send({ msg: "Error updating favorites list" });
 
 });
 
-/***********DELETE /favorites/:uid for remove.*/
-//app.delete()
-/**
- * Handle the DELETE request to remove a user's favorite movie from the database
- * @param {Object} req - The HTTP request object
- * @param {Object} res - The HTTP response object
- * @param {Function} next - The next middleware function
- * @returns {void}
- */
+
+/** 
+* PUT - Removes a movie from a user's favorite list in the database
+* @method /favorite
+* @param {string} Request.body.uid -  The unique user account ID.
+* @param {string} Request.body.movieId -  The unique ID for a movie provided by TMBD.
+* @return {Response} 200/304 on success. 400 on error.
+*/
 app.put("/favorite", async (req, res, next) => {
     // Setup variables
     const uid = String(req.body.uid)
@@ -442,23 +448,18 @@ app.put("/favorite", async (req, res, next) => {
     result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
 
     if (result) {
-        res.send({ msg: "Successfully deleted" });
+        res.status(200).send({ msg: "Successfully deleted" });
     } else {
-        res.send({ msg: "Error deleting favorite movie from your list" });
+        res.status(400).send({ msg: "Error deleting favorite movie from your list" });
     }
 });
 
-/***** chatgpt provided GET endpoints for user favorites and user account information */
-// Route handler for retrieving a user's favorite movies
-/**
-Handle a GET request to retrieve a user's favorite movies from the database.
-@function
-@async
-@param {object} req - The request object.
-@param {object} res - The response object.
-@param {function} next - The next middleware function.
-@throws {error} - Error retrieving favorite movies.
-@returns {json} - A JSON object containing the user's favorite movies.
+//chatgpt provided aid with GET endpoints for user favorites and user account information
+/** 
+* GET - Retrieves a user's favorite list from the database
+* @method /favorites/:uid
+* @param {string} Request.params.uid -  The unique user account ID.
+* @return {Response} 200/304 on success. 500 on error.
 */
 app.get("/favorites/:uid", async (req, res, next) => {
     try {
@@ -486,16 +487,14 @@ app.get("/favorites/:uid", async (req, res, next) => {
         res.status(500).send({ error: "Error retrieving favorite movies" });
     }
 });
-// Route handler for retrieving a user's account information
-/**
- * Retrieve user's account information from database and send as response
- * @param {object} req - The request object
- * @param {object} res - The response object
- * @param {function} next - The next middleware function
- * @param {string} req.params.uid - The user ID parameter
- * @returns {object} - The account information for the user as a JSON response
- * @throws {error} - If an error occurs while retrieving account information, sends a 500 status code with an error message
- */
+
+
+/** 
+* GET - Retrieves a user's account information from the database
+* @method /accountinfo/:uid
+* @param {string} Request.params.uid -  The unique user account ID.
+* @return {Response} 200/304 on success. 500 on error.
+*/
 app.get("/accountinfo/:uid", async (req, res, next) => {
     try {
         const uid = req.params.uid;
@@ -517,7 +516,12 @@ const accountInfo = (result) => {
         ;
 }
 
+<<<<<<< HEAD
 app.get('*', function (req, res) {
+=======
+
+app.get('*', function (req, res){
+>>>>>>> 3215d691830a5caf129d4f5da76501b55c8962e0
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 

@@ -82,6 +82,26 @@ Please make sure to review and comply with these terms of use before using the a
 
 ## Miscellaneous
 
+#### How to deploy to heroku
+
+First to deploy to heroku using react you need to add a script to your package.json file in your react root directory .
+```javascript
+"scripts": {
+    ...
+    "build": "set BUILD_PATH=../backend/build&& react-scripts build",
+    ...
+  },
+```
+- ```set BUILD_PATH``` adds a variable to your enviroment. The react-scripts program then builds the needed static files in the 
+specified directory.
+- Next, You want to initalize a new git repository in the backend using ```git init```. Next, you want to add a remote .
+- Then you ``` git add .``` to add files to project.
+- Then do a commit .
+- Then use command ```heroku git:remote -a reelgood``` to then create a heroku remote. 
+- To deploy you just use git normally and push your branch to heroku
+```git push heroku master```
+
+
 #### MongoDB CRUD operations
 
 Here are the functions that will be called for crud operations for database. The queries need to be build before passed into the function. Please user the example query templates provided to create queries to certain user data. The data in fields are just temporary data. Please change to fit needed query requirements

@@ -3,13 +3,12 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 import { Row, Col } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import {useState, useEffect, useContext} from 'react';
-import {getAuth, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged, GoogleAuthProvider} from 'firebase/auth';
+import { useState, useEffect, useContext, React, useRef } from 'react';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, onAuthStateChanged, GoogleAuthProvider } from 'firebase/auth';
 import '../config/firebase-config';
 import Alert from 'react-bootstrap/Alert';
-
 import { UserContext } from '../Context/UserContext';
-
+import audiofile from "../Login.mp3"
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -19,13 +18,15 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
 
+  const [isSoundPlayed, setIsSoundPlayed] = useState(false);
+  const audioRef = useRef(null);
   // used to naviate to different locations
   const navigate = useNavigate();
 
   // called when user logs in
   const login = async (e) => {
     e.preventDefault();
-    navigate('/');  // navigate back to home page   
+    //navigate('/');  // navigate back to home page   
     // authenticates with google using api credentals
     const auth = getAuth()
 
@@ -63,8 +64,12 @@ function Login() {
     if (Token) {
       const res = await axios.get('/Login', options);
       console.log(res.data);
+      if (res.data.playsound) {
+        console.log("Inside the submit prior to calling sound");
+        await playSound();
+        navigate('/');  // navigate back to home page   
+      }
     }
-
     // check to see if users state has changed
     CheckAuthStateChanged();
 
@@ -72,54 +77,71 @@ function Login() {
 
   // called when user logs in with Google
   const loginWithGoogle = async () => {
-    navigate('/');  // navigate back to home page   
+    //navigate('/');  // navigate back to home page   
     // authenticates with firebase using Google provider
     const auth = getAuth()
 
     const provider = new GoogleAuthProvider();
     const Token = await signInWithPopup(auth, provider)
-    .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
-      if(usercredentials){
-        // If user exist, set user
-        setUser(usercredentials.user);
+      .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
+        if (usercredentials) {
+          // If user exist, set user
+          setUser(usercredentials.user);
 
-        // Return Token
-        return usercredentials.user.getIdToken().then((token) => {
-          setToken(token)
-          return token;
-        });
+          // Return Token
+          return usercredentials.user.getIdToken().then((token) => {
+            setToken(token)
+            return token;
+          });
 
-      }
-    }).catch((e) => { // else catch and print errors
-      console.log(e.code)
-      console.log(e.message);
-      setToken(false);  // set token to false incase of error
-      return;
-    });
+        }
+      }).catch((e) => { // else catch and print errors
+        console.log(e.code)
+        console.log(e.message);
+        setToken(false);  // set token to false incase of error
+        return;
+      });
 
-    const options ={
+    const options = {
       headers: {
         Authorization: 'Bearer ' + Token,
         "Content-Type": "text/plain",
-        "CSRF-Token":Cookies.get("XSRF-TOKEN"),
+        "CSRF-Token": Cookies.get("XSRF-TOKEN"),
         withCredentials: true
       }
     }
 
     // if successfull login, sent request to backend for a session
-    if(Token){
-      const res = await axios.get('/Login',options);
+    if (Token) {
+      const res = await axios.get('/Login', options);
       console.log(res.data);
+      if (res.data.playsound) {
+        console.log("Inside the submit prior to calling sound");
+        await playSound();
+        navigate('/');  // navigate back to home page   
+      }
     }
 
     // check to see if users state has changed
-    CheckAuthStateChanged(); 
+    CheckAuthStateChanged();
 
   }
 
-  
-  return(
-    <Container className='py-5'  fluid>
+  const playSound = () => {
+    return new Promise(resolve => {
+      console.log("Playing the sound");
+      const audio = audioRef.current;
+      audio.play();
+      audio.addEventListener('ended', () => {
+        setIsSoundPlayed(true);
+        resolve();
+      });
+    });
+  };
+
+  return (
+    <Container className='py-5' fluid>
+      <audio src={audiofile} ref={audioRef} />
       <Row className='justify-content-center'>
         <Col md={6}>
           <h1 className='text-center mb-5'>Login</h1>
@@ -142,6 +164,7 @@ function Login() {
         </Col>
       </Row>
     </Container>
+
   );
 }
 
