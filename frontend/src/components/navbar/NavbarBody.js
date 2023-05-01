@@ -10,7 +10,7 @@ import { UserContext } from '../../Context/UserContext';
 
 import { getAuth, signOut } from 'firebase/auth';
 import '../../config/firebase-config';
-
+import audiofile from "../../Logout.mp3"
 
 export default function MyNavbar() {
 
@@ -22,7 +22,8 @@ export default function MyNavbar() {
 
     const signout = (e) => {
         e.preventDefault();
-
+        const audio = new Audio(audiofile);
+        audio.play();
         // authenticates with google using api credentals
         const auth = getAuth()
         auth.signOut()
