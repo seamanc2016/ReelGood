@@ -220,6 +220,7 @@ const updatedocument = async function (queryid, db, collection, query) {
     const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
 
       // If returned response is false, print error
+      console.log(valueOrbool.acknowledged);
       if (valueOrbool.acknowledged == false){
         console.log("Error - Could not update document");
         return false;
@@ -229,6 +230,12 @@ const updatedocument = async function (queryid, db, collection, query) {
         return true;
       }
     });
+
+    //This is what updatedocument is returning
+    if (result)
+      return true; //Success
+    else
+      return false; //Failure
 
   } catch (error) {
 
