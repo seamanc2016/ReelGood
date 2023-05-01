@@ -46,7 +46,7 @@ app.use("/Signout", Signout);
 
 
 
-const upload = multer();    // Allows for form submitions
+const upload = multer();    // Allows for form submissions
 
 // routing For endpoints
 
@@ -434,7 +434,7 @@ app.put("/favorite", async (req, res, next) => {
     // see if this user already has a favoriteMovie movie list
     let result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
 
-    
+
     // Create query parameters
     const UserFavoriteId = { _id: uid };
     const UserFavoriteMovieId = { $pull: { "FavoriteMovie_Id": movieId } }
@@ -473,7 +473,7 @@ app.get("/favorites/:uid", async (req, res, next) => {
                 _id: uid,
                 movieId: [],    // make a empty array
             }
-    
+
             await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
             return res.status(200).send([]);
         }
@@ -517,7 +517,7 @@ const accountInfo = (result) => {
         ;
 }
 
-app.get('*', function (req, res){
+app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
