@@ -118,8 +118,56 @@ function Login() {
   }
 
 
-  return (
-    <Container className='py-5' fluid>
+  // called when user logs in with Google
+  const loginWithGoogle = async () => {
+    navigate('/');  // navigate back to home page   
+    // authenticates with firebase using Google provider
+    const auth = getAuth()
+
+    const provider = new GoogleAuthProvider();
+    const Token = await signInWithPopup(auth, provider)
+    .then((usercredentials) => {  // If usercredentials are returned, user exist, hence login
+      if(usercredentials){
+        // If user exist, set user
+        setUser(usercredentials.user);
+
+        // Return Token
+        return usercredentials.user.getIdToken().then((token) => {
+          setToken(token)
+          return token;
+        });
+
+      }
+    }).catch((e) => { // else catch and print errors
+      console.log(e.code)
+      console.log(e.message);
+      setToken(false);  // set token to false incase of error
+      return;
+    });
+
+    const options ={
+      headers: {
+        Authorization: 'Bearer ' + Token,
+        "Content-Type": "text/plain",
+        "CSRF-Token":Cookies.get("XSRF-TOKEN"),
+        withCredentials: true
+      }
+    }
+
+    // if successfull login, sent request to backend for a session
+    if(Token){
+      const res = await axios.get('/Login',options);
+      console.log(res.data);
+    }
+
+    // check to see if users state has changed
+    CheckAuthStateChanged(); 
+
+  }
+
+  
+  return(
+    <Container className='py-5'  fluid>
       <Row className='justify-content-center'>
         <Col md={6}>
           <h1 className='text-center mb-5'>Login</h1>
