@@ -490,7 +490,7 @@ app.get("/favorites/:uid", async (req, res, next) => {
 
 
 /** 
-* GET - Retrieves a user's favorite list from the database
+* GET - Retrieves a user's account information from the database
 * @method /accountinfo/:uid
 * @param {string} Request.params.uid -  The unique user account ID.
 * @return {Response} 200/304 on success. 500 on error.
