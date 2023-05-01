@@ -11,13 +11,14 @@ import { UserContext } from '../Context/UserContext';
 import audiofile from "../Login.mp3"
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { Spinner } from 'react-bootstrap';
 
 function Login() {
 
   const { User, setUser, Token, setToken, CheckAuthStateChanged } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isSoundPlayed, setIsSoundPlayed] = useState(false);
   const audioRef = useRef(null);
   // used to naviate to different locations
@@ -130,15 +131,16 @@ function Login() {
   const playSound = () => {
     return new Promise(resolve => {
       console.log("Playing the sound");
+      setIsLoading(true); // set isLoading to true
       const audio = audioRef.current;
       audio.play();
       audio.addEventListener('ended', () => {
         setIsSoundPlayed(true);
+        setIsLoading(false); // set isLoading to false
         resolve();
       });
     });
   };
-
   return (
     <Container className='py-5' fluid>
       <audio src={audiofile} ref={audioRef} />
@@ -162,6 +164,12 @@ function Login() {
             </div>
           </Form>
         </Col>
+        {isLoading && (
+          <div className="d-flex align-items-center justify-content-center mt-3">
+            <Spinner animation="border" role="status" className="mr-2" />
+            <span className="font-weight-bold " style={{ fontWeight: 'bold', fontSize: '1.5rem' }}> Please wait </span>
+          </div>
+        )}
       </Row>
     </Container>
 
