@@ -52,7 +52,7 @@ router.get('/', decodeToken, async (req, res) => {
             console.log("success")
             const options = { maxAge: expiresIn, httpOnly: false, path: "/", sameSite: 'None', secure: true };
             res.cookie("session", sessionCookie, options);
-            res.send({ status: "success" });
+            res.send({ status: "success", playsound: true});
         }).catch((e) => {
             console.log("not working")
             res.send("UNAUTHORIZED REQUEST!");
