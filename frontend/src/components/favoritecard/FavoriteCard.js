@@ -8,7 +8,16 @@ function FavoriteCard(props) {
     return (
         <div className="d-flex flex-column border border-gray h-100 mx-1 recommendation-link" onClick={() => {
             console.log(props.history);
+<<<<<<< HEAD
+            let historyCopy = [...props.history];
+            historyCopy.push(props.movieID);
+            props.setHistory(historyCopy);
+            props.setMovieID(props.movie.id);
+            window.scroll(0, 0);
+            navigate(`/movies/${props.movie.id}`, { replace: true })
+=======
             navigate(`/movies/${props.movie.id}`,{ replace: true })
+>>>>>>> c725921b283af160d3f8284ab8f54390adcf4b83
         }}>
             {/*For the source we're using, movie images come in 278x185 px sizes.*/}
             {props.movie.poster_path ? (
