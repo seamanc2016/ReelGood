@@ -19,9 +19,6 @@ const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument, D
 
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
-
-
-
 // Setup Cors options
 const corsOptions = {
     origin: '*',
@@ -29,16 +26,20 @@ const corsOptions = {
     optionSuccessStatus: 200
 };
 
-const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
-
 // setting up middlewares
-app.use(express.static(join(__dirname, 'build')));
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(join(__dirname, 'build')));
+
+
+const csrfMiddleware = csrf({ cookie: true }); // Sets csrf middleware
+
+
 //app.use(csrfMiddleware);
 app.use('/Register', Register);
-app.use(bodyParser.urlencoded({ extended: true }));
+
 // app.use(csrfMiddleware);
 app.use("/Login", Login);
 app.use("/Signout", Signout);
@@ -516,11 +517,12 @@ const accountInfo = (result) => {
         ;
 }
 
-
 app.get('*', function (req, res){
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
+
 app.listen(process.env.PORT || 5678); //start the server
+console.log(process.env.PORT);
 console.log('Server is running...');
 
