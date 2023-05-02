@@ -516,12 +516,8 @@ const accountInfo = (result) => {
         ;
 }
 
-<<<<<<< HEAD
-app.get('*', function (req, res) {
-=======
 
 app.get('*', function (req, res){
->>>>>>> 3215d691830a5caf129d4f5da76501b55c8962e0
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
