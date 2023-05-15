@@ -46,10 +46,10 @@ $ npm start
 
 ## Usage
 
-For environment configuration, be sure to have the variables below. Place the environment file in the backend folder.
+For environment configuration, be sure to have the variables below. Place the environment file in the backend folder in a folder called "certs".
 
 ```sh
-MOVIE_DB_API_KEY= "[Your MovieDB API Key]"
+MOVIE_DB_API_KEY="[Your MovieDB API Key]"
 MOVIE_DB_BASE_URL="https://api.themoviedb.org/3"
 
 YELP_API_KEY="Bearer [Your Yelp API Key]"
@@ -57,6 +57,10 @@ YELP_BASE_URL="https://api.yelp.com/v3"
 
 MONGODB_USER="[Your MongoDB Username]"
 MONGODB_PASS="[Your MongoDB Password]"
+MONGODB_HOST="[Your MongoDB Host]"
+MONGODB_DB_NAME="[Your MongoDB Database Name]"
+MONGODB_COLL_NAME_1="FavoritedMovies"
+MONGODB_COLL_NAME_2="Users"
 ```
 
 ## Technologies Used

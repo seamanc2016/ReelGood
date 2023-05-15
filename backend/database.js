@@ -1,12 +1,12 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
-const { MongoClient, serverApiVersion, MongoServerError, ListCollectionsCursor } = require("mongodb");
-const { query } = require('express');
+const { MongoClient, MongoServerError} = require("mongodb");
 
 // Create Uri
-const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@studentcluster.fwd4l95.mongodb.net/?retryWrites=true&w=majority`
-const USERCOLLECTION = "Users";
-const FAVORITEDMOVIES = "FavoritedMovies";
+const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}/?retryWrites=true&w=majority`
+const FAVORITEDMOVIES = process.env.MONGODB_COLL_NAME_1;
+const USERCOLLECTION = process.env.MONGODB_COLL_NAME_2;
+
 
 const client = new MongoClient(uri);
 
