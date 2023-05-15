@@ -15,7 +15,7 @@ const Login = require('./Routes/Login');
 const Signout = require('./Routes/Signout');
 const Register = require('./Routes/Register');
 
-const { writeToCollection, DeleteFromCollection, Readdocument, updatedocument, DeleteFavoritedMovie } = require('./database');
+const { writeToCollection, Readdocument, updatedocument } = require('./database');
 
 require('dotenv').config({ path: path.join(__dirname, 'certs', '.env') });
 
@@ -397,7 +397,7 @@ app.post("/favorite", async (req, res, next) => {
     const movieId = parseInt(req.body.movieId)
 
     // see if this user already has a favoriteMovie movie list
-    let result = await Readdocument(String(req.body.uid), "UsersDB", "FavoritedMovies", { _id: String(uid) });
+    let result = await Readdocument(String(req.body.uid), process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1, { _id: String(uid) });
 
     // If null response, create a new favoriteMovie list 
     if (result == null) {
@@ -406,7 +406,7 @@ app.post("/favorite", async (req, res, next) => {
             movieId: [],    // make a empty array
         }
 
-        await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+        await writeToCollection(FavoriteMovies, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1);
     }
 
     // After creating favorite movies list or determining if user already has one...
@@ -415,7 +415,7 @@ app.post("/favorite", async (req, res, next) => {
     const UserFavoriteId = { _id: uid };
     const UserFavoriteMovieId = { $push: { "FavoriteMovie_Id": movieId } }
 
-    result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
+    result = await updatedocument(UserFavoriteId, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1, UserFavoriteMovieId);
 
     if (result)
         res.status(200).send({ msg: "Successfullly updated" });
@@ -438,14 +438,14 @@ app.put("/favorite", async (req, res, next) => {
     const movieId = parseInt(req.body.movieId)
 
     // see if this user already has a favoriteMovie movie list
-    let result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
+    let result = await Readdocument(uid, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1, { _id: uid });
 
 
     // Create query parameters
     const UserFavoriteId = { _id: uid };
     const UserFavoriteMovieId = { $pull: { "FavoriteMovie_Id": movieId } }
 
-    result = await updatedocument(UserFavoriteId, "UsersDB", "FavoritedMovies", UserFavoriteMovieId);
+    result = await updatedocument(UserFavoriteId, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1, UserFavoriteMovieId);
 
     if (result) {
         res.status(200).send({ msg: "Successfully deleted" });
@@ -466,7 +466,7 @@ app.get("/favorites/:uid", async (req, res, next) => {
         const uid = req.params.uid;
         console.log(req.params.uid)
         // Retrieve user's favorite movies from database
-        const result = await Readdocument(uid, "UsersDB", "FavoritedMovies", { _id: uid });
+        const result = await Readdocument(uid, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1, { _id: uid });
 
         // If null response, create a new favoriteMovie list 
         if (result == null) {
@@ -475,7 +475,7 @@ app.get("/favorites/:uid", async (req, res, next) => {
                 movieId: [],    // make a empty array
             }
 
-            await writeToCollection(FavoriteMovies, "UsersDB", "FavoritedMovies");
+            await writeToCollection(FavoriteMovies, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1);
             return res.status(200).send([]);
         }
 
@@ -499,7 +499,7 @@ app.get("/accountinfo/:uid", async (req, res, next) => {
     try {
         const uid = req.params.uid;
         // Retrieve user's account information from database
-        const result = await Readdocument(uid, "UsersDB", "Users", { _id: uid });
+        const result = await Readdocument(uid, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_2, { _id: uid });
         // Send response with account information
         console.log(result);
         res.status(200).send(result);
