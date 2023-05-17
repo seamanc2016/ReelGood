@@ -14,33 +14,6 @@ const FavoriteList = (props) => {
     const { User } = useContext(UserContext);
     let userID = JSON.parse(User).uid;
 
-
-    //Function for Axios call to backend server to get favorite movies from user:
-    // async function generateFavoritesList() {
-
-    //     //Reset error/response states and set loading to true
-    //     setError(null);
-    //     setLoading(true);
-
-    //     //Make Axios call to get the array of favorite movie IDs
-    //     axios.get(`/favorites/${userID}`, {
-    //     })
-    //         .then(function (res) {
-    //             //On success
-    //             // console.log(response.data);
-    //             console.log(res.data);
-    //             let favoriteMovieIDs = res.data;
-    //             favoriteList = favoriteMovieIDs.map( favoriteMovieID => {getPrunedMovieDetails(favoriteMovieID)});
-    //             console.log(favoriteList);
-    //             setLoading(false);
-
-    //         })
-    //         .catch(function (error) {
-    //             // On error
-    //             console.log(error);
-    //         });
-    // }
-
     async function generateFavoritesList() {
         // Reset error/response states and set loading to true
         setError(null);
@@ -58,7 +31,7 @@ const FavoriteList = (props) => {
             setFavoriteList(prunedMovieDetails);
         } catch (error) {
             // On error
-            console.log(error);
+            // console.log(error);
             setError(error);
         } finally {
             setLoading(false);
@@ -79,13 +52,13 @@ const FavoriteList = (props) => {
                     title: res.data.title,
                     poster_path: res.data.poster_path
                 }
-                console.log(prunedMovieDetails);
+                // console.log(prunedMovieDetails);
 
                 return prunedMovieDetails;
             })
             .catch(function (error) {
                 // On error
-                console.log(error);
+                // console.log(error);
             });
     }
 

@@ -29,7 +29,6 @@ function Register() {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => { // when users login state changes...
       if (user) {
-        console.log(user)
         // setAuth(true);
         // userCred.getIdToken().then((token)=>{
         //   setToken(token);
@@ -57,13 +56,13 @@ function Register() {
           token: token_auth
         });
         setResponse(response);
-        console.log("Register data sent: ");
+        // console.log("Register data sent: ");
         console.dir(response);
       }
     } catch (error) {
       setResponse(error);
       setError(true);
-      console.log("The error during an error is: " + error);
+      // console.log("The error during an error is: " + error);
     }
   }
 

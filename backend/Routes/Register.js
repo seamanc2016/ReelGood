@@ -19,8 +19,6 @@ const decodeTokenForReg = async (req, res, next) => {
         // Generated decoded JWT token
         const decodeValue = await admin.auth().verifyIdToken(token);
         if (decodeValue) {
-            console.log("trying to decode value");
-
             // append decodeValue and token onto req response for use in other middleware methods
             req.decodeValue = decodeValue;
             req.token = token.toString();
@@ -36,9 +34,6 @@ const decodeTokenForReg = async (req, res, next) => {
  * @method /Register
  */
 router.post('/', decodeTokenForReg, async (req, res, next) => {
-    console.log(req.body);
-    console.log(req.decodeValue);
-
     // Create User profile
     const User = {
         _id: String(req.decodeValue.uid),

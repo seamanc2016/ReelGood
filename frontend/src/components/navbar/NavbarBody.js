@@ -32,8 +32,8 @@ export default function MyNavbar() {
                 setUser(null);
                 localStorage.clear()
             }).catch((e) => { // else catch and print errors
-                console.log(e.code)
-                console.log(e.message);
+                // console.log(e.code)
+                // console.log(e.message);
             });
     }
 

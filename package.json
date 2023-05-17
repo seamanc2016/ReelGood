@@ -1,14 +1,15 @@
 {
-  "name": "reelgood",
-  "version": "1.0.0",
-  "description": "ReelGood is a web application for movie enthusiasts that provides users with the ability to browse info on the latest movies, manage a favorites list and find a nearby theater to visit in order to see what’s now playing. It can be viewed on Heroku [here](https://reelgood.herokuapp.com/).",
-  "main": "index.js",
   "scripts": {
-    "start": "cd backend && node app.js && cd .. & cd frontend && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd backend && npm install && cd .. && cd frontend && npm install"
+    "start": "cd backend && npm install && node app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seamanc2016/ReelGood.git"
+  },
+  "author": "Eyan Eubanks, Charles Seaman, Steffano Martinez, Joshua Henry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seamanc2016/ReelGood/issues"
+  },
+  "homepage": "https://github.com/seamanc2016/ReelGood#readme"
 }
