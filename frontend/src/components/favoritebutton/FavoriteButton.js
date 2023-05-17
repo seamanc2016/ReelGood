@@ -62,11 +62,11 @@ function FavoriteButton(props) {
         })
             .then(function (response) {
                 //On success
-                console.log(response);
+                // console.log(response);
             })
             .catch(function (error) {
                 // On error
-                console.log(error);
+                // console.log(error);
             });
 
     }
@@ -83,11 +83,11 @@ function FavoriteButton(props) {
         })
             .then(function (response) {
                 //On success
-                console.log(response);
+                // console.log(response);
             })
             .catch(function (error) {
                 // On error
-                console.log(error);
+                // console.log(error);
             });
     }
 

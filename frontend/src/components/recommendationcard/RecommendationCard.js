@@ -8,7 +8,7 @@ function RecommendationCard(props) {
 
     return (
         <div className="d-flex flex-column border border-gray h-100 mx-1 recommendation-link" onClick={() => {
-            console.log(props.history);
+            // console.log(props.history);
             let historyCopy = [...props.history];
             historyCopy.push(props.movieID);
             props.setHistory(historyCopy);

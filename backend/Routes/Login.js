@@ -16,8 +16,6 @@ const decodeToken = async (req, res, next) => {
     try {
         const decodeValue = await admin.auth().verifyIdToken(token);
         if (decodeValue) {
-            console.log("trying to decode value")
-            console.log(decodeValue);
             req.decodeValue = decodeValue;
             req.token = token.toString();
             return next();
@@ -39,7 +37,6 @@ router.get('/', decodeToken, async (req, res) => {
 
     const idToken = req.token;   // get un-decoded idToken
     const decodedtoken = req.decodeValue
-    console.log(idToken)
     
     // setting time for cookie expiring in 5 days
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
@@ -49,12 +46,10 @@ router.get('/', decodeToken, async (req, res) => {
         .auth()
         .createSessionCookie(idToken, { expiresIn })
         .then((sessionCookie) => {
-            console.log("success")
             const options = { maxAge: expiresIn, httpOnly: false, path: "/", sameSite: 'None', secure: true };
             res.cookie("session", sessionCookie, options);
             res.send({ status: "success", playsound: true});
         }).catch((e) => {
-            console.log("not working")
             res.send("UNAUTHORIZED REQUEST!");
         });
 })

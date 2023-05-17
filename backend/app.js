@@ -59,16 +59,12 @@ app.use(Signout)
 const checkSession = (req, res, next) => {
 
     const sessionCookie = req.cookies.session || "a";
-    console.log("checkingSession")
-    // console.log("This is csrfToken" + req.csrfToken());
 
     admin.auth().verifySessionCookie(sessionCookie, true)
         .then(() => {
-            console.log("next")
             next();
         })
         .catch((error) => {
-            console.log(error)
             res.send("UNAUTHORIZED REQUEST!");
         });
 }
@@ -373,7 +369,6 @@ app.get('/theatres', function (req, res) {
         })
         .catch(function (error) {
             // If a response has been received from the request server, the error object will contain the response property.
-            console.log(error);
             if (error.response)
                 return res.status(error.response.status).send(error.response.data);
         });
@@ -464,7 +459,6 @@ app.put("/favorite", async (req, res, next) => {
 app.get("/favorites/:uid", async (req, res, next) => {
     try {
         const uid = req.params.uid;
-        console.log(req.params.uid)
         // Retrieve user's favorite movies from database
         const result = await Readdocument(uid, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_1, { _id: uid });
 
@@ -501,7 +495,6 @@ app.get("/accountinfo/:uid", async (req, res, next) => {
         // Retrieve user's account information from database
         const result = await Readdocument(uid, process.env.MONGODB_DB_NAME, process.env.MONGODB_COLL_NAME_2, { _id: uid });
         // Send response with account information
-        console.log(result);
         res.status(200).send(result);
     } catch (error) {
         // Handle error
@@ -522,6 +515,5 @@ app.get('*', function (req, res){
 })
 
 app.listen(process.env.PORT || 5678); //start the server
-console.log(process.env.PORT);
-console.log('Server is running...');
+console.log(`Server is running on port ${process.env.PORT}...`);
 
