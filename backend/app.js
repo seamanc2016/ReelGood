@@ -59,7 +59,6 @@ app.use(Signout)
 const checkSession = (req, res, next) => {
 
     const sessionCookie = req.cookies.session || "a";
-    console.log("checkingSession")
 
     admin.auth().verifySessionCookie(sessionCookie, true)
         .then(() => {

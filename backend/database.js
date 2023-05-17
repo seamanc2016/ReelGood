@@ -51,7 +51,6 @@ const writeToCollection = async function (obj, db, collection) {
 
 
     if (collection == USERCOLLECTION) {
-      console.log("insert")
       await myColl.insertOne({ _id: obj._id, "first_name": obj.first_name, "last_name": obj.last_name, "email": obj.email, "zipcode": obj.zipcode, "state": obj.state },).then((valueOrbool) => {
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
@@ -103,7 +102,6 @@ const DeleteFromCollection = async function (Id, db, collection) {
     // Create query
     const query = { _id: parseInt(Id) };
     if (collection == USERCOLLECTION) {
-      console.log("insert")
       await myColl.findOneAndDelete(query).then((valueOrbool) => {
         // If returned response is false, print error
         if (valueOrbool.acknowledged == false)
@@ -152,7 +150,6 @@ const ReadCollection = async function (Id, db, collection) {
     if (myCursorAry.length === 0)
       console.log(`There are no documents in ${myColl.collectionName} collection`);
     else {
-      myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
     }
 
@@ -181,7 +178,6 @@ const Readdocument = async function (objId, db, collection, query) {
     const myColl = myDB.collection(String(collection));
 
     const newQuery = query
-    console.log(newQuery)
 
     var myCursorAry = await myColl.find(newQuery).toArray();
     
@@ -189,7 +185,6 @@ const Readdocument = async function (objId, db, collection, query) {
       console.log(`There are no document with record id ${newQuery._id} in ${myColl.collectionName} collection`);
       return null
     } else {
-      myCursorAry.forEach((document) => console.log(document));
       return myCursorAry;
     }
 
@@ -220,7 +215,6 @@ const updatedocument = async function (queryid, db, collection, query) {
     const result = await myColl.updateOne(queryid, query).then((valueOrbool) => {
 
       // If returned response is false, print error
-      console.log(valueOrbool.acknowledged);
       if (valueOrbool.acknowledged == false){
         console.log("Error - Could not update document");
         return false;
