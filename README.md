@@ -1,6 +1,6 @@
 # ReelGood
 
-ReelGood is a web application for movie enthusiasts that provides users with the ability to browse info on the latest movies, manage a favorites list and find a nearby theater to visit in order to see what’s now playing. It can be viewed on Heroku [here](https://reelgood.herokuapp.com/).
+ReelGood is a web application for movie enthusiasts that provides users with the ability to browse info on the latest movies, manage a favorites list and find a nearby theater to visit in order to see what’s now playing. It can be viewed on Heroku [here](https://my-reelgood.herokuapp.com/).
 
 ![reelgood-usage](./frontend/src/images/reelgood-usage.gif)
 
@@ -22,13 +22,13 @@ ReelGood is a web application for movie enthusiasts that provides users with the
 
 ```sh
 $ cd <your-local-directory>
-$ git clone https://github.com/cop4808-spring-2023-fullstack-web
+$ git clone https://github.com/seamanc2016/ReelGood
 ```
 
 2. **Install the dependencies using [npm](https://www.npmjs.com/):**
 
 ```sh
-$ cd final-project-group2
+$ cd ReelGood
 $ cd frontend
 $ npm install
 $ cd ..
@@ -61,6 +61,8 @@ MONGODB_HOST="[Your MongoDB Host]"
 MONGODB_DB_NAME="[Your MongoDB Database Name]"
 MONGODB_COLL_NAME_1="FavoritedMovies"
 MONGODB_COLL_NAME_2="Users"
+
+FIREBASE_SERVICE_ACCOUNT="[Your FB Service Account JSON info]"
 ```
 
 ## Technologies Used
