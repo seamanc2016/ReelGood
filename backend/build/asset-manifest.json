@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.eb9a7b37.css",
-    "main.js": "/static/js/main.00fb87c5.js",
+    "main.js": "/static/js/main.bba6b696.js",
     "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
     "static/media/SearchingMovie.jpg": "/static/media/SearchingMovie.78c783d4241cec17df5d.jpg",
     "static/media/AddingFavorites.jpg": "/static/media/AddingFavorites.9098015b662768672e5c.jpg",
     "static/media/SearchingTheater.jpg": "/static/media/SearchingTheater.95c6d270c33b1c92d2c4.jpg",
-    "static/media/Login.mp3": "/static/media/Login.5fb2fad33e9f0ab012d5.mp3",
+    "static/media/Logout.mp3": "/static/media/Logout.ea88b2c9684d6f40507f.mp3",
+    "static/media/Login.mp3": "/static/media/Login.5715df73c403eb7e2f48.mp3",
     "static/media/Yelp_logo.png": "/static/media/Yelp_logo.4d7edc2bd62d3066a454.png",
-    "static/media/Logout.mp3": "/static/media/Logout.64c8e844a2fe5b2a8401.mp3",
     "static/media/reelgood_logo_with_name_nbg.png": "/static/media/reelgood_logo_with_name_nbg.675e4f959a6675aa059f.png",
     "static/media/no-image-available.jpg": "/static/media/no-image-available.221d8a61462fc6133f63.jpg",
     "static/media/Home-background.jpg": "/static/media/Home-background.4feba2c5d960a610c2eb.jpg",
@@ -17,11 +17,11 @@
     "static/media/default-prof-pic.PNG": "/static/media/default-prof-pic.4176b203f11e42b61b3d.PNG",
     "index.html": "/index.html",
     "main.eb9a7b37.css.map": "/static/css/main.eb9a7b37.css.map",
-    "main.00fb87c5.js.map": "/static/js/main.00fb87c5.js.map",
+    "main.bba6b696.js.map": "/static/js/main.bba6b696.js.map",
     "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.eb9a7b37.css",
-    "static/js/main.00fb87c5.js"
+    "static/js/main.bba6b696.js"
   ]
 }
